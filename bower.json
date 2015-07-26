@@ -1,0 +1,39 @@
+{
+  "name": "vfile",
+  "main": "vfile.js",
+  "description": "Virtual file format for text processing",
+  "license": "MIT",
+  "keywords": [
+    "virtual",
+    "file",
+    "text",
+    "processing",
+    "message",
+    "warning",
+    "error",
+    "mdast",
+    "retext"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wooorm/vfile.git"
+  },
+  "authors": [
+    "Titus Wormer <tituswormer@gmail.com>"
+  ],
+  "ignore": [
+    ".*",
+    "*.log",
+    "*.md",
+    "*.sh",
+    "*.svg",
+    "build/",
+    "components/",
+    "coverage/",
+    "node_modules/",
+    "component.json",
+    "package.json",
+    "build.js",
+    "index.js"
+  ]
+}

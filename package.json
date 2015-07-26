@@ -1,0 +1,60 @@
+{
+  "name": "vfile",
+  "version": "0.0.0",
+  "description": "Virtual file format for text processing",
+  "license": "MIT",
+  "keywords": [
+    "virtual",
+    "file",
+    "text",
+    "processing",
+    "message",
+    "warning",
+    "error",
+    "mdast",
+    "retext"
+  ],
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wooorm/vfile.git"
+  },
+  "author": "Titus Wormer <tituswormer@gmail.com>",
+  "files": [
+    "index.js"
+  ],
+  "devDependencies": {
+    "browserify": "^11.0.0",
+    "clone": "^1.0.1",
+    "diff": "^1.0.0",
+    "eslint": "^0.24.0",
+    "esmangle": "^1.0.0",
+    "istanbul": "^0.3.0",
+    "jscs": "^1.0.0",
+    "jscs-jsdoc": "^1.0.0",
+    "mdast": "^0.27.1",
+    "mdast-comment-config": "^0.1.2",
+    "mdast-github": "^0.3.0",
+    "mdast-lint": "^0.4.0",
+    "mdast-man": "^0.4.0",
+    "mdast-toc": "^0.5.0",
+    "mdast-validate-links": "^0.2.0",
+    "mocha": "^2.0.0"
+  },
+  "scripts": {
+    "test-api": "mocha --check-leaks test.js",
+    "test-api-extensive": "TEST_EXTENDED=true npm run test-api",
+    "test-coveralls": "istanbul cover _mocha --report lcovonly -- --check-leaks test.js",
+    "test-coverage": "istanbul cover _mocha -- -- test.js",
+    "test-travis": "npm run test-coveralls",
+    "test": "npm run test-api",
+    "lint-api": "eslint .",
+    "lint-style": "jscs --reporter inline .",
+    "lint": "npm run lint-api && npm run lint-style",
+    "make": "npm run lint && npm run test-coverage",
+    "build-md": "mdast . --quiet",
+    "build-bundle": "browserify index.js -s VFile > vfile.js",
+    "postbuild-bundle": "esmangle vfile.js > vfile.min.js",
+    "build": "npm run build-md && npm run build-bundle"
+  }
+}
