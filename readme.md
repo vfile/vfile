@@ -52,7 +52,29 @@ and as an AMD, CommonJS, and globals module, [uncompressed](vfile.js) and [compr
 ## Usage
 
 ```js
+var VFile = require('vfile');
 
+var file = new VFile({
+  'directory': '~',
+  'filename': 'example',
+  'extension': 'txt',
+  'contents': 'Foo *bar* baz'
+});
+
+file.toString(); // 'Foo *bar* baz'
+file.filePath(); // '~/example.txt'
+
+file.move({'extension': 'md'});
+file.filePath(); // '~/example.md'
+
+file.warn('Something went wrong', {'line': 1, 'column': 3});
+// { [~/example.md:1:3: Something went wrong]
+//   name: '~/example.md:1:3',
+//   file: '~/example.md',
+//   reason: 'Something went wrong',
+//   line: 1,
+//   column: 3,
+//   fatal: false }
 ```
 
 ## API
