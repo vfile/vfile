@@ -1,6 +1,6 @@
 # ![vfile](https://cdn.rawgit.com/wooorm/vfile/master/logo.svg)
 
-[![Build Status](https://img.shields.io/travis/wooorm/vfile.svg?style=flat)](https://travis-ci.org/wooorm/vfile) [![Coverage Status](https://img.shields.io/coveralls/wooorm/vfile.svg?style=flat)](https://coveralls.io/r/wooorm/vfile?branch=master)
+[![Build Status](https://img.shields.io/travis/wooorm/vfile.svg)](https://travis-ci.org/wooorm/vfile) [![Coverage Status](https://img.shields.io/codecov/c/github/wooorm/vfile.svg)](https://codecov.io/github/wooorm/vfile)
 
 **VFile** is a virtual file format used by [**retext**](https://github.com/wooorm/retext)
 (natural language) and [**mdast**](https://github.com/wooorm/mdast) (markdown).
