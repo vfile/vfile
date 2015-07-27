@@ -268,6 +268,10 @@ file.move({'extension': 'md'});
 file.filePath(); // '/var/www/example.md'
 ```
 
+**Signatures**
+
+*   `vFile = vFile.move(options?)`.
+
 **Parameters**
 
 *   `options` (`Object`):
@@ -280,10 +284,6 @@ file.filePath(); // '/var/www/example.md'
 
     *   `extension` (`string`, default: `''`)
         — Extension(s), without initial dot.
-
-**Signatures**
-
-*   `vFile = vFile.move(options?)`.
 
 **Returns**
 
