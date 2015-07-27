@@ -5,13 +5,20 @@
 **VFile** is a virtual file format used by [**retext**](https://github.com/wooorm/retext)
 (natural language) and [**mdast**](https://github.com/wooorm/mdast) (markdown).
 Two processors which parse, transform, and compile text. Both need a virtual
-representation of files and a place to store warnings. And, they work in the
-browser. **VFile** provides these requirements.
+representation of files and a place to store metadata and messages. And, they
+work in the browser. **VFile** provides these requirements.
 
 Also, **VFile** exposes a warning mechanism compatible with [**ESLint**](https://github.com/eslint/eslint)s
 formatters, making it easy to expose [stylish](https://github.com/eslint/eslint/blob/master/lib/formatters/stylish.js)
 warnings, or export [tap](https://github.com/eslint/eslint/blob/master/lib/formatters/tap.js)
 compliant messages.
+
+> **VFile** is different from (the excellent :+1:) [**vinyl**](https://github.com/wearefractal/vinyl)
+> in that it does not include file-system or node-only functionality. No
+> buffers, streams, or stats. In addition, the focus on
+> [metadata](#vfilenamespacekey) and [messages](#vfilemessagereason-position)
+> are useful when processing a file through a
+> [middleware](https://github.com/segmentio/ware) pipeline.
 
 ## Installation
 
@@ -41,6 +48,7 @@ and as an AMD, CommonJS, and globals module, [uncompressed](vfile.js) and [compr
     *   [VFile#toString()](#vfiletostring)
     *   [VFile#filePath()](#vfilefilepath)
     *   [VFile#move(options)](#vfilemoveoptions)
+    *   [VFile#namespace(key)](#vfilenamespacekey)
     *   [VFile#message(reason, position?)](#vfilemessagereason-position)
     *   [VFile#warn(reason, position?)](#vfilewarnreason-position)
     *   [VFile#fail(reason, position?)](#vfilefailreason-position)
@@ -280,6 +288,28 @@ file.filePath(); // '/var/www/example.md'
 **Returns**
 
 `vFile` — Context object (chainable).
+
+### VFile#namespace(key)
+
+Access metadata.
+
+**Example**
+
+```js
+var file = new VFile('Foo');
+
+file.namespace('foo').bar = 'baz';
+
+console.log(file.namespace('foo').bar) // 'baz';
+```
+
+**Parameters**
+
+*   `key` (`string`) — Namespace key.
+
+**Returns**
+
+`Object` — Private namespace for metadata.
 
 ### VFile#message(reason, position?)
 

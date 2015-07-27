@@ -465,7 +465,7 @@ function hasFailed() {
 }
 
 /**
- * Access private information relating to a file.
+ * Access metadata.
  *
  * @example
  *   var file = new VFile('Foo');
