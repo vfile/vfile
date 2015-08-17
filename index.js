@@ -101,7 +101,7 @@ function stringify(position) {
  *   filePath(); // 'example.txt'
  *
  * @private
- * @param {VFile} file
+ * @param {VFile} file - Virtual file.
  * @return {Function}
  */
 function filePathFactory(file) {
@@ -278,7 +278,7 @@ function toString() {
  *
  * @this {VFile}
  * @memberof {VFile}
- * @param {Object?} [options]
+ * @param {Object?} [options] - Configuration.
  * @return {VFile} - Context object.
  */
 function move(options) {

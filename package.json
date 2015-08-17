@@ -15,35 +15,31 @@
     "retext"
   ],
   "dependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/wooorm/vfile.git"
-  },
+  "repository": "wooorm/vfile",
   "author": "Titus Wormer <tituswormer@gmail.com>",
   "files": [
     "index.js"
   ],
   "devDependencies": {
     "browserify": "^11.0.0",
-    "eslint": "^0.24.0",
+    "eslint": "^1.0.0",
     "esmangle": "^1.0.0",
     "istanbul": "^0.3.0",
-    "jscs": "^1.0.0",
+    "jscs": "^2.0.0",
     "jscs-jsdoc": "^1.0.0",
-    "mdast": "^0.27.1",
-    "mdast-comment-config": "^0.1.2",
+    "mdast": "^1.0.0",
+    "mdast-comment-config": "^1.0.0",
     "mdast-github": "^0.3.0",
-    "mdast-lint": "^0.4.0",
-    "mdast-man": "^0.4.0",
+    "mdast-lint": "^1.0.0",
+    "mdast-man": "^0.5.0",
     "mdast-toc": "^0.5.0",
     "mdast-validate-links": "^0.3.0",
     "mocha": "^2.0.0"
   },
   "scripts": {
     "test-api": "mocha --check-leaks test.js",
-    "test-coveralls": "istanbul cover _mocha --report lcovonly -- --check-leaks test.js",
-    "test-coverage": "istanbul cover _mocha -- -- test.js",
-    "test-travis": "npm run test-coveralls",
+    "test-coverage": "istanbul cover _mocha -- test.js",
+    "test-travis": "npm run test-coverage",
     "test": "npm run test-api",
     "lint-api": "eslint .",
     "lint-style": "jscs --reporter inline .",

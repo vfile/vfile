@@ -8,21 +8,20 @@
     "vfile.js",
     "vfile.min.js"
   ],
-  "plugins": [
-    "jscs-jsdoc"
-  ],
   "jsDoc": {
     "checkAnnotations": "jsdoc3",
     "checkParamNames": true,
-    "requireParamTypes": true,
-    "checkRedundantParams": true,
-    "checkReturnTypes": true,
-    "checkRedundantReturns": true,
-    "requireReturnTypes": true,
-    "checkTypes": "strictNativeCase",
     "checkRedundantAccess": true,
+    "checkRedundantParams": true,
+    "checkRedundantReturns": true,
+    "checkReturnTypes": true,
+    "checkTypes": "strictNativeCase",
     "enforceExistence": true,
-    "requireHyphenBeforeDescription": true
+    "requireHyphenBeforeDescription": true,
+    "requireNewlineAfterDescription": true,
+    "requireParamTypes": true,
+    "requireParamDescription": true,
+    "requireReturnTypes": true
   },
   "requireCurlyBraces": [
     "if",
@@ -128,6 +127,7 @@
     "with"
   ],
   "disallowMultipleLineStrings": true,
+  "disallowMultipleLineBreaks": true,
   "validateLineBreaks": "LF",
   "validateQuoteMarks": "'",
   "disallowMixedSpacesAndTabs": true,
@@ -137,14 +137,8 @@
     "else"
   ],
   "requireLineFeedAtFileEnd": true,
-  "maximumLineLength": 78,
   "requireCapitalizedConstructors": true,
   "safeContextKeyword": "self",
   "requireDotNotation": true,
-  "disallowYodaConditions": true,
-  "validateJSDoc": {
-    "checkParamNames": true,
-    "checkRedundantParams": true,
-    "requireParamTypes": true
-  }
+  "disallowYodaConditions": true
 }
