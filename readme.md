@@ -36,6 +36,8 @@ and as an AMD, CommonJS, and globals module, [uncompressed](vfile.js) and [compr
 
 *   [Usage](#usage)
 
+*   [Related Tools](#related-tools)
+
 *   [API](#api)
 
     *   [VFile()](#vfile)
@@ -84,6 +86,22 @@ file.warn('Something went wrong', {'line': 1, 'column': 3});
 //   column: 3,
 //   fatal: false }
 ```
+
+## Related Tools
+
+[**VFile**](#api)s are used by both [**retext**](https://github.com/wooorm/retext)
+and [**mdast**](https://github.com/wooorm/mdast).
+
+In addition, here’s a list of useful tools:
+
+*   [`wooorm/to-vfile`](https://github.com/wooorm/to-vfile)
+    — Create a virtual file from a file-path;
+
+*   [`wooorm/vfile-sort`](https://github.com/wooorm/vfile-sort)
+    — Sort virtual file messages by line/column;
+
+*   [`wooorm/vfile-reporter`](https://github.com/wooorm/vfile-reporter)
+    — Stylish reporter for virtual files.
 
 ## API
 
