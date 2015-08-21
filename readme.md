@@ -481,6 +481,10 @@ property set to `true`.
 
 *   `fatal` (`boolean?`) — Whether the associated file is still processable.
 
+*   `location` (`object`) — Full range information, when available. Has
+    `start` and `end` properties, both set to an object with `line` and
+    `column`, set to `number?`.
+
 ## License
 
 [MIT](LICENSE) © [Titus Wormer](http://wooorm.com)

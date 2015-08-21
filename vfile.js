@@ -228,9 +228,6 @@ function VFile(options) {
     }
 
     self.contents = options.contents || '';
-    self.filename = options.filename || '';
-    self.directory = options.directory || '';
-    self.extension = options.extension || '';
 
     self.messages = [];
 
@@ -240,6 +237,14 @@ function VFile(options) {
      */
 
     self.filePath = filePathFactory(self);
+
+    self.history = [];
+
+    self.move({
+        'filename': options.filename,
+        'directory': options.directory,
+        'extension': options.extension
+    })
 }
 
 /**
@@ -284,6 +289,8 @@ function toString() {
  */
 function move(options) {
     var self = this;
+    var before = self.filePath();
+    var after;
 
     if (!options) {
         options = {};
@@ -292,6 +299,12 @@ function move(options) {
     self.directory = options.directory || self.directory || '';
     self.filename = options.filename || self.filename || '';
     self.extension = options.extension || self.extension || '';
+
+    after = self.filePath();
+
+    if (after && before !== after) {
+        self.history.push(after);
+    }
 
     return self;
 }
@@ -322,8 +335,18 @@ function move(options) {
  */
 function message(reason, position) {
     var filePath = this.filePath();
-    var location;
+    var range;
     var err;
+    var location = {
+        'start': {
+            'line': null,
+            'column': null
+        },
+        'end': {
+            'line': null,
+            'column': null
+        }
+    };
 
     /*
      * Node / location / position.
@@ -334,19 +357,27 @@ function message(reason, position) {
     }
 
     if (position && position.start) {
-        location = stringify(position.start) + '-' + stringify(position.end);
+        range = stringify(position.start) + '-' + stringify(position.end);
+        location = position;
         position = position.start;
     } else {
-        location = stringify(position);
+        range = stringify(position);
+
+        if (position) {
+            location.start = position;
+            location.end.line = null;
+            location.end.column = null;
+        }
     }
 
     err = new Error(reason.message || reason);
 
-    err.name = (filePath ? filePath + ':' : '') + location;
+    err.name = (filePath ? filePath + ':' : '') + range;
     err.file = filePath;
     err.reason = reason.message || reason;
     err.line = position ? position.line : null;
     err.column = position ? position.column : null;
+    err.location = location;
 
     if (reason.stack) {
         err.stack = reason.stack;

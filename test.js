@@ -266,6 +266,16 @@ describe('VFile(options?)', function () {
             equal(err.reason, 'test');
             equal(err.line, null);
             equal(err.column, null);
+            dequal(err.location, {
+                'start': {
+                    'line': null,
+                    'column': null
+                },
+                'end': {
+                    'line': null,
+                    'column': null
+                }
+            });
         });
 
         it('should add properties on an unfilled vfile', function () {
@@ -275,6 +285,16 @@ describe('VFile(options?)', function () {
             equal(err.reason, 'test');
             equal(err.line, null);
             equal(err.column, null);
+            dequal(err.location, {
+                'start': {
+                    'line': null,
+                    'column': null
+                },
+                'end': {
+                    'line': null,
+                    'column': null
+                }
+            });
         });
 
         it('should create a pretty message', function () {
@@ -300,7 +320,7 @@ describe('VFile(options?)', function () {
         });
 
         it('should accept a node', function () {
-            var node = {
+            var err = new VFile().message('test', {
                 'position': {
                     'start': {
                         'line': 2,
@@ -311,16 +331,9 @@ describe('VFile(options?)', function () {
                         'column': 5
                     }
                 }
-            };
+            });
 
-            equal(
-                new VFile().message('test', node).toString(),
-                '2:1-2:5: test'
-            );
-        });
-
-        it('should accept a location', function () {
-            var location = {
+            dequal(err.location, {
                 'start': {
                     'line': 2,
                     'column': 1
@@ -329,24 +342,55 @@ describe('VFile(options?)', function () {
                     'line': 2,
                     'column': 5
                 }
-            };
+            });
 
-            equal(
-                new VFile().message('test', location).toString(),
-                '2:1-2:5: test'
-            );
+            equal(err.toString(), '2:1-2:5: test');
+        });
+
+        it('should accept a location', function () {
+            var err = new VFile().message('test', {
+                'start': {
+                    'line': 2,
+                    'column': 1
+                },
+                'end': {
+                    'line': 2,
+                    'column': 5
+                }
+            });
+
+            dequal(err.location, {
+                'start': {
+                    'line': 2,
+                    'column': 1
+                },
+                'end': {
+                    'line': 2,
+                    'column': 5
+                }
+            });
+
+            equal(err.toString(), '2:1-2:5: test');
         });
 
         it('should accept a position', function () {
-            var position = {
+            var err = new VFile().message('test', {
                 'line': 2,
                 'column': 5
-            };
+            });
 
-            equal(
-                new VFile().message('test', position).toString(),
-                '2:5: test'
-            );
+            dequal(err.location, {
+                'start': {
+                    'line': 2,
+                    'column': 5
+                },
+                'end': {
+                    'line': null,
+                    'column': null
+                }
+            });
+
+            equal(err.toString(), '2:5: test');
         });
     });
 

@@ -334,8 +334,18 @@ function move(options) {
  */
 function message(reason, position) {
     var filePath = this.filePath();
-    var location;
+    var range;
     var err;
+    var location = {
+        'start': {
+            'line': null,
+            'column': null
+        },
+        'end': {
+            'line': null,
+            'column': null
+        }
+    };
 
     /*
      * Node / location / position.
@@ -346,19 +356,27 @@ function message(reason, position) {
     }
 
     if (position && position.start) {
-        location = stringify(position.start) + '-' + stringify(position.end);
+        range = stringify(position.start) + '-' + stringify(position.end);
+        location = position;
         position = position.start;
     } else {
-        location = stringify(position);
+        range = stringify(position);
+
+        if (position) {
+            location.start = position;
+            location.end.line = null;
+            location.end.column = null;
+        }
     }
 
     err = new Error(reason.message || reason);
 
-    err.name = (filePath ? filePath + ':' : '') + location;
+    err.name = (filePath ? filePath + ':' : '') + range;
     err.file = filePath;
     err.reason = reason.message || reason;
     err.line = position ? position.line : null;
     err.column = position ? position.column : null;
+    err.location = location;
 
     if (reason.stack) {
         err.stack = reason.stack;
