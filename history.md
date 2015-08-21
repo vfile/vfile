@@ -2,6 +2,12 @@
 
 <!--lint disable no-multiple-toplevel-headings-->
 
+1.1.0 / 2015-08-21
+==================
+
+*   Add extensive location information to messages ([848aef7](https://github.com/wooorm/vfile/commit/848aef7))
+*   Add history tracking ([67d0112](https://github.com/wooorm/vfile/commit/67d0112))
+
 1.0.1 / 2015-08-17
 ==================
 
