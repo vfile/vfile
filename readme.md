@@ -47,6 +47,7 @@ and as an AMD, CommonJS, and globals module, [uncompressed](vfile.js) and [compr
     *   [VFile#extension](#vfileextension)
     *   [VFile#quiet](#vfilequiet)
     *   [VFile#messages](#vfilemessages)
+    *   [VFile#history](#vfilehistory)
     *   [VFile#toString()](#vfiletostring)
     *   [VFile#filePath()](#vfilefilepath)
     *   [VFile#move(options)](#vfilemoveoptions)
@@ -217,6 +218,11 @@ this to `true`.
 `VFile#message()`, and in turn `VFile#warn()` and `VFile#fail()`, return
 `Error` objects that adhere to the [`VFileMessage`](#vfilemessage) schema.
 Its results can populate `messages`.
+
+### VFile#history
+
+`Array.<String>` — List of file-paths the file [`move`](#vfilemoveoptions)d
+between.
 
 ### VFile#toString()
 

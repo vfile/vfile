@@ -227,9 +227,6 @@ function VFile(options) {
     }
 
     self.contents = options.contents || '';
-    self.filename = options.filename || '';
-    self.directory = options.directory || '';
-    self.extension = options.extension || '';
 
     self.messages = [];
 
@@ -239,6 +236,14 @@ function VFile(options) {
      */
 
     self.filePath = filePathFactory(self);
+
+    self.history = [];
+
+    self.move({
+        'filename': options.filename,
+        'directory': options.directory,
+        'extension': options.extension
+    })
 }
 
 /**
@@ -283,6 +288,8 @@ function toString() {
  */
 function move(options) {
     var self = this;
+    var before = self.filePath();
+    var after;
 
     if (!options) {
         options = {};
@@ -291,6 +298,12 @@ function move(options) {
     self.directory = options.directory || self.directory || '';
     self.filename = options.filename || self.filename || '';
     self.extension = options.extension || self.extension || '';
+
+    after = self.filePath();
+
+    if (after && before !== after) {
+        self.history.push(after);
+    }
 
     return self;
 }

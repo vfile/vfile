@@ -12,6 +12,7 @@ var VFile = require('./');
  */
 
 var equal = assert.strictEqual;
+var dequal = assert.deepEqual;
 var nequal = assert.notStrictEqual;
 
 /* eslint-env mocha */
@@ -414,6 +415,69 @@ describe('VFile(options?)', function () {
 
             equal(vfile.namespace('foo'), vfile.namespace('foo'));
             nequal(vfile.namespace('foo'), vfile.namespace('bar'));
+        });
+    });
+
+    describe('#history', function () {
+        it('should be set on creation', function () {
+            dequal(new VFile().history, []);
+
+            dequal(new VFile({
+                'filename': 'example',
+                'extension': 'js',
+                'directory': '.'
+            }).history, [
+                'example.js'
+            ]);
+        });
+
+        it('should update', function () {
+            var file = new VFile({
+                'filename': 'example',
+                'extension': 'md'
+            });
+
+            dequal(file.history, [
+                'example.md'
+            ]);
+
+            file.move({
+                'extension': 'js'
+            });
+
+            dequal(file.history, [
+                'example.md',
+                'example.js'
+            ]);
+
+            file.move({
+                'directory': '~'
+            });
+
+            dequal(file.history, [
+                'example.md',
+                'example.js',
+                '~/example.js'
+            ]);
+        });
+
+        it('should update ignore when nothing changed', function () {
+            var file = new VFile({});
+
+            file.move();
+
+            dequal(file.history, []);
+
+            file.move({
+                'filename': 'example',
+                'extension': 'md'
+            });
+
+            file.move({
+                'directory': '.'
+            });
+
+            dequal(file.history, ['example.md']);
         });
     });
 });
