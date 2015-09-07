@@ -95,6 +95,9 @@ and [**mdast**](https://github.com/wooorm/mdast).
 
 In addition, here’s a list of useful tools:
 
+*   [`dustinspecker/convert-vinyl-to-vfile`](https://github.com/dustinspecker/convert-vinyl-to-vfile)
+    — Convert a [Vinyl](https://github.com/wearefractal/vinyl) file to a VFile;
+
 *   [`wooorm/to-vfile`](https://github.com/wooorm/to-vfile)
     — Create a virtual file from a file-path;
 
