@@ -2,6 +2,12 @@
 
 <!--lint disable no-multiple-toplevel-headings-->
 
+1.1.1 / 2015-10-14
+==================
+
+*   Fix Safari 9 ([bcb7a61](https://github.com/wooorm/vfile/commit/bcb7a61))
+*   Add `convert-vinyl-to-vfile` to related tools ([1423652](https://github.com/wooorm/vfile/commit/1423652))
+
 1.1.0 / 2015-08-21
 ==================
 
