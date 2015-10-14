@@ -43,6 +43,48 @@ try {
 } catch (e) { /* empty */ }
 
 /**
+ * Construct a new file message.
+ *
+ * Note: We cannot invoke `Error` on the created context,
+ * as that adds readonly `line` and `column` attributes on
+ * Safari 9, thus throwing and failing the data.
+ *
+ * @example
+ *   var message = new VFileMessage('Whoops!');
+ *
+ *   message instanceof Error // true
+ *
+ * @constructor
+ * @class {VFileMessage}
+ * @param {string} reason - Reason for messaging.
+ * @property {boolean} [fatal=null] - Whether the message
+ *   is fatal.
+ * @property {string} [name=''] - File-name and positional
+ *   information.
+ * @property {string} [file=''] - File-path.
+ * @property {string} [reason=''] - Reason for messaging.
+ * @property {number} [line=null] - Start of message.
+ * @property {number} [column=null] - Start of message.
+ * @property {Position|Location} [location=null] - Place of
+ *   message.
+ * @property {string} [stack] - Stack-trace of warning.
+ */
+function VFileMessage(reason) {
+    this.message = reason;
+}
+
+/**
+ * Inherit from `Error#`.
+ */
+function VFileMessagePrototype() {}
+
+VFileMessagePrototype.prototype = Error.prototype;
+
+var proto = new VFileMessagePrototype();
+
+VFileMessage.prototype = proto;
+
+/**
  * File-related message with location information.
  *
  * @typedef {Error} VFileMessage
@@ -369,7 +411,7 @@ function message(reason, position) {
         }
     }
 
-    err = new Error(reason.message || reason);
+    err = new VFileMessage(reason.message || reason);
 
     err.name = (filePath ? filePath + ':' : '') + range;
     err.file = filePath;
