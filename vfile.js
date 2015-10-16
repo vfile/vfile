@@ -85,6 +85,13 @@ var proto = new VFileMessagePrototype();
 
 VFileMessage.prototype = proto;
 
+/*
+ * Expose defaults.
+ */
+
+proto.file = proto.name = proto.reason = proto.message = proto.stack = '';
+proto.fatal = proto.column = proto.line = null;
+
 /**
  * File-related message with location information.
  *
