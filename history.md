@@ -2,6 +2,11 @@
 
 <!--lint disable no-multiple-toplevel-headings-->
 
+1.1.2 / 2015-10-16
+==================
+
+*   Fix missing `Error` properties on `VFileMessage` ([c896cf9](https://github.com/wooorm/vfile/commit/c896cf9))
+
 1.1.1 / 2015-10-14
 ==================
 
