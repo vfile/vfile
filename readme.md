@@ -28,8 +28,7 @@ compliant messages.
 npm install vfile
 ```
 
-**VFile** is also available for [bower](http://bower.io/#install-packages),
-[component](https://github.com/componentjs/component), and [duo](http://duojs.org/#getting-started),
+**VFile** is also available for [duo](http://duojs.org/#getting-started),
 and as an AMD, CommonJS, and globals module, [uncompressed](vfile.js) and [compressed](vfile.min.js).
 
 ## Table of Contents
