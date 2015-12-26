@@ -37,17 +37,16 @@
     "mocha": "^2.0.0"
   },
   "scripts": {
-    "test-api": "mocha --check-leaks test.js",
-    "test-coverage": "istanbul cover _mocha -- test.js",
-    "test-travis": "npm run test-coverage",
-    "test": "npm run test-api",
+    "build-md": "remark . --quiet --frail",
+    "build-bundle": "browserify index.js -s VFile > vfile.js",
+    "build-mangle": "esmangle vfile.js > vfile.min.js",
+    "build": "npm run build-md && npm run build-bundle && npm run build-mangle",
     "lint-api": "eslint .",
     "lint-style": "jscs --reporter inline .",
     "lint": "npm run lint-api && npm run lint-style",
-    "make": "npm run lint && npm run test-coverage",
-    "build-md": "remark . --quiet",
-    "build-bundle": "browserify index.js -s VFile > vfile.js",
-    "postbuild-bundle": "esmangle vfile.js > vfile.min.js",
-    "build": "npm run build-md && npm run build-bundle"
+    "test-api": "mocha --check-leaks test.js",
+    "test-coverage": "istanbul cover _mocha -- test.js",
+    "test-travis": "npm run test-coverage",
+    "test": "npm run build && npm run lint && npm run test-coverage",
   }
 }
