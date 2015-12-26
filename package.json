@@ -47,6 +47,6 @@
     "test-api": "mocha --check-leaks test.js",
     "test-coverage": "istanbul cover _mocha -- test.js",
     "test-travis": "npm run test-coverage",
-    "test": "npm run build && npm run lint && npm run test-coverage",
+    "test": "npm run build && npm run lint && npm run test-coverage"
   }
 }

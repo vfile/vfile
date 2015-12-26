@@ -1,5 +1,7 @@
 'use strict';
 
+/* eslint-env node */
+
 /*
  * Dependencies.
  */
@@ -145,9 +147,9 @@ describe('VFile(options?)', function () {
     describe('#move()', function () {
         it('should change an extension', function () {
             var vfile = new VFile({
-              'directory': '~',
-              'filename': 'example',
-              'extension': 'markdown'
+                'directory': '~',
+                'filename': 'example',
+                'extension': 'markdown'
             });
 
             vfile.move({
@@ -159,9 +161,9 @@ describe('VFile(options?)', function () {
 
         it('should change a filename', function () {
             var vfile = new VFile({
-              'directory': '~',
-              'filename': 'example',
-              'extension': 'markdown'
+                'directory': '~',
+                'filename': 'example',
+                'extension': 'markdown'
             });
 
             vfile.move({
@@ -173,9 +175,9 @@ describe('VFile(options?)', function () {
 
         it('should change a directory', function () {
             var vfile = new VFile({
-              'directory': '~',
-              'filename': 'example',
-              'extension': 'markdown'
+                'directory': '~',
+                'filename': 'example',
+                'extension': 'markdown'
             });
 
             vfile.move({

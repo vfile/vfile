@@ -36,6 +36,8 @@
 
 'use strict';
 
+/* eslint-env commonjs */
+
 var SEPARATOR = '/';
 
 try {
@@ -123,7 +125,7 @@ proto.fatal = proto.column = proto.line = null;
  * @private
  * @param {Object?} [position] - Single position, like
  *   those available at `node.position.start`.
- * @return {string}
+ * @return {string} - Compiled location.
  */
 function stringify(position) {
     if (!position) {
@@ -151,7 +153,7 @@ function stringify(position) {
  *
  * @private
  * @param {VFile} file - Virtual file.
- * @return {Function}
+ * @return {Function} - `filePath` getter.
  */
 function filePathFactory(file) {
     /**
@@ -292,7 +294,7 @@ function VFile(options) {
         'filename': options.filename,
         'directory': options.directory,
         'extension': options.extension
-    })
+    });
 }
 
 /**
