@@ -29,7 +29,8 @@ npm install vfile
 ```
 
 **VFile** is also available for [duo](http://duojs.org/#getting-started),
-and as an AMD, CommonJS, and globals module, [uncompressed](vfile.js) and [compressed](vfile.min.js).
+and as an AMD, CommonJS, and globals module, [uncompressed and
+compressed](https://github.com/wooorm/vfile/releases).
 
 ## Table of Contents
 

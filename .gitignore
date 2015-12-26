@@ -3,3 +3,5 @@
 components/
 node_modules/
 coverage/
+vfile.js
+vfile.min.js
