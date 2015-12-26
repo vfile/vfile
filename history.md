@@ -2,6 +2,14 @@
 
 <!--lint disable no-multiple-toplevel-headings-->
 
+1.2.0 / 2015-12-27
+==================
+
+*   Update list of related tools ([69e576f](https://github.com/wooorm/vfile/commit/69e576f))
+*   Remove distribution files from source ([b45c780](https://github.com/wooorm/vfile/commit/b45c780))
+*   Remove support for bower ([849c3ad](https://github.com/wooorm/vfile/commit/849c3ad))
+*   Rename mdast to remark ([b3c8cea](https://github.com/wooorm/vfile/commit/b3c8cea))
+
 1.1.2 / 2015-10-16
 ==================
 
