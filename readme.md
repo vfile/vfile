@@ -98,11 +98,16 @@ In addition, here’s a list of useful tools:
 *   [`dustinspecker/convert-vinyl-to-vfile`](https://github.com/dustinspecker/convert-vinyl-to-vfile)
     — Convert a [Vinyl](https://github.com/wearefractal/vinyl) file to a VFile;
 
+*   [`shinnn/is-vfile-message`](https://github.com/shinnn/is-vfile-message)
+    — Check if a value is a `VFileMessage` object;
+
 *   [`wooorm/to-vfile`](https://github.com/wooorm/to-vfile)
     — Create a virtual file from a file-path;
 
 *   [`wooorm/vfile-sort`](https://github.com/wooorm/vfile-sort)
     — Sort virtual file messages by line/column;
+*   [`shinnn/vfile-messages-to-vscode-diagnostics`](https://github.com/shinnn/vfile-messages-to-vscode-diagnostics)
+    — Convert `VFileMessage`s into an array of VS Code diagnostics;
 
 *   [`wooorm/vfile-reporter`](https://github.com/wooorm/vfile-reporter)
     — Stylish reporter for virtual files.
