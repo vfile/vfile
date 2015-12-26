@@ -106,6 +106,7 @@ In addition, here’s a list of useful tools:
 
 *   [`wooorm/vfile-sort`](https://github.com/wooorm/vfile-sort)
     — Sort virtual file messages by line/column;
+
 *   [`shinnn/vfile-messages-to-vscode-diagnostics`](https://github.com/shinnn/vfile-messages-to-vscode-diagnostics)
     — Convert `VFileMessage`s into an array of VS Code diagnostics;
 
