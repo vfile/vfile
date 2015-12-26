@@ -1,6 +1,4 @@
-build/
 components/
 coverage/
-build.js
 vfile.js
 vfile.min.js

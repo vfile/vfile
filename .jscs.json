@@ -1,10 +1,8 @@
 {
   "excludeFiles": [
-    "build/",
     "components/",
     "coverage/",
     "node_modules/",
-    "build.js",
     "vfile.js",
     "vfile.min.js"
   ],
