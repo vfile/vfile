@@ -3,10 +3,10 @@
 [![Build Status](https://img.shields.io/travis/wooorm/vfile.svg)](https://travis-ci.org/wooorm/vfile) [![Coverage Status](https://img.shields.io/codecov/c/github/wooorm/vfile.svg)](https://codecov.io/github/wooorm/vfile)
 
 **VFile** is a virtual file format used by [**retext**](https://github.com/wooorm/retext)
-(natural language) and [**mdast**](https://github.com/wooorm/mdast) (markdown).
-Two processors which parse, transform, and compile text. Both need a virtual
-representation of files and a place to store metadata and messages. And, they
-work in the browser. **VFile** provides these requirements.
+(natural language) and [**remark**](https://github.com/wooorm/remark)
+(markdown). Two processors which parse, transform, and compile text. Both need
+a virtual representation of files and a place to store metadata and messages.
+And, they work in the browser. **VFile** provides these requirements.
 
 Also, **VFile** exposes a warning mechanism compatible with [**ESLint**](https://github.com/eslint/eslint)s
 formatters, making it easy to expose [stylish](https://github.com/eslint/eslint/blob/master/lib/formatters/stylish.js)
@@ -91,7 +91,7 @@ file.warn('Something went wrong', {'line': 1, 'column': 3});
 ## Related Tools
 
 [**VFile**](#api)s are used by both [**retext**](https://github.com/wooorm/retext)
-and [**mdast**](https://github.com/wooorm/mdast).
+and [**remark**](https://github.com/wooorm/remark).
 
 In addition, here’s a list of useful tools:
 

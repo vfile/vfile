@@ -11,7 +11,7 @@
     "message",
     "warning",
     "error",
-    "mdast",
+    "remark",
     "retext"
   ],
   "dependencies": {},
