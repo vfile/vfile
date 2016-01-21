@@ -209,6 +209,32 @@ function filePathFactory(file) {
 }
 
 /**
+* Get the filename with extantion.
+*
+* @example
+*   var file = new VFile({
+*     'directory': '~/foo/bar'
+*     'filename': 'example',
+*     'extension': 'txt'
+*   });
+*
+*   file.basename() // example.txt
+*
+* @memberof {VFile}
+* @return {string} - name of file with extantion.
+*/
+function basename() {
+    var self = this;
+    var extension = self.extension;
+
+    if (self.filename || extension) {
+        return self.filename + (extension ? '.' + extension : '');
+    }
+
+    return '';
+}
+
+/**
  * Construct a new file.
  *
  * @example
@@ -582,6 +608,7 @@ function namespace(key) {
 
 var vFilePrototype = VFile.prototype;
 
+vFilePrototype.basename = basename;
 vFilePrototype.move = move;
 vFilePrototype.toString = toString;
 vFilePrototype.message = message;
