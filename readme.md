@@ -50,6 +50,7 @@ compressed](https://github.com/wooorm/vfile/releases).
     *   [VFile#history](#vfilehistory)
     *   [VFile#toString()](#vfiletostring)
     *   [VFile#filePath()](#vfilefilepath)
+    *   [VFile#fileBasename()](#vfilefilebasename)
     *   [VFile#move(options)](#vfilemoveoptions)
     *   [VFile#namespace(key)](#vfilenamespacekey)
     *   [VFile#message(reason, position?)](#vfilemessagereason-position)
@@ -278,6 +279,33 @@ file.filePath() // ~/example.txt
 `string` — If the `vFile` has a `filename`, it will be prefixed with the
 directory (slashed), if applicable, and suffixed with the (dotted) extension
 (if applicable).  Otherwise, an empty string is returned.
+
+### VFile#fileBasename()
+
+Get the filename, with extension, if applicable.
+
+**Example**
+
+```js
+var file = new VFile({
+  'directory': '~',
+  'filename': 'example',
+  'extension': 'txt'
+});
+
+String(file.fileBasename); // example.txt
+file.fileBasename() // example.txt
+```
+
+**Signatures**
+
+*   `string = vFile.fileBasename()`.
+
+**Returns**
+
+`string` — If the `vFile` has a `extension`, it will be prefixed with the
+`filename`, if applicable. If the `vFile` does not have `extension`,
+only `filename` will be returned. Otherwise, an empty string is returned.
 
 ### VFile#move(options)
 
