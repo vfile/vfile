@@ -144,6 +144,34 @@ describe('VFile(options?)', function () {
         });
     });
 
+    describe('#fileBasename()', function () {
+        it('should return `""` without a filename', function () {
+            equal(new VFile().fileBasename(), '');
+        });
+
+        it('should return the basename without extension', function () {
+            equal(new VFile({
+                'filename': 'Untitled',
+                'extension': null
+            }).fileBasename(), 'Untitled');
+        });
+
+        it('should return the basename with extension', function () {
+            equal(new VFile({
+                'filename': 'Untitled',
+                'extension': 'markdown'
+            }).fileBasename(), 'Untitled.markdown');
+        });
+
+        it('should return only the basename without path', function () {
+            equal(new VFile({
+                'directory': 'foo/bar',
+                'filename': 'baz',
+                'extension': 'qux'
+            }).fileBasename(), 'baz.qux');
+        });
+    });
+
     describe('#move()', function () {
         it('should change an extension', function () {
             var vfile = new VFile({
