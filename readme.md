@@ -45,12 +45,12 @@ compressed](https://github.com/wooorm/vfile/releases).
     *   [VFile#directory](#vfiledirectory)
     *   [VFile#filename](#vfilefilename)
     *   [VFile#extension](#vfileextension)
+    *   [VFile#basename()](#vfilebasename)
     *   [VFile#quiet](#vfilequiet)
     *   [VFile#messages](#vfilemessages)
     *   [VFile#history](#vfilehistory)
     *   [VFile#toString()](#vfiletostring)
     *   [VFile#filePath()](#vfilefilepath)
-    *   [VFile#fileBasename()](#vfilefilebasename)
     *   [VFile#move(options)](#vfilemoveoptions)
     *   [VFile#namespace(key)](#vfilenamespacekey)
     *   [VFile#message(reason, position?)](#vfilemessagereason-position)
@@ -211,6 +211,31 @@ Which would yield the following:
 `string` — Extension. A file-path can still be generated when no extension
 exists.
 
+### VFile#basename()
+
+Get the filename, with extension, if applicable.
+
+**Example**
+
+```js
+var file = new VFile({
+  'directory': '~',
+  'filename': 'example',
+  'extension': 'txt'
+});
+
+file.basename() // example.txt
+```
+
+**Signatures**
+
+*   `string = vFile.basename()`.
+
+**Returns**
+
+`string`— Returns the file path without a directory, if applicable.
+Otherwise,an empty string is returned.
+
 ### VFile#quiet
 
 `boolean?` — Whether an error created by [`VFile#fail()`](#vfilefailreason-position)
@@ -279,33 +304,6 @@ file.filePath() // ~/example.txt
 `string` — If the `vFile` has a `filename`, it will be prefixed with the
 directory (slashed), if applicable, and suffixed with the (dotted) extension
 (if applicable).  Otherwise, an empty string is returned.
-
-### VFile#fileBasename()
-
-Get the filename, with extension, if applicable.
-
-**Example**
-
-```js
-var file = new VFile({
-  'directory': '~',
-  'filename': 'example',
-  'extension': 'txt'
-});
-
-String(file.fileBasename); // example.txt
-file.fileBasename() // example.txt
-```
-
-**Signatures**
-
-*   `string = vFile.fileBasename()`.
-
-**Returns**
-
-`string` — If the `vFile` has a `extension`, it will be prefixed with the
-`filename`, if applicable. If the `vFile` does not have `extension`,
-only `filename` will be returned. Otherwise, an empty string is returned.
 
 ### VFile#move(options)
 
