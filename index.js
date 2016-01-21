@@ -209,44 +209,27 @@ function filePathFactory(file) {
 }
 
 /**
- * If the vFile has a extension, it will be prefixed with the filename,
- * if applicable. If the vFile does not have extension,
- * only `filename` will be returned.
- * Otherwise, an empty string is returned.
- *
- * @private
- * @param {VFile} file - Virtual file.
- * @return {Function} - `fileName` getter.
- */
-function fileBasenameFactory(file) {
-    /**
-     * Get the filename with extantion.
-     *
-     * @example
-     *   var file = new VFile({
-     *     'filename': 'example',
-     *     'extension': 'txt'
-     *   });
-     *
-     *   String(file.fileName); // example.txt
-     *   file.fileName() // example.txt
-     *
-     * @memberof {VFile}
-     * @property {Function} toString - Itself.
-     * @return {string} - name of file with extantion.
-     */
-    function fileBasename() {
-        if (file.filename || file.extension) {
-            return file.filename +
-                (file.extension ? '.' + file.extension : '');
-        }
-
-        return '';
+* Get the filename with extantion.
+*
+* @example
+*   var file = new VFile({
+*     'directory': '~/foo/bar/'
+*     'filename': 'example',
+*     'extension': 'txt'
+*   });
+*
+*   file.basename() // example.txt
+*
+* @memberof {VFile}
+* @return {string} - name of file with extantion.
+*/
+function basename() {
+    var file = this;
+    if (file.filename || file.extension) {
+    return file.filename +
+        (file.extension ? '.' + file.extension : '');
     }
-
-    fileBasename.toString = fileBasename;
-
-    return fileBasename;
+    return '';
 }
 
 /**
@@ -328,7 +311,7 @@ function VFile(options) {
      */
 
     self.filePath = filePathFactory(self);
-    self.fileBasename = fileBasenameFactory(self);
+    self.basename = basename.bind(self);
 
     self.history = [];
 
