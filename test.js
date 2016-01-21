@@ -144,23 +144,25 @@ describe('VFile(options?)', function () {
         });
     });
 
-    describe('#fileBasename()', function () {
+    describe('#basename()', function () {
         it('should return `""` without a filename', function () {
-            equal(new VFile().fileBasename(), '');
+            equal(new VFile().basename(), '');
         });
 
         it('should return the basename without extension', function () {
             equal(new VFile({
+                'directory': '~',
                 'filename': 'Untitled',
                 'extension': null
-            }).fileBasename(), 'Untitled');
+            }).basename(), 'Untitled');
         });
 
         it('should return the basename with extension', function () {
             equal(new VFile({
+                'directory': '~',
                 'filename': 'Untitled',
                 'extension': 'markdown'
-            }).fileBasename(), 'Untitled.markdown');
+            }).basename(), 'Untitled.markdown');
         });
 
         it('should return only the basename without path', function () {
@@ -168,7 +170,15 @@ describe('VFile(options?)', function () {
                 'directory': 'foo/bar',
                 'filename': 'baz',
                 'extension': 'qux'
-            }).fileBasename(), 'baz.qux');
+            }).basename(), 'baz.qux');
+        });
+
+        it('should return only the extension without a filename', function () {
+            equal(new VFile({
+                'directory': 'foo/bar',
+                'filename': null,
+                'extension': 'remarkrc'
+            }).basename(), '.remarkrc');
         });
     });
 
