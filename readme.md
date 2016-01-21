@@ -53,9 +53,9 @@ compressed](https://github.com/wooorm/vfile/releases).
     *   [VFile#filePath()](#vfilefilepath)
     *   [VFile#move(options)](#vfilemoveoptions)
     *   [VFile#namespace(key)](#vfilenamespacekey)
-    *   [VFile#message(reason, position?)](#vfilemessagereason-position)
-    *   [VFile#warn(reason, position?)](#vfilewarnreason-position)
-    *   [VFile#fail(reason, position?)](#vfilefailreason-position)
+    *   [VFile#message(reason\[, position\])](#vfilemessagereason-position)
+    *   [VFile#warn(reason\[, position\])](#vfilewarnreason-position)
+    *   [VFile#fail(reason\[, position\])](#vfilefailreason-position)
     *   [VFile#hasFailed()](#vfilehasfailed)
     *   [VFileMessage](#vfilemessage)
 
@@ -116,7 +116,7 @@ In addition, here’s a list of useful tools:
 
 ## API
 
-### VFile()
+### `VFile()`
 
 **VFile** objects make it easy to move files, to trigger warnings and
 errors, and to store supplementary metadata relating to files, all without
@@ -194,24 +194,24 @@ Which would yield the following:
 1 problem
 ```
 
-### VFile#contents
+### `VFile#contents`
 
 `string` — Content of file.
 
-### VFile#directory
+### `VFile#directory`
 
 `string` — Path to parent directory.
 
-### VFile#filename
+### `VFile#filename`
 
 `string` — Filename. A file-path can still be generated when no filename exists.
 
-### VFile#extension
+### `VFile#extension`
 
 `string` — Extension. A file-path can still be generated when no extension
 exists.
 
-### VFile#basename()
+### `VFile#basename()`
 
 Get the filename, with extension, if applicable.
 
@@ -236,7 +236,7 @@ file.basename() // example.txt
 `string`— Returns the file path without a directory, if applicable.
 Otherwise,an empty string is returned.
 
-### VFile#quiet
+### `VFile#quiet`
 
 `boolean?` — Whether an error created by [`VFile#fail()`](#vfilefailreason-position)
 is returned (when truthy) or thrown (when falsey).
@@ -244,7 +244,7 @@ is returned (when truthy) or thrown (when falsey).
 Ensure all `messages` associated with a file are handled properly when setting
 this to `true`.
 
-### VFile#messages
+### `VFile#messages`
 
 `Array.<VFileMessage>` — List of associated messages.
 
@@ -254,12 +254,12 @@ this to `true`.
 `Error` objects that adhere to the [`VFileMessage`](#vfilemessage) schema.
 Its results can populate `messages`.
 
-### VFile#history
+### `VFile#history`
 
 `Array.<String>` — List of file-paths the file [`move`](#vfilemoveoptions)d
 between.
 
-### VFile#toString()
+### `VFile#toString()`
 
 Get the value of the file.
 
@@ -278,7 +278,7 @@ String(vFile); // 'Foo'
 
 `string` — Contents.
 
-### VFile#filePath()
+### `VFile#filePath()`
 
 Get the filename, with extension and directory, if applicable.
 
@@ -305,7 +305,7 @@ file.filePath() // ~/example.txt
 directory (slashed), if applicable, and suffixed with the (dotted) extension
 (if applicable).  Otherwise, an empty string is returned.
 
-### VFile#move(options)
+### `VFile#move(options)`
 
 Move a file by passing a new directory, filename, and extension.  When these
 are not given, the default values are kept.
@@ -348,7 +348,7 @@ file.filePath(); // '/var/www/example.md'
 
 `vFile` — Context object (chainable).
 
-### VFile#namespace(key)
+### `VFile#namespace(key)`
 
 Access metadata.
 
@@ -370,7 +370,7 @@ console.log(file.namespace('foo').bar) // 'baz';
 
 `Object` — Private namespace for metadata.
 
-### VFile#message(reason, position?)
+### `VFile#message(reason[, position])`
 
 Create a message with `reason` at `position`. When an error is passed in as
 `reason`, copies the stack. This does not add a message to `messages`.
@@ -411,7 +411,7 @@ file.message('Something went wrong');
 [`VFileMessage`](#vfilemessage) — File-related message with location
 information.
 
-### VFile#warn(reason, position?)
+### `VFile#warn(reason[, position])`
 
 Warn. Creates a non-fatal message (see [`VFile#message()`](#vfilemessagereason-position)),
 and adds it to the file's [`messages`](#vfilemessages) list.
@@ -435,7 +435,7 @@ file.warn('Something went wrong');
 
 *   [`VFile#message`](#vfilemessagereason-position)
 
-### VFile#fail(reason, position?)
+### `VFile#fail(reason[, position])`
 
 Fail. Creates a fatal message (see `VFile#message()`), sets `fatal: true`,
 adds it to the file's `messages` list.
@@ -468,7 +468,7 @@ file.fail('Something went wrong');
 
 *   [`VFile#message`](#vfilemessagereason-position)
 
-### VFile#hasFailed()
+### `VFile#hasFailed()`
 
 Check if a fatal message occurred making the file no longer processable.
 
@@ -493,7 +493,7 @@ file.hasFailed(); // true
 `boolean` — `true` if at least one of file’s `messages` has a `fatal`
 property set to `true`.
 
-### VFileMessage
+### `VFileMessage`
 
 `Error` — File-related message with location information.
 
