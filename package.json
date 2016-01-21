@@ -15,7 +15,11 @@
     "retext"
   ],
   "dependencies": {},
-  "repository": "wooorm/vfile",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wooorm/vfile.git"
+  },
+  "bugs": "https://github.com/wooorm/vfile/issues",
   "author": "Titus Wormer <tituswormer@gmail.com>",
   "files": [
     "index.js"
