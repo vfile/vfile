@@ -6,374 +6,440 @@
  * Dependencies.
  */
 
-var assert = require('assert');
+var test = require('tape');
 var VFile = require('./');
 
 /*
- * Methods.
+ * Tests.
  */
 
-var equal = assert.strictEqual;
-var dequal = assert.deepEqual;
-var nequal = assert.notStrictEqual;
+test('VFile(options?)', function (t) {
+    t.ok(new VFile() instanceof VFile, 'should create a new `VFile`');
 
-/* eslint-env mocha */
+    /* eslint-disable new-cap */
+    t.ok(VFile() instanceof VFile, 'should work without `new`');
+    /* eslint-enable new-cap */
 
-describe('VFile(options?)', function () {
-    it('should create a new `VFile`', function () {
-        assert(new VFile() instanceof VFile);
-    });
-
-    it('should work without `new`', function () {
-        /* eslint-disable new-cap */
-        assert(VFile() instanceof VFile);
-        /* eslint-enable new-cap */
-    });
-
-    it('should accept missing options', function () {
+    t.test('should accept missing options', function (st) {
         var vfile = new VFile();
 
-        equal(vfile.filename, '');
-        equal(vfile.extension, '');
-        equal(vfile.contents, '');
+        st.equal(vfile.filename, '');
+        st.equal(vfile.extension, '');
+        st.equal(vfile.contents, '');
+
+        st.end();
     });
 
-    it('should accept a `string`', function () {
+    t.test('should accept a `string`', function (st) {
         var vfile = new VFile('Test');
 
-        equal(vfile.filename, '');
-        equal(vfile.extension, '');
-        equal(vfile.contents, 'Test');
+        st.equal(vfile.filename, '');
+        st.equal(vfile.extension, '');
+        st.equal(vfile.contents, 'Test');
+
+        st.end();
     });
 
-    it('should accept an `Object`', function () {
+    t.test('should accept an `Object`', function (st) {
         var vfile = new VFile({
             'filename': 'Untitled',
             'extension': 'markdown',
             'contents': 'Test'
         });
 
-        equal(vfile.filename, 'Untitled');
-        equal(vfile.extension, 'markdown');
-        equal(vfile.contents, 'Test');
+        st.equal(vfile.filename, 'Untitled');
+        st.equal(vfile.extension, 'markdown');
+        st.equal(vfile.contents, 'Test');
+
+        st.end();
     });
 
-    it('should accept a `VFile`', function () {
+    t.test('should accept a `VFile`', function (st) {
         var vfile = new VFile(new VFile({
             'filename': 'Untitled',
             'extension': 'markdown',
             'contents': 'Test'
         }));
 
-        equal(vfile.filename, 'Untitled');
-        equal(vfile.extension, 'markdown');
-        equal(vfile.contents, 'Test');
+        st.equal(vfile.filename, 'Untitled');
+        st.equal(vfile.extension, 'markdown');
+        st.equal(vfile.contents, 'Test');
+
+        st.end();
     });
 
-    describe('#toString()', function () {
-        it('should return `""` without content', function () {
-            equal(new VFile().toString(), '');
-        });
+    t.test('#toString()', function (st) {
+        st.equal(
+            new VFile().toString(),
+            '',
+            'should return `""` without content'
+        );
 
-        it('should return the internal value', function () {
-            equal(new VFile('foo').toString(), 'foo');
-        });
+        st.equal(
+            new VFile('foo').toString(),
+            'foo',
+            'should return the internal value'
+        );
+
+        st.end();
     });
 
-    describe('#filePath()', function () {
-        it('should return `""` without a filename', function () {
-            equal(new VFile().filePath(), '');
-        });
+    t.test('#filePath()', function (st) {
+        st.equal(
+            new VFile().filePath(),
+            '',
+            'should return `""` without a filename'
+        );
 
-        it('should return the filename without extension', function () {
-            equal(new VFile({
+        st.equal(
+            new VFile({
                 'filename': 'Untitled',
                 'extension': null
-            }).filePath(), 'Untitled');
-        });
+            }).filePath(),
+            'Untitled',
+            'should return the filename without extension'
+        );
 
-        it('should return the filename with extension', function () {
-            equal(new VFile({
+        st.equal(
+            new VFile({
                 'filename': 'Untitled',
                 'extension': 'markdown'
-            }).filePath(), 'Untitled.markdown');
-        });
+            }).filePath(),
+            'Untitled.markdown',
+            'should return the filename with extension'
+        );
 
-        it('should return the full vfile path', function () {
-            equal(new VFile({
+        st.equal(
+            new VFile({
                 'directory': 'foo/bar',
                 'filename': 'baz',
                 'extension': 'qux'
-            }).filePath(), 'foo/bar/baz.qux');
-        });
+            }).filePath(),
+            'foo/bar/baz.qux',
+            'should return the full vfile path'
+        );
 
-        it('should not return an extra directory slash', function () {
-            equal(new VFile({
+        st.equal(
+            new VFile({
                 'directory': '~/',
                 'filename': 'baz',
                 'extension': 'qux'
-            }).filePath(), '~/baz.qux');
-        });
+            }).filePath(),
+            '~/baz.qux',
+            'should not return an extra directory slash'
+        );
 
-        it('should not return the current directory', function () {
-            equal(new VFile({
+        st.equal(
+            new VFile({
                 'directory': '.',
                 'filename': 'baz',
                 'extension': 'qux'
-            }).filePath(), 'baz.qux');
+            }).filePath(),
+            'baz.qux',
+            'should not return the current directory (#1)'
+        );
 
-            equal(new VFile({
+        st.equal(
+            new VFile({
                 'directory': './',
                 'filename': 'baz',
                 'extension': 'qux'
-            }).filePath(), 'baz.qux');
-        });
+            }).filePath(),
+            'baz.qux',
+            'should not return the current directory (#2)'
+        );
 
-        it('should return the parent directory', function () {
-            equal(new VFile({
+        st.equal(
+            new VFile({
                 'directory': '..',
                 'filename': 'baz',
                 'extension': 'qux'
-            }).filePath(), '../baz.qux');
+            }).filePath(),
+            '../baz.qux',
+            'should return the parent directory (#1)'
+        );
 
-            equal(new VFile({
+        st.equal(
+            new VFile({
                 'directory': '../',
                 'filename': 'baz',
                 'extension': 'qux'
-            }).filePath(), '../baz.qux');
-        });
+            }).filePath(),
+            '../baz.qux',
+            'should return the parent directory (#2)'
+        );
+
+        st.end();
     });
 
-    describe('#basename()', function () {
-        it('should return `""` without a filename', function () {
-            equal(new VFile().basename(), '');
-        });
+    test('#basename()', function (st) {
+        st.equal(
+            new VFile().basename(),
+            '',
+            'should return `""` without a filename'
+        );
 
-        it('should return the basename without extension', function () {
-            equal(new VFile({
+        st.equal(
+            new VFile({
                 'directory': '~',
                 'filename': 'Untitled',
                 'extension': null
-            }).basename(), 'Untitled');
-        });
+            }).basename(),
+            'Untitled',
+            'should return the basename without extension'
+        );
 
-        it('should return the basename with extension', function () {
-            equal(new VFile({
+        st.equal(
+            new VFile({
                 'directory': '~',
                 'filename': 'Untitled',
                 'extension': 'markdown'
-            }).basename(), 'Untitled.markdown');
-        });
+            }).basename(),
+            'Untitled.markdown',
+            'should return the basename with extension'
+        );
 
-        it('should return only the basename without path', function () {
-            equal(new VFile({
+        st.equal(
+            new VFile({
                 'directory': 'foo/bar',
                 'filename': 'baz',
                 'extension': 'qux'
-            }).basename(), 'baz.qux');
-        });
+            }).basename(),
+            'baz.qux',
+            'should return only the basename without path'
+        );
 
-        it('should return only the extension without a filename', function () {
-            equal(new VFile({
+        st.equal(
+            new VFile({
                 'directory': 'foo/bar',
                 'filename': null,
                 'extension': 'remarkrc'
-            }).basename(), '.remarkrc');
-        });
+            }).basename(),
+            '.remarkrc',
+            'should return only the extension without a filename'
+        );
+
+        st.end();
     });
 
-    describe('#move()', function () {
-        it('should change an extension', function () {
-            var vfile = new VFile({
-                'directory': '~',
-                'filename': 'example',
-                'extension': 'markdown'
-            });
+    test('#move()', function (st) {
+        var vfile;
 
-            vfile.move({
-                'extension': 'md'
-            });
-
-            equal(vfile.filePath(), '~/example.md');
+        vfile = new VFile({
+            'directory': '~',
+            'filename': 'example',
+            'extension': 'markdown'
         });
 
-        it('should change a filename', function () {
-            var vfile = new VFile({
-                'directory': '~',
-                'filename': 'example',
-                'extension': 'markdown'
-            });
-
-            vfile.move({
-                'filename': 'foo'
-            });
-
-            equal(vfile.filePath(), '~/foo.markdown');
+        vfile.move({
+            'extension': 'md'
         });
 
-        it('should change a directory', function () {
-            var vfile = new VFile({
-                'directory': '~',
-                'filename': 'example',
-                'extension': 'markdown'
-            });
+        st.equal(
+            vfile.filePath(),
+            '~/example.md',
+            'should change an extension'
+        );
 
-            vfile.move({
-                'directory': '/var/www'
-            });
-
-            equal(vfile.filePath(), '/var/www/example.markdown');
+        vfile = new VFile({
+            'directory': '~',
+            'filename': 'example',
+            'extension': 'markdown'
         });
 
-        it('should ignore not-given values', function () {
-            var vfile = new VFile();
-
-            vfile.extension = null;
-
-            vfile.move();
-
-            equal(vfile.filePath(), '');
+        vfile.move({
+            'filename': 'foo'
         });
 
-        it('should add a filename', function () {
-            var vfile = new VFile();
+        st.equal(
+            vfile.filePath(),
+            '~/foo.markdown',
+            'should change a filename'
+        );
 
-            vfile.move({
-                'filename': 'example'
-            });
-
-            equal(vfile.filePath(), 'example');
+        vfile = new VFile({
+            'directory': '~',
+            'filename': 'example',
+            'extension': 'markdown'
         });
 
-        it('should add a directory', function () {
-            var vfile = new VFile();
-
-            vfile.move({
-                'directory': '~',
-                'filename': 'example'
-            });
-
-            equal(vfile.filePath(), '~/example');
+        vfile.move({
+            'directory': '/var/www'
         });
 
-        it('should add an extension', function () {
-            var vfile = new VFile({
-                'filename': 'README',
-                'extension': ''
-            });
+        st.equal(
+            vfile.filePath(),
+            '/var/www/example.markdown',
+            'should change a directory'
+        );
 
-            vfile.move({
-                'extension': 'md'
-            });
+        vfile = new VFile();
 
-            equal(vfile.filePath(), 'README.md');
+        vfile.extension = null;
+
+        vfile.move();
+
+        st.equal(
+            vfile.filePath(),
+            '',
+            'should ignore not-given values'
+        );
+
+        vfile = new VFile();
+
+        vfile.move({
+            'filename': 'example'
         });
+
+        st.equal(
+            vfile.filePath(),
+            'example',
+            'should add a filename'
+        );
+
+        vfile = new VFile();
+
+        vfile.move({
+            'directory': '~',
+            'filename': 'example'
+        });
+
+        st.equal(
+            vfile.filePath(),
+            '~/example',
+            'should add a directory'
+        );
+
+        vfile = new VFile({
+            'filename': 'README',
+            'extension': ''
+        });
+
+        vfile.move({
+            'extension': 'md'
+        });
+
+        st.equal(
+            vfile.filePath(),
+            'README.md',
+            'should add an extension'
+        );
+
+        st.end();
     });
 
-    describe('#hasFailed()', function () {
-        it('should return `false` when without messages', function () {
-            var vfile = new VFile();
+    t.test('#hasFailed()', function (st) {
+        var vfile;
 
-            equal(vfile.hasFailed(), false);
+        vfile = new VFile();
 
-            vfile.warn('Foo');
+        t.equal(vfile.hasFailed(), false);
 
-            equal(vfile.hasFailed(), false);
-        });
+        vfile.warn('Foo');
 
-        it('should return `true` when with fatal messages', function () {
-            var vfile = new VFile();
+        st.equal(
+            vfile.hasFailed(),
+            false,
+            'should return `false` when without messages'
+        );
 
-            vfile.quiet = true;
+        vfile = new VFile();
 
-            vfile.fail('Foo');
+        vfile.quiet = true;
 
-            equal(vfile.hasFailed(), true);
-        });
+        vfile.fail('Foo');
+
+        st.equal(
+            vfile.hasFailed(),
+            true,
+            'should return `true` when with fatal messages'
+        );
+
+        st.end();
     });
 
-    describe('#message(reason, position?)', function () {
-        it('should return an Error', function () {
-            assert(new VFile().message('') instanceof Error);
+    t.test('#message(reason, position?)', function (st) {
+        var err;
+        var exception;
+
+        st.ok(
+            new VFile().message('') instanceof Error,
+            'should return an Error'
+        );
+
+        err = new VFile({
+            'filename': 'untitled'
+        }).message('test');
+
+        st.equal(err.file, 'untitled');
+        st.equal(err.reason, 'test');
+        st.equal(err.line, null);
+        st.equal(err.column, null);
+        st.deepEqual(err.location, {
+            'start': {
+                'line': null,
+                'column': null
+            },
+            'end': {
+                'line': null,
+                'column': null
+            }
         });
 
-        it('should add properties', function () {
-            var err = new VFile({
+        err = new VFile().message('test');
+
+        st.equal(err.file, '');
+        st.equal(err.reason, 'test');
+        st.equal(err.line, null);
+        st.equal(err.column, null);
+        st.deepEqual(err.location, {
+            'start': {
+                'line': null,
+                'column': null
+            },
+            'end': {
+                'line': null,
+                'column': null
+            }
+        });
+
+        st.equal(
+            new VFile().message('test').message,
+            'test',
+            'should create a pretty message'
+        );
+
+        st.equal(
+            new VFile().message('test').toString(),
+            '1:1: test',
+            'should have a pretty `toString()` message'
+        );
+
+        st.equal(
+            new VFile({
                 'filename': 'untitled'
-            }).message('test');
+            }).message('test').toString(),
+            'untitled:1:1: test',
+            'should include the filename in `toString()`'
+        );
 
-            equal(err.file, 'untitled');
-            equal(err.reason, 'test');
-            equal(err.line, null);
-            equal(err.column, null);
-            dequal(err.location, {
-                'start': {
-                    'line': null,
-                    'column': null
-                },
-                'end': {
-                    'line': null,
-                    'column': null
-                }
-            });
-        });
+        err = new Error('foo');
+        exception = new VFile().message(err);
 
-        it('should add properties on an unfilled vfile', function () {
-            var err = new VFile().message('test');
+        st.equal(
+            exception.stack,
+            err.stack,
+            'should accept an error (#1)'
+        );
 
-            equal(err.file, '');
-            equal(err.reason, 'test');
-            equal(err.line, null);
-            equal(err.column, null);
-            dequal(err.location, {
-                'start': {
-                    'line': null,
-                    'column': null
-                },
-                'end': {
-                    'line': null,
-                    'column': null
-                }
-            });
-        });
+        st.equal(
+            exception.message,
+            err.message,
+            'should accept an error (#2)'
+        );
 
-        it('should create a pretty message', function () {
-            equal(new VFile().message('test').message, 'test');
-        });
-
-        it('should have a pretty `toString()` message', function () {
-            equal(new VFile().message('test').toString(), '1:1: test');
-        });
-
-        it('should include the filename in `toString()`', function () {
-            equal(new VFile({
-                'filename': 'untitled'
-            }).message('test').toString(), 'untitled:1:1: test');
-        });
-
-        it('should accept an error', function () {
-            var err = new Error('foo');
-            var exception = new VFile().message(err);
-
-            equal(exception.stack, err.stack);
-            equal(exception.message, err.message);
-        });
-
-        it('should accept a node', function () {
-            var err = new VFile().message('test', {
-                'position': {
-                    'start': {
-                        'line': 2,
-                        'column': 1
-                    },
-                    'end': {
-                        'line': 2,
-                        'column': 5
-                    }
-                }
-            });
-
-            dequal(err.location, {
+        err = new VFile().message('test', {
+            'position': {
                 'start': {
                     'line': 2,
                     'column': 1
@@ -382,13 +448,11 @@ describe('VFile(options?)', function () {
                     'line': 2,
                     'column': 5
                 }
-            });
-
-            equal(err.toString(), '2:1-2:5: test');
+            }
         });
 
-        it('should accept a location', function () {
-            var err = new VFile().message('test', {
+        st.deepEqual(
+            err.location, {
                 'start': {
                     'line': 2,
                     'column': 1
@@ -397,29 +461,55 @@ describe('VFile(options?)', function () {
                     'line': 2,
                     'column': 5
                 }
-            });
+            },
+            'should accept a node (#1)'
+        );
 
-            dequal(err.location, {
-                'start': {
-                    'line': 2,
-                    'column': 1
-                },
-                'end': {
-                    'line': 2,
-                    'column': 5
-                }
-            });
+        st.equal(
+            err.toString(),
+            '2:1-2:5: test',
+            'should accept a node (#2)'
+        );
 
-            equal(err.toString(), '2:1-2:5: test');
-        });
-
-        it('should accept a position', function () {
-            var err = new VFile().message('test', {
+        err = new VFile().message('test', {
+            'start': {
+                'line': 2,
+                'column': 1
+            },
+            'end': {
                 'line': 2,
                 'column': 5
-            });
+            }
+        });
 
-            dequal(err.location, {
+        st.deepEqual(
+            err.location, {
+                'start': {
+                    'line': 2,
+                    'column': 1
+                },
+                'end': {
+                    'line': 2,
+                    'column': 5
+                }
+            },
+            'should accept a location (#1)'
+        );
+
+        st.equal(
+            err.toString(),
+            '2:1-2:5: test',
+            'should accept a location (#2)'
+        );
+
+        err = new VFile().message('test', {
+            'line': 2,
+            'column': 5
+        });
+
+        st.deepEqual(
+            err.location,
+            {
                 'start': {
                     'line': 2,
                     'column': 5
@@ -428,100 +518,129 @@ describe('VFile(options?)', function () {
                     'line': null,
                     'column': null
                 }
-            });
+            },
+            'should accept a position (#1)'
+        );
 
-            equal(err.toString(), '2:5: test');
-        });
+        st.equal(
+            err.toString(),
+            '2:5: test',
+            'should accept a position'
+        );
+
+        st.end();
     });
 
-    describe('#fail(reason, position?)', function () {
-        it('should add a fatal error to `messages`', function () {
+    t.test('#fail(reason, position?)', function (st) {
+        st.test('should add a fatal error to `messages`', function (sst) {
             var vfile = new VFile();
             var message;
 
-            assert.throws(function () {
+            sst.throws(function () {
                 vfile.fail('Foo', {
                     'line': 1,
                     'column': 3
                 });
             }, /1:3: Foo/);
 
-            equal(vfile.messages.length, 1);
+            sst.equal(vfile.messages.length, 1);
 
             message = vfile.messages[0];
 
-            equal(message.file, '');
-            equal(message.reason, 'Foo');
-            equal(message.line, 1);
-            equal(message.column, 3);
-            equal(message.name, '1:3');
-            equal(message.fatal, true);
+            sst.equal(message.file, '');
+            sst.equal(message.reason, 'Foo');
+            sst.equal(message.line, 1);
+            sst.equal(message.column, 3);
+            sst.equal(message.name, '1:3');
+            sst.equal(message.fatal, true);
+
+            sst.end();
         });
 
-        it('should not throw when `quiet: true`', function () {
-            var vfile = new VFile();
+        st.doesNotThrow(
+            function () {
+                var vfile = new VFile();
 
-            vfile.quiet = true;
+                vfile.quiet = true;
 
-            vfile.fail('Foo', {
-                'line': 1,
-                'column': 3
-            });
-        });
+                vfile.fail('Foo', {
+                    'line': 1,
+                    'column': 3
+                });
+            },
+            'should not throw when `quiet: true`'
+        );
+
+        st.end();
     });
 
-    describe('#warn(reason, position?)', function () {
-        it('should add a non-fatal error to `messages`', function () {
-            var vfile = new VFile();
-            var message;
+    t.test('#warn(reason, position?)', function (st) {
+        var vfile = new VFile();
+        var message;
 
-            vfile.warn('Bar', {
-                'line': 9,
-                'column': 2
-            });
-
-            equal(vfile.messages.length, 1);
-
-            message = vfile.messages[0];
-
-            equal(message.file, '');
-            equal(message.reason, 'Bar');
-            equal(message.line, 9);
-            equal(message.column, 2);
-            equal(message.name, '9:2');
-            equal(message.fatal, false);
+        vfile.warn('Bar', {
+            'line': 9,
+            'column': 2
         });
+
+        st.equal(
+            vfile.messages.length,
+            1,
+            'should add a non-fatal error to `messages`'
+        );
+
+        message = vfile.messages[0];
+
+        st.equal(message.file, '');
+        st.equal(message.reason, 'Bar');
+        st.equal(message.line, 9);
+        st.equal(message.column, 2);
+        st.equal(message.name, '9:2');
+        st.equal(message.fatal, false);
+
+        st.end();
     });
 
-    describe('#namespace(key)', function () {
-        it('should create a unique space', function () {
-            var vfile = new VFile();
+    t.test('#namespace(key)', function (st) {
+        var vfile = new VFile();
 
-            equal(vfile.namespace('foo'), vfile.namespace('foo'));
-            nequal(vfile.namespace('foo'), vfile.namespace('bar'));
-        });
+        st.equal(
+            vfile.namespace('foo'),
+            vfile.namespace('foo'),
+            'should create a unique space'
+        );
+
+        st.notEqual(vfile.namespace('foo'), vfile.namespace('bar'));
+
+        st.end();
     });
 
-    describe('#history', function () {
-        it('should be set on creation', function () {
-            dequal(new VFile().history, []);
+    t.test('#history', function (st) {
+        st.deepEqual(
+            new VFile().history,
+            [],
+            'should be set on creation (#1)'
+        );
 
-            dequal(new VFile({
+        st.deepEqual(
+            new VFile({
                 'filename': 'example',
                 'extension': 'js',
                 'directory': '.'
-            }).history, [
+            }).history,
+            [
                 'example.js'
-            ]);
-        });
+            ],
+            'should be set on creation (#2)'
+        );
 
-        it('should update', function () {
+        st.test('should update', function (sst) {
             var file = new VFile({
                 'filename': 'example',
                 'extension': 'md'
             });
 
-            dequal(file.history, [
+            sst.deepEqual(file.history, [
                 'example.md'
             ]);
 
@@ -529,7 +648,7 @@ describe('VFile(options?)', function () {
                 'extension': 'js'
             });
 
-            dequal(file.history, [
+            sst.deepEqual(file.history, [
                 'example.md',
                 'example.js'
             ]);
@@ -538,19 +657,21 @@ describe('VFile(options?)', function () {
                 'directory': '~'
             });
 
-            dequal(file.history, [
+            sst.deepEqual(file.history, [
                 'example.md',
                 'example.js',
                 '~/example.js'
             ]);
+
+            sst.end();
         });
 
-        it('should update ignore when nothing changed', function () {
+        st.test('should update ignore when nothing changed', function (sst) {
             var file = new VFile({});
 
             file.move();
 
-            dequal(file.history, []);
+            sst.deepEqual(file.history, []);
 
             file.move({
                 'filename': 'example',
@@ -561,7 +682,13 @@ describe('VFile(options?)', function () {
                 'directory': '.'
             });
 
-            dequal(file.history, ['example.md']);
+            sst.deepEqual(file.history, ['example.md']);
+
+            sst.end();
         });
+
+        st.end();
     });
+
+    t.end();
 });

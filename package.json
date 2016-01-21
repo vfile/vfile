@@ -34,7 +34,7 @@
     "remark-man": "^2.0.0",
     "remark-toc": "^2.0.0",
     "remark-validate-links": "^2.0.0",
-    "mocha": "^2.0.0"
+    "tape": "^4.4.0"
   },
   "scripts": {
     "build-md": "remark . --quiet --frail",
@@ -44,8 +44,8 @@
     "lint-api": "eslint .",
     "lint-style": "jscs --reporter inline .",
     "lint": "npm run lint-api && npm run lint-style",
-    "test-api": "mocha --check-leaks test.js",
-    "test-coverage": "istanbul cover _mocha -- test.js",
+    "test-api": "node test.js",
+    "test-coverage": "istanbul cover test.js",
     "test-travis": "npm run test-coverage",
     "test": "npm run build && npm run lint && npm run test-coverage"
   }
