@@ -45,6 +45,7 @@ compressed](https://github.com/wooorm/vfile/releases).
     *   [VFile#directory](#vfiledirectory)
     *   [VFile#filename](#vfilefilename)
     *   [VFile#extension](#vfileextension)
+    *   [VFile#basename()](#vfilebasename)
     *   [VFile#quiet](#vfilequiet)
     *   [VFile#messages](#vfilemessages)
     *   [VFile#history](#vfilehistory)
@@ -209,6 +210,31 @@ Which would yield the following:
 
 `string` — Extension. A file-path can still be generated when no extension
 exists.
+
+### VFile#basename()
+
+Get the filename, with extension, if applicable.
+
+**Example**
+
+```js
+var file = new VFile({
+  'directory': '~',
+  'filename': 'example',
+  'extension': 'txt'
+});
+
+file.basename() // example.txt
+```
+
+**Signatures**
+
+*   `string = vFile.basename()`.
+
+**Returns**
+
+`string`— Returns the file path without a directory, if applicable.
+Otherwise,an empty string is returned.
 
 ### VFile#quiet
 

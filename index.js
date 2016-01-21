@@ -209,6 +209,30 @@ function filePathFactory(file) {
 }
 
 /**
+* Get the filename with extantion.
+*
+* @example
+*   var file = new VFile({
+*     'directory': '~/foo/bar/'
+*     'filename': 'example',
+*     'extension': 'txt'
+*   });
+*
+*   file.basename() // example.txt
+*
+* @memberof {VFile}
+* @return {string} - name of file with extantion.
+*/
+function basename() {
+    var file = this;
+    if (file.filename || file.extension) {
+    return file.filename +
+        (file.extension ? '.' + file.extension : '');
+    }
+    return '';
+}
+
+/**
  * Construct a new file.
  *
  * @example
@@ -287,6 +311,7 @@ function VFile(options) {
      */
 
     self.filePath = filePathFactory(self);
+    self.basename = basename.bind(self);
 
     self.history = [];
 
