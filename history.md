@@ -2,6 +2,16 @@
 
 <!--lint disable no-multiple-toplevel-headings-->
 
+1.3.0 / 2016-01-21
+==================
+
+*   Refactor API signatures in `readme.md` ([`d41883c`](https://github.com/wooorm/vfile/commit/d41883c))
+*   Add npm deployment to Travis ([`0d236c0`](https://github.com/wooorm/vfile/commit/0d236c0))
+*   Update metadata in `package.json` ([`9726eec`](https://github.com/wooorm/vfile/commit/9726eec))
+*   Refactor to replace mocha with tape ([`05d29df`](https://github.com/wooorm/vfile/commit/05d29df))
+*   Update dev-dependencies ([`6255dd9`](https://github.com/wooorm/vfile/commit/6255dd9))
+*   Add new `basename` method ([`07b79af`](https://github.com/wooorm/vfile/commit/07b79af))
+
 1.2.0 / 2015-12-27
 ==================
 
