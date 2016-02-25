@@ -105,6 +105,10 @@ In addition, here’s a list of useful tools:
 *   [`wooorm/to-vfile`](https://github.com/wooorm/to-vfile)
     — Create a virtual file from a file-path;
 
+*   [`wooorm/vfile-location`](https://github.com/wooorm/vfile-location)
+    — Convert between positions (line and column-based) and offsets
+    (range-based) locations;
+
 *   [`wooorm/vfile-sort`](https://github.com/wooorm/vfile-sort)
     — Sort virtual file messages by line/column;
 
