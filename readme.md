@@ -108,6 +108,9 @@ In addition, here’s a list of useful tools:
 *   [`wooorm/vfile-find-down`](https://github.com/wooorm/vfile-find-down)
     — Find one or more files by searching the file system downwards;
 
+*   [`wooorm/vfile-find-up`](https://github.com/wooorm/vfile-find-up)
+    — Find one or more files by searching the file system upwards;
+
 *   [`wooorm/vfile-location`](https://github.com/wooorm/vfile-location)
     — Convert between positions (line and column-based) and offsets
     (range-based) locations;
