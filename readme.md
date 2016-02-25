@@ -105,6 +105,9 @@ In addition, here’s a list of useful tools:
 *   [`wooorm/to-vfile`](https://github.com/wooorm/to-vfile)
     — Create a virtual file from a file-path;
 
+*   [`wooorm/vfile-find-down`](https://github.com/wooorm/vfile-find-down)
+    — Find one or more files by searching the file system downwards;
+
 *   [`wooorm/vfile-location`](https://github.com/wooorm/vfile-location)
     — Convert between positions (line and column-based) and offsets
     (range-based) locations;
