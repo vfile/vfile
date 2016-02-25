@@ -115,14 +115,14 @@ In addition, here’s a list of useful tools:
     — Convert between positions (line and column-based) and offsets
     (range-based) locations;
 
-*   [`wooorm/vfile-sort`](https://github.com/wooorm/vfile-sort)
-    — Sort virtual file messages by line/column;
-
 *   [`shinnn/vfile-messages-to-vscode-diagnostics`](https://github.com/shinnn/vfile-messages-to-vscode-diagnostics)
     — Convert `VFileMessage`s into an array of VS Code diagnostics;
 
 *   [`wooorm/vfile-reporter`](https://github.com/wooorm/vfile-reporter)
     — Stylish reporter for virtual files.
+
+*   [`wooorm/vfile-sort`](https://github.com/wooorm/vfile-sort)
+    — Sort virtual file messages by line/column;
 
 ## API
 
