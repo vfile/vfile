@@ -2,6 +2,11 @@
 
 <!--lint disable no-multiple-toplevel-headings-->
 
+1.4.0 / 2016-04-18
+==================
+
+*   Add support for passing `ruleId` to `message()` ([`77547fb`](https://github.com/wooorm/vfile/commit/77547fb))
+
 1.3.1 / 2016-01-21
 ==================
 
