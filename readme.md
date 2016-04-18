@@ -16,7 +16,7 @@ compliant messages.
 > **VFile** is different from (the excellent :+1:) [**vinyl**](https://github.com/wearefractal/vinyl)
 > in that it does not include file-system or node-only functionality. No
 > buffers, streams, or stats. In addition, the focus on
-> [metadata](#vfilenamespacekey) and [messages](#vfilemessagereason-position)
+> [metadata](#vfilenamespacekey) and [messages](#vfilemessagereason-position-ruleid)
 > are useful when processing a file through a
 > [middleware](https://github.com/segmentio/ware) pipeline.
 
@@ -53,9 +53,9 @@ compressed](https://github.com/wooorm/vfile/releases).
     *   [VFile#filePath()](#vfilefilepath)
     *   [VFile#move(options)](#vfilemoveoptions)
     *   [VFile#namespace(key)](#vfilenamespacekey)
-    *   [VFile#message(reason\[, position\])](#vfilemessagereason-position)
-    *   [VFile#warn(reason\[, position\])](#vfilewarnreason-position)
-    *   [VFile#fail(reason\[, position\])](#vfilefailreason-position)
+    *   [VFile#message(reason\[, position\[, ruleId\]\])](#vfilemessagereason-position-ruleid)
+    *   [VFile#warn(reason\[, position\[, ruleId\]\])](#vfilewarnreason-position-ruleid)
+    *   [VFile#fail(reason\[, position\[, ruleId\]\])](#vfilefailreason-position-ruleid)
     *   [VFile#hasFailed()](#vfilehasfailed)
     *   [VFileMessage](#vfilemessage)
 
@@ -248,7 +248,7 @@ Otherwise,an empty string is returned.
 
 ### `VFile#quiet`
 
-`boolean?` — Whether an error created by [`VFile#fail()`](#vfilefailreason-position)
+`boolean?` — Whether an error created by [`VFile#fail()`](#vfilemessagereason-position-ruleid)
 is returned (when truthy) or thrown (when falsey).
 
 Ensure all `messages` associated with a file are handled properly when setting
@@ -380,7 +380,7 @@ console.log(file.namespace('foo').bar) // 'baz';
 
 `Object` — Private namespace for metadata.
 
-### `VFile#message(reason[, position])`
+### `VFile#message(reason[, position[, ruleId]])`
 
 Create a message with `reason` at `position`. When an error is passed in as
 `reason`, copies the stack. This does not add a message to `messages`.
@@ -401,7 +401,8 @@ file.message('Something went wrong');
 
 **Signatures**:
 
-*   `VFileMessage = vFile.message(err|reason, node|location|position?)`.
+*   `VFileMessage = vFile.message(err|reason, node|location|position?,
+    ruleId?)`.
 
 **Parameters**:
 
@@ -416,14 +417,16 @@ file.message('Something went wrong');
 *   `position` (`Object`) — Syntax tree position (found at
     `node.position.start` or `node.position.end`).
 
+*   `ruleId` (`string`) — Category of warning.
+
 **Returns**:
 
 [`VFileMessage`](#vfilemessage) — File-related message with location
 information.
 
-### `VFile#warn(reason[, position])`
+### `VFile#warn(reason[, position[, ruleId]])`
 
-Warn. Creates a non-fatal message (see [`VFile#message()`](#vfilemessagereason-position)),
+Warn. Creates a non-fatal message (see [`VFile#message()`](#vfilemessagereason-position-ruleid)),
 and adds it to the file's [`messages`](#vfilemessages) list.
 
 **Example**:
@@ -443,9 +446,9 @@ file.warn('Something went wrong');
 
 **See**:
 
-*   [`VFile#message`](#vfilemessagereason-position)
+*   [`VFile#message`](#vfilemessagereason-position-ruleid)
 
-### `VFile#fail(reason[, position])`
+### `VFile#fail(reason[, position[, ruleId]])`
 
 Fail. Creates a fatal message (see `VFile#message()`), sets `fatal: true`,
 adds it to the file's `messages` list.
@@ -476,7 +479,7 @@ file.fail('Something went wrong');
 
 **See**:
 
-*   [`VFile#message`](#vfilemessagereason-position)
+*   [`VFile#message`](#vfilemessagereason-position-ruleid)
 
 ### `VFile#hasFailed()`
 

@@ -408,10 +408,11 @@ function move(options) {
  * @param {string|Error} reason - Reason for message.
  * @param {Node|Location|Position} [position] - Location
  *   of message in file.
+ * @param {string} [ruleId] - Category of warning.
  * @return {VFileMessage} - File-related message with
  *   location information.
  */
-function message(reason, position) {
+function message(reason, position, ruleId) {
     var filePath = this.filePath();
     var range;
     var err;
@@ -456,6 +457,7 @@ function message(reason, position) {
     err.line = position ? position.line : null;
     err.column = position ? position.column : null;
     err.location = location;
+    err.ruleId = ruleId || null;
 
     if (reason.stack) {
         err.stack = reason.stack;

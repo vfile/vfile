@@ -358,7 +358,7 @@ test('VFile(options?)', function (t) {
         st.end();
     });
 
-    t.test('#message(reason, position?)', function (st) {
+    t.test('#message(reason, position?, ruleId?)', function (st) {
         var err;
         var exception;
 
@@ -526,6 +526,15 @@ test('VFile(options?)', function (t) {
             err.toString(),
             '2:5: test',
             'should accept a position'
+        );
+
+        st.equal(
+            new VFile().message('test', {
+                'line': 2,
+                'column': 5
+            }, 'charlie').ruleId,
+            'charlie',
+            'should accept a `ruleId`'
         );
 
         st.end();
