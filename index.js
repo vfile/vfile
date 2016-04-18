@@ -38,6 +38,8 @@
 
 /* eslint-env commonjs */
 
+var proto;
+
 var SEPARATOR = '/';
 
 try {
@@ -82,7 +84,7 @@ function VFileMessagePrototype() {}
 
 VFileMessagePrototype.prototype = Error.prototype;
 
-var proto = new VFileMessagePrototype();
+proto = new VFileMessagePrototype();
 
 VFileMessage.prototype = proto;
 
@@ -606,16 +608,16 @@ function namespace(key) {
  * Methods.
  */
 
-var vFilePrototype = VFile.prototype;
+proto = VFile.prototype;
 
-vFilePrototype.basename = basename;
-vFilePrototype.move = move;
-vFilePrototype.toString = toString;
-vFilePrototype.message = message;
-vFilePrototype.warn = warn;
-vFilePrototype.fail = fail;
-vFilePrototype.hasFailed = hasFailed;
-vFilePrototype.namespace = namespace;
+proto.basename = basename;
+proto.move = move;
+proto.toString = toString;
+proto.message = message;
+proto.warn = warn;
+proto.fail = fail;
+proto.hasFailed = hasFailed;
+proto.namespace = namespace;
 
 /*
  * Expose.

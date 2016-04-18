@@ -6,9 +6,13 @@
     "vfile.js",
     "vfile.min.js"
   ],
-  "preset": "yandex",
+  "preset": "crockford",
+  "requireMultipleVarDecl": false,
+  "disallowDanglingUnderscores": false,
   "requireQuotedKeysInObjects": true,
-  "disallowQuotedKeysInObjects": false,
+  "disallowKeywords": [
+    "with"
+  ],
   "maximumLineLength": {
     "value": 79,
     "allExcept": [

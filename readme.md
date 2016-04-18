@@ -40,7 +40,7 @@ compressed](https://github.com/wooorm/vfile/releases).
 
 *   [API](#api)
 
-    *   [VFile()](#vfile)
+    *   [VFile()](#vfile-1)
     *   [VFile#contents](#vfilecontents)
     *   [VFile#directory](#vfiledirectory)
     *   [VFile#filename](#vfilefilename)
@@ -132,7 +132,7 @@ In addition, here’s a list of useful tools:
 errors, and to store supplementary metadata relating to files, all without
 accessing the file-system.
 
-**Example**
+**Example**:
 
 ```js
 var file = new VFile({
@@ -148,11 +148,11 @@ file === new VFile(file); // true
 VFile('foo') instanceof VFile; // true
 ```
 
-**Signatures**
+**Signatures**:
 
 *   `file = VFile(contents|options|vFile?)`.
 
-**Parameters**
+**Parameters**:
 
 *   `contents` (`string`) — Contents of the file;
 
@@ -172,11 +172,11 @@ VFile('foo') instanceof VFile; // true
     *   `contents` (`string?`, default: `''`)
         — Raw value.
 
-**Returns**
+**Returns**:
 
 `vFile` — Instance.
 
-**Notes**
+**Notes**:
 
 `VFile` exposes an interface compatible with ESLint’s formatters.  For example,
 to expose warnings using ESLint’s `compact` formatter, execute the following:
@@ -225,7 +225,7 @@ exists.
 
 Get the filename, with extension, if applicable.
 
-**Example**
+**Example**:
 
 ```js
 var file = new VFile({
@@ -237,11 +237,11 @@ var file = new VFile({
 file.basename() // example.txt
 ```
 
-**Signatures**
+**Signatures**:
 
 *   `string = vFile.basename()`.
 
-**Returns**
+**Returns**:
 
 `string`— Returns the file path without a directory, if applicable.
 Otherwise,an empty string is returned.
@@ -258,7 +258,7 @@ this to `true`.
 
 `Array.<VFileMessage>` — List of associated messages.
 
-**Notes**
+**Notes**:
 
 `VFile#message()`, and in turn `VFile#warn()` and `VFile#fail()`, return
 `Error` objects that adhere to the [`VFileMessage`](#vfilemessage) schema.
@@ -273,18 +273,18 @@ between.
 
 Get the value of the file.
 
-**Example**
+**Example**:
 
 ```js
 var vFile = new VFile('Foo');
 String(vFile); // 'Foo'
 ```
 
-**Signatures**
+**Signatures**:
 
 *   `string = vFile.toString()`.
 
-**Returns**
+**Returns**:
 
 `string` — Contents.
 
@@ -292,7 +292,7 @@ String(vFile); // 'Foo'
 
 Get the filename, with extension and directory, if applicable.
 
-**Example**
+**Example**:
 
 ```js
 var file = new VFile({
@@ -305,11 +305,11 @@ String(file.filePath); // ~/example.txt
 file.filePath() // ~/example.txt
 ```
 
-**Signatures**
+**Signatures**:
 
 *   `string = vFile.filePath()`.
 
-**Returns**
+**Returns**:
 
 `string` — If the `vFile` has a `filename`, it will be prefixed with the
 directory (slashed), if applicable, and suffixed with the (dotted) extension
@@ -320,7 +320,7 @@ directory (slashed), if applicable, and suffixed with the (dotted) extension
 Move a file by passing a new directory, filename, and extension.  When these
 are not given, the default values are kept.
 
-**Example**
+**Example**:
 
 ```js
 var file = new VFile({
@@ -337,11 +337,11 @@ file.move({'extension': 'md'});
 file.filePath(); // '/var/www/example.md'
 ```
 
-**Signatures**
+**Signatures**:
 
 *   `vFile = vFile.move(options?)`.
 
-**Parameters**
+**Parameters**:
 
 *   `options` (`Object`):
 
@@ -354,7 +354,7 @@ file.filePath(); // '/var/www/example.md'
     *   `extension` (`string`, default: `''`)
         — Extension(s), without initial dot.
 
-**Returns**
+**Returns**:
 
 `vFile` — Context object (chainable).
 
@@ -362,7 +362,7 @@ file.filePath(); // '/var/www/example.md'
 
 Access metadata.
 
-**Example**
+**Example**:
 
 ```js
 var file = new VFile('Foo');
@@ -372,11 +372,11 @@ file.namespace('foo').bar = 'baz';
 console.log(file.namespace('foo').bar) // 'baz';
 ```
 
-**Parameters**
+**Parameters**:
 
 *   `key` (`string`) — Namespace key.
 
-**Returns**
+**Returns**:
 
 `Object` — Private namespace for metadata.
 
@@ -385,7 +385,7 @@ console.log(file.namespace('foo').bar) // 'baz';
 Create a message with `reason` at `position`. When an error is passed in as
 `reason`, copies the stack. This does not add a message to `messages`.
 
-**Example**
+**Example**:
 
 ```js
 var file = new VFile();
@@ -399,11 +399,11 @@ file.message('Something went wrong');
 //   column: null }
 ```
 
-**Signatures**
+**Signatures**:
 
 *   `VFileMessage = vFile.message(err|reason, node|location|position?)`.
 
-**Parameters**
+**Parameters**:
 
 *   `err` (`Error`) — Original error, whose stack and message are used;
 
@@ -416,7 +416,7 @@ file.message('Something went wrong');
 *   `position` (`Object`) — Syntax tree position (found at
     `node.position.start` or `node.position.end`).
 
-**Returns**
+**Returns**:
 
 [`VFileMessage`](#vfilemessage) — File-related message with location
 information.
@@ -426,7 +426,7 @@ information.
 Warn. Creates a non-fatal message (see [`VFile#message()`](#vfilemessagereason-position)),
 and adds it to the file's [`messages`](#vfilemessages) list.
 
-**Example**
+**Example**:
 
 ```js
 var file = new VFile();
@@ -441,7 +441,7 @@ file.warn('Something went wrong');
 //   fatal: false }
 ```
 
-**See**
+**See**:
 
 *   [`VFile#message`](#vfilemessagereason-position)
 
@@ -452,7 +452,7 @@ adds it to the file's `messages` list.
 
 If `quiet` is not `true`, throws the error.
 
-**Example**
+**Example**:
 
 ```js
 var file = new VFile();
@@ -474,7 +474,7 @@ file.fail('Something went wrong');
 //   fatal: true }
 ```
 
-**See**
+**See**:
 
 *   [`VFile#message`](#vfilemessagereason-position)
 
@@ -482,7 +482,7 @@ file.fail('Something went wrong');
 
 Check if a fatal message occurred making the file no longer processable.
 
-**Example**
+**Example**:
 
 ```js
 var file = new VFile();
@@ -494,11 +494,11 @@ file.fail('Something went wrong');
 file.hasFailed(); // true
 ```
 
-**Signatures**
+**Signatures**:
 
 *   `boolean = vFile.hasFailed()`.
 
-**Returns**
+**Returns**:
 
 `boolean` — `true` if at least one of file’s `messages` has a `fatal`
 property set to `true`.
@@ -507,7 +507,7 @@ property set to `true`.
 
 `Error` — File-related message with location information.
 
-**Properties**
+**Properties**:
 
 *   `name` (`string`)
     — (Starting) location of the message, preceded by its file-path when
