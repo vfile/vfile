@@ -124,6 +124,12 @@ In addition, here’s a list of useful tools:
 *   [`wooorm/vfile-sort`](https://github.com/wooorm/vfile-sort)
     — Sort virtual file messages by line/column;
 
+*   [`sindresorhus/vfile-to-eslint`](https://github.com/sindresorhus/vfile-to-eslint)
+    — Convert VFiles to ESLint formatter compatible output;
+
+*   [`sindresorhus/vfile-reporter-pretty`](https://github.com/sindresorhus/vfile-reporter-pretty)
+    — Pretty reporter for VFile;
+
 ## API
 
 ### `VFile()`
