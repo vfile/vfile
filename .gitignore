@@ -1,7 +1,7 @@
 .DS_Store
 *.log
-components/
 node_modules/
+.nyc_output/
 coverage/
 vfile.js
 vfile.min.js

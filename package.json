@@ -14,11 +14,10 @@
     "remark",
     "retext"
   ],
-  "dependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/wooorm/vfile.git"
+  "dependencies": {
+    "unist-util-stringify-position": "^1.0.0"
   },
+  "repository": "https://github.com/wooorm/vfile",
   "bugs": "https://github.com/wooorm/vfile/issues",
   "author": "Titus Wormer <tituswormer@gmail.com> (http://wooorm.com)",
   "contributors": [
@@ -29,31 +28,62 @@
   ],
   "devDependencies": {
     "browserify": "^13.0.0",
-    "eslint": "^2.0.0",
     "esmangle": "^1.0.0",
-    "istanbul": "^0.4.0",
-    "jscs": "^3.0.0",
-    "jscs-jsdoc": "^2.0.0",
-    "remark": "^4.0.0",
-    "remark-comment-config": "^3.0.0",
-    "remark-github": "^4.0.1",
-    "remark-lint": "^3.0.0",
-    "remark-man": "^3.0.0",
+    "nyc": "^7.1.0",
+    "remark-cli": "^1.0.0",
+    "remark-comment-config": "^4.0.0",
+    "remark-github": "^5.0.0",
+    "remark-lint": "^4.0.0",
     "remark-toc": "^3.0.0",
-    "remark-validate-links": "^3.0.0",
-    "tape": "^4.4.0"
+    "remark-validate-links": "^4.0.0",
+    "tape": "^4.4.0",
+    "xo": "^0.16.0"
   },
   "scripts": {
     "build-md": "remark . --quiet --frail",
     "build-bundle": "browserify index.js -s VFile > vfile.js",
     "build-mangle": "esmangle vfile.js > vfile.min.js",
     "build": "npm run build-md && npm run build-bundle && npm run build-mangle",
-    "lint-api": "eslint .",
-    "lint-style": "jscs --reporter inline .",
-    "lint": "npm run lint-api && npm run lint-style",
-    "test-api": "node test.js",
-    "test-coverage": "istanbul cover test.js",
-    "test-travis": "npm run test-coverage",
+    "lint": "xo",
+    "test-api": "node test",
+    "test-coverage": "nyc --reporter lcov tape test",
     "test": "npm run build && npm run lint && npm run test-coverage"
+  },
+  "nyc": {
+    "check-coverage": true,
+    "lines": 100,
+    "functions": 100,
+    "branches": 100
+  },
+  "xo": {
+    "space": true,
+    "rules": {
+      "max-lines": "off"
+    },
+    "ignores": [
+      "vfile.js",
+      "vfile.min.js"
+    ]
+  },
+  "remarkConfig": {
+    "output": true,
+    "plugins": {
+      "comment-config": null,
+      "github": null,
+      "lint": {
+        "heading-increment": false,
+        "list-item-spacing": false,
+        "no-missing-blank-lines": false,
+        "no-duplicate-headings": false
+      },
+      "toc": {
+        "tight": true,
+        "maxDepth": 3
+      },
+      "validate-links": null
+    },
+    "settings": {
+      "bullet": "*"
+    }
   }
 }
