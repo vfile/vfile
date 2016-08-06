@@ -11,38 +11,35 @@
 'use strict';
 
 /* Dependencies. */
+var path = require('path');
+var has = require('has');
+var replace = require('replace-ext');
 var stringify = require('unist-util-stringify-position');
+var buffer = require('is-buffer');
+var string = require('x-is-string');
 
 /* Expose. */
 module.exports = VFile;
 
-/* Get path separator. */
-var SEPARATOR = '/';
-
-try {
-  /* eslint-disable no-useless-concat */
-  SEPARATOR = require('pa' + 'th').sep;
-} catch (err) { /* empty */ }
-
-var proto;
-
 /* Methods. */
-proto = VFile.prototype;
+var proto = VFile.prototype;
 
-proto.basename = basename;
-proto.move = move;
 proto.toString = toString;
 proto.message = message;
-proto.warn = warn;
 proto.fail = fail;
-proto.hasFailed = hasFailed;
-proto.namespace = namespace;
 
-/* Message properties. */
-proto = VFileMessage.prototype;
+/* Slight backwards compatibility.  Remove in the future. */
+proto.warn = message;
 
-proto.file = proto.name = proto.reason = proto.message = proto.stack = '';
-proto.fatal = proto.column = proto.line = null;
+/* Order of setting (least specific to most). */
+var order = [
+  'history',
+  'path',
+  'basename',
+  'stem',
+  'extname',
+  'dirname'
+];
 
 /**
  * Construct a new file.
@@ -51,33 +48,224 @@ proto.fatal = proto.column = proto.line = null;
  * @param {Object|VFile|string} [options] - File, contents, or config.
  */
 function VFile(options) {
+  var prop;
+  var index;
+  var length;
+
+  if (!options) {
+    options = {};
+  } else if (string(options) || buffer(options)) {
+    options = {contents: options};
+  } else if ('message' in options && 'messages' in options) {
+    return options;
+  }
+
   if (!(this instanceof VFile)) {
     return new VFile(options);
   }
 
-  /* Given file. */
-  if (
-    options &&
-    typeof options === 'object' &&
-    'filePath' in options &&
-    'messages' in options
-  ) {
-    return options;
-  }
-
-  if (!options) {
-    options = {};
-  } else if (typeof options === 'string') {
-    options = {contents: options};
-  }
-
-  this.contents = options.contents || '';
-  this.history = [];
+  this.data = {};
   this.messages = [];
-  this.filePath = filePathFactory(this);
+  this.history = [];
+  this.cwd = process.cwd();
 
-  this.move(options);
+  /* Set path related properties in the correct order. */
+  index = -1;
+  length = order.length;
+
+  while (++index < length) {
+    prop = order[index];
+
+    if (has(options, prop)) {
+      this[prop] = options[prop];
+    }
+  }
+
+  /* Set non-path related properties. */
+  for (prop in options) {
+    if (order.indexOf(prop) === -1) {
+      this[prop] = options[prop];
+    }
+  }
 }
+
+/**
+ * Access complete path (`~/index.min.js`).
+ */
+Object.defineProperty(proto, 'path', {
+  get: function () {
+    return this.history[this.history.length - 1];
+  },
+  set: function (path) {
+    assertNonEmpty(path, 'path');
+
+    if (path !== this.path) {
+      this.history.push(path);
+    }
+  }
+});
+
+/**
+ * Access parent path (`~`).
+ */
+Object.defineProperty(proto, 'dirname', {
+  get: function () {
+    return string(this.path) ? path.dirname(this.path) : undefined;
+  },
+  set: function (dirname) {
+    assertPath(this.path, 'dirname');
+    this.path = path.join(dirname || '', this.basename);
+  }
+});
+
+/**
+ * Access basename (`index.min.js`).
+ */
+Object.defineProperty(proto, 'basename', {
+  get: function () {
+    return string(this.path) ? path.basename(this.path) : undefined;
+  },
+  set: function (basename) {
+    assertNonEmpty(basename, 'basename');
+    assertPart(basename, 'basename');
+    this.path = path.join(this.dirname || '', basename);
+  }
+});
+
+/**
+ * Access extname (`.js`).
+ */
+Object.defineProperty(proto, 'extname', {
+  get: function () {
+    return string(this.path) ? path.extname(this.path) : undefined;
+  },
+  set: function (extname) {
+    var ext = extname || '';
+
+    assertPart(ext, 'extname');
+    assertPath(this.path, 'extname');
+
+    if (ext) {
+      if (ext.charAt(0) !== '.') {
+        throw new Error('`extname` must start with `.`');
+      }
+
+      if (ext.indexOf('.', 1) !== -1) {
+        throw new Error('`extname` cannot contain multiple dots');
+      }
+    }
+
+    this.path = replace(this.path, ext);
+  }
+});
+
+/**
+ * Access stem (`index.min`).
+ */
+Object.defineProperty(proto, 'stem', {
+  get: function () {
+    return string(this.path) ? path.basename(this.path, this.extname) : undefined;
+  },
+  set: function (stem) {
+    assertNonEmpty(stem, 'stem');
+    assertPart(stem, 'stem');
+    this.path = path.join(this.dirname || '', stem + (this.extname || ''));
+  }
+});
+
+/**
+ * Get the value of the file.
+ *
+ * @return {string} - Contents.
+ */
+function toString(encoding) {
+  var value = this.contents || '';
+  return buffer(value) ? value.toString(encoding) : String(value);
+}
+
+/**
+ * Create a message with `reason` at `position`.
+ * When an error is passed in as `reason`, copies the
+ * stack.  This does not add a message to `messages`.
+ *
+ * @param {string|Error} reason - Reason for message.
+ * @param {Node|Location|Position} [position] - Place of message.
+ * @param {string} [ruleId] - Category of message.
+ * @return {VMessage} - Message.
+ */
+function message(reason, position, ruleId) {
+  var filePath = this.path;
+  var range = stringify(position) || '1:1';
+  var location;
+  var err;
+
+  location = {
+    start: {line: null, column: null},
+    end: {line: null, column: null}
+  };
+
+  if (position && position.position) {
+    position = position.position;
+  }
+
+  if (position) {
+    /* Location. */
+    if (position.start) {
+      location = position;
+      position = position.start;
+    } else {
+      /* Position. */
+      location.start = position;
+      location.end.line = null;
+      location.end.column = null;
+    }
+  }
+
+  err = new VMessage(reason.message || reason);
+
+  err.name = (filePath ? filePath + ':' : '') + range;
+  err.file = filePath || '';
+  err.reason = reason.message || reason;
+  err.line = position ? position.line : null;
+  err.column = position ? position.column : null;
+  err.location = location;
+  err.ruleId = ruleId || null;
+  err.source = null;
+  err.fatal = false;
+
+  if (reason.stack) {
+    err.stack = reason.stack;
+  }
+
+  this.messages.push(err);
+
+  return err;
+}
+
+/**
+ * Fail. Creates a vmessage, associates it with the file,
+ * and throws it.
+ *
+ * @throws {VMessage} - Fatal exception.
+ */
+function fail() {
+  var message = this.message.apply(this, arguments);
+
+  message.fatal = true;
+
+  throw message;
+}
+
+/* Inherit from `Error#`. */
+function VMessagePrototype() {}
+VMessagePrototype.prototype = Error.prototype;
+VMessage.prototype = new VMessagePrototype();
+
+/* Message properties. */
+proto = VMessage.prototype;
+
+proto.file = proto.name = proto.reason = proto.message = proto.stack = '';
+proto.fatal = proto.column = proto.line = null;
 
 /**
  * Construct a new file message.
@@ -89,240 +277,32 @@ function VFile(options) {
  * @constructor
  * @param {string} reason - Reason for messaging.
  */
-function VFileMessage(reason) {
+function VMessage(reason) {
   this.message = reason;
 }
 
-/* Inherit from `Error#`. */
-function VFileMessagePrototype() {}
-VFileMessagePrototype.prototype = Error.prototype;
-VFileMessage.prototype = new VFileMessagePrototype();
-
-/**
- * ESLint's formatter API expects `filePath` to be a
- * string.
- *
- * @private
- * @param {VFile} file - Virtual file.
- * @return {Function} - `filePath` getter.
- */
-function filePathFactory(file) {
-  filePath.toString = filePath;
-
-  return filePath;
-
-  /**
-   * Get the filename, with extension and directory, if applicable.
-   */
-  function filePath() {
-    var directory = file.directory;
-    var separator;
-
-    if (file.filename || file.extension) {
-      separator = directory.charAt(directory.length - 1);
-
-      if (separator === '/' || separator === '\\') {
-        directory = directory.slice(0, -1);
-      }
-
-      if (directory === '.') {
-        directory = '';
-      }
-
-      return (directory ? directory + SEPARATOR : '') +
-        file.filename +
-        (file.extension ? '.' + file.extension : '');
-    }
-
-    return '';
+/* Assert that `part` is not a path (i.e., does
+ * not contain `path.sep`). */
+function assertPart(part, name) {
+  if (part.indexOf(path.sep) !== -1) {
+    throw new Error(
+      '`' + name + '` cannot be a path: did not expect `' + path.sep + '`'
+    );
   }
 }
 
-/**
- * Get the filename with extension.
- *
- * @return {string} - name of file with extension.
- */
-function basename() {
-  var self = this;
-  var extension = self.extension;
-
-  if (self.filename || extension) {
-    return self.filename + (extension ? '.' + extension : '');
+/* Assert that `part` is not empty. */
+function assertNonEmpty(part, name) {
+  if (!part) {
+    throw new Error('`' + name + '` cannot be empty');
   }
-
-  return '';
 }
 
-/**
- * Get the value of the file.
- *
- * @return {string} - Contents.
- */
-function toString() {
-  return this.contents;
-}
-
-/**
- * Move a file by passing a new file-path parts.
- *
- * @param {Object?} [options] - Configuration.
- * @return {VFile} - Context object.
- */
-function move(options) {
-  var parts = options || {};
-  var self = this;
-  var before = self.filePath();
-  var after;
-
-  self.directory = parts.directory || self.directory || '';
-  self.filename = parts.filename || self.filename || '';
-  self.extension = parts.extension || self.extension || '';
-
-  after = self.filePath();
-
-  if (after && before !== after) {
-    self.history.push(after);
+/* Assert `path` exists. */
+function assertPath(path, name) {
+  if (!path) {
+    throw new Error(
+      'Setting `' + name + '` requires `path` to be set too'
+    );
   }
-
-  return self;
-}
-
-/**
- * Create a message with `reason` at `position`.
- * When an error is passed in as `reason`, copies the
- * stack.  This does not add a message to `messages`.
- *
- * @param {string|Error} reason - Reason for message.
- * @param {Node|Location|Position} [position] - Place of message.
- * @param {string} [ruleId] - Category of message.
- * @return {VFileMessage} - Message.
- */
-function message(reason, position, ruleId) {
-  var filePath = this.filePath();
-  var range;
-  var err;
-  var location = {
-    start: {line: null, column: null},
-    end: {line: null, column: null}
-  };
-
-  /* Node / location / position. */
-  range = stringify(position) || '1:1';
-
-  if (position && position.position) {
-    position = position.position;
-  }
-
-  if (position) {
-    if (position.start) {
-      location = position;
-      position = position.start;
-    } else {
-      location.start = position;
-      location.end.line = null;
-      location.end.column = null;
-    }
-  }
-
-  err = new VFileMessage(reason.message || reason);
-
-  err.name = (filePath ? filePath + ':' : '') + range;
-  err.file = filePath;
-  err.reason = reason.message || reason;
-  err.line = position ? position.line : null;
-  err.column = position ? position.column : null;
-  err.location = location;
-  err.ruleId = ruleId || null;
-
-  if (reason.stack) {
-    err.stack = reason.stack;
-  }
-
-  return err;
-}
-
-/**
- * Warn. Creates a non-fatal message (see `VFile#message()`),
- * and adds it to the file's `messages` list.
- *
- * @see VFile#message
- */
-function warn() {
-  var err = this.message.apply(this, arguments);
-
-  err.fatal = false;
-
-  this.messages.push(err);
-
-  return err;
-}
-
-/**
- * Fail. Creates a fatal message (see `VFile#message()`),
- * sets `fatal: true`, adds it to the file's
- * `messages` list.
- *
- * If `quiet` is not `true`, throws the error.
- *
- * @throws {VFileMessage} - When not `quiet: true`.
- * @param {string|Error} reason - Reason for failure.
- * @param {Node|Location|Position} [position] - Place
- *   of failure in file.
- * @return {VFileMessage} - Unless thrown, of course.
- */
-function fail(reason, position) {
-  var err = this.message(reason, position);
-
-  err.fatal = true;
-
-  this.messages.push(err);
-
-  if (!this.quiet) {
-    throw err;
-  }
-
-  return err;
-}
-
-/**
- * Check if a fatal message occurred making the file no
- * longer processable.
- *
- * @return {boolean} - `true` if at least one of file's
- *   `messages` has a `fatal` property set to `true`
- */
-function hasFailed() {
-  var messages = this.messages;
-  var length = messages.length;
-  var index = -1;
-
-  while (++index < length) {
-    if (messages[index].fatal) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
-/**
- * Access metadata.
- *
- * @param {string} key - Namespace key.
- * @return {Object} - Private space.
- */
-function namespace(key) {
-  var self = this;
-  var space = self.data;
-
-  if (!space) {
-    space = self.data = {};
-  }
-
-  if (!space[key]) {
-    space[key] = {};
-  }
-
-  return space[key];
 }
