@@ -6,40 +6,19 @@
 **VFile** is a virtual file format used by [**unified**][unified],
 a text processing umbrella (it powers [**retext**][retext] for
 natural language, [**remark**][remark] for markdown, and
-[**rehype**][rehype] for HTML).  Each processors which parse, transform,
+[**rehype**][rehype] for HTML).  Each processors that parse, transform,
 and compile text, and need a virtual representation of files and a
-place to store [metadata][] and [messages][] about them.  Plus, they
-work in the browser.  **VFile** provides these requirements.
+place to store [messages][] about them.  Plus, they work in the browser.
+**VFile** provides these requirements at a small size, in IE 9 and up.
 
 > **VFile** is different from (the excellent :+1:) [**vinyl**][vinyl]
-> in that it does not include file-system or node-only functionality.
-> No streams or stats.  In addition, the focus on [metadata][] is
-> useful when processing a file through a [middleware][] pipeline.
+> in that it has a smaller API, a lower footprint, and focusses on
+> [messages][].
 
-## Table of Contents
+<!--.-->
 
-*   [Installation](#installation)
-*   [Usage](#usage)
-*   [List of Utilities](#list-of-utilities)
-*   [API](#api)
-    *   [VFile(\[options\])](#vfileoptions)
-    *   [vfile.contents](#vfilecontents)
-    *   [vfile.directory](#vfiledirectory)
-    *   [vfile.filename](#vfilefilename)
-    *   [vfile.extension](#vfileextension)
-    *   [vfile.messages](#vfilemessages)
-    *   [vfile.history](#vfilehistory)
-    *   [VFile#toString()](#vfiletostring)
-    *   [VFile#filePath()](#vfilefilepath)
-    *   [VFile#basename()](#vfilebasename)
-    *   [VFile#move(\[options\])](#vfilemoveoptions)
-    *   [VFile#namespace(key)](#vfilenamespacekey)
-    *   [VFile#hasFailed()](#vfilehasfailed)
-    *   [VFile#message(reason\[, position\[, ruleId\]\])](#vfilemessagereason-position-ruleid)
-    *   [VFile#warn(reason\[, position\[, ruleId\]\])](#vfilewarnreason-position-ruleid)
-    *   [VFile#fail(reason\[, position\[, ruleId\]\])](#vfilefailreason-position-ruleid)
-    *   [VFileMessage](#vfilemessage)
-*   [License](#license)
+> A lot has changed recently, other tools may still use the [1.0.0][]
+> API.
 
 ## Installation
 
@@ -49,31 +28,64 @@ work in the browser.  **VFile** provides these requirements.
 npm install vfile
 ```
 
+## Table of Contents
+
+*   [Usage](#usage)
+*   [List of Utilities](#list-of-utilities)
+*   [API](#api)
+    *   [VFile(\[options\])](#vfileoptions)
+    *   [vfile.contents](#vfilecontents)
+    *   [vfile.cwd](#vfilecwd)
+    *   [vfile.path](#vfilepath)
+    *   [vfile.basename](#vfilebasename)
+    *   [vfile.stem](#vfilestem)
+    *   [vfile.extname](#vfileextname)
+    *   [vfile.dirname](#vfiledirname)
+    *   [vfile.history](#vfilehistory)
+    *   [vfile.messages](#vfilemessages)
+    *   [vfile.data](#vfiledata)
+    *   [VFile#toString(\[encoding='utf8'\])](#vfiletostringencodingutf8)
+    *   [VFile#message(reason\[, position\[, ruleId\]\])](#vfilemessagereason-position-ruleid)
+    *   [VFile#fail(reason\[, position\[, ruleId\]\])](#vfilefailreason-position-ruleid)
+    *   [VFileMessage](#vfilemessage)
+*   [License](#license)
+
 ## Usage
 
 ```js
 var vfile = require('vfile');
 
-var file = vfile({
-  directory: '~',
-  filename: 'example',
-  extension: 'txt',
-  contents: 'Foo *bar* baz'
-});
+var file = vfile({path: '~/example.txt', contents: 'Alpha *braavo* charlie.'});
 
-file.toString(); // 'Foo *bar* baz'
-file.filePath(); // '~/example.txt'
+console.log(file.path);
+// '~/example.txt'
 
-file.move({extension: 'md'});
-file.filePath(); // '~/example.md'
+console.log(file.dirname);
+// '~'
 
-file.warn('Something went wrong', {line: 1, column: 3});
-// { [~/example.md:1:3: Something went wrong]
-//   name: '~/example.md:1:3',
-//   file: '~/example.md',
-//   reason: 'Something went wrong',
+file.extname = '.md';
+
+console.log(file.basename);
+// 'example.md'
+
+file.basename = 'index.text';
+
+console.log(file.history);
+// [ '~/example.txt', '~/example.md', '~/index.text' ]
+
+file.message('`braavo` is misspelt; did you mean `bravo`?', {line: 1, column: 8});
+// { [~/index.text:1:8: `braavo` is misspelt; did you mean `bravo`?]
+//   message: '`braavo` is misspelt; did you mean `bravo`?',
+//   name: '~/index.text:1:8',
+//   file: '~/index.text',
+//   reason: '`braavo` is misspelt; did you mean `bravo`?',
 //   line: 1,
-//   column: 3,
+//   column: 8,
+//   location:
+//    { start: { line: 1, column: 8 },
+//      end: { line: null, column: null } },
+//   ruleId: null,
+//   source: null,
 //   fatal: false }
 ```
 
@@ -83,11 +95,11 @@ The following list of projects includes tools for working with virtual
 files.  See [**Unist**][unist] for projects working with nodes.
 
 *   [`dustinspecker/convert-vinyl-to-vfile`](https://github.com/dustinspecker/convert-vinyl-to-vfile)
-    — Convert from [Vinyl][] a VFile;
+    — Convert from [Vinyl][];
 *   [`shinnn/is-vfile-message`](https://github.com/shinnn/is-vfile-message)
     — Check if a value is a `VFileMessage` object;
 *   [`wooorm/to-vfile`](https://github.com/wooorm/to-vfile)
-    — Create a virtual file from a file-path (and read it in);
+    — Create a virtual file from a file-path (and optionally read it);
 *   [`wooorm/vfile-find-down`](https://github.com/wooorm/vfile-find-down)
     — Find files by searching the file system downwards;
 *   [`wooorm/vfile-find-up`](https://github.com/wooorm/vfile-find-up)
@@ -97,108 +109,89 @@ files.  See [**Unist**][unist] for projects working with nodes.
 *   [`shinnn/vfile-messages-to-vscode-diagnostics`](https://github.com/shinnn/vfile-messages-to-vscode-diagnostics)
     — Convert to VS Code diagnostics;
 *   [`wooorm/vfile-reporter`](https://github.com/wooorm/vfile-reporter)
-    — Stylish reporter for virtual files.
+    — Stylish reporter.
 *   [`wooorm/vfile-sort`](https://github.com/wooorm/vfile-sort)
-    — Sort virtual file messages by line/column;
+    — Sort messages by line/column;
 *   [`sindresorhus/vfile-to-eslint`](https://github.com/sindresorhus/vfile-to-eslint)
     — Convert VFiles to ESLint formatter compatible output;
 *   [`sindresorhus/vfile-reporter-pretty`](https://github.com/sindresorhus/vfile-reporter-pretty)
-    — Pretty reporter for VFile;
+    — Pretty reporter;
 
 ## API
 
 ### `VFile([options])`
 
-Create a new virtual file.  If `options` is `string`, treats it as
-`{contents: options}`.  If `options` is a `VFile`, returns it.
+Create a new virtual file.  If `options` is `string` or `Buffer`, treats
+it as `{contents: options}`.  If `options` is a `VFile`, returns it.
+All other options are set on the newly created `vfile`.
 
 ###### Example
 
 ```js
-var file = vfile({
-  directory: '~',
-  filename: 'example',
-  extension: 'txt',
-  contents: 'Foo *bar* baz'
-});
-
-var file = vfile('Qux quux');
+vfile();
+vfile('console.log("alpha");');
+vfile(Buffer.from('exit 1'));
+vfile({path: path.join(__dirname, 'readme.md')});
+vfile({stem: 'readme', extname: '.md', dirname: __dirname});
+vfile({other: 'properties', are: 'copied', ov: {e: 'r'}});
 ```
-
-###### `options`
-
-*   `directory` (`string?`, optional) — Parent directory;
-*   `filename` (`string?`, optional) — Name, without extension;
-*   `extension` (`string?`, optional) — Extension, without initial dot;
-*   `contents` (`string?`, optional) — Raw value.
-
-###### Returns
-
-New instance of `vfile`.
 
 ### `vfile.contents`
 
-Raw value.
+`Buffer`, `string`, `null` — Raw value.
 
-### `vfile.directory`
+### `vfile.cwd`
 
-Path to parent directory.
+`string` — Base of `path`.  Defaults to `process.cwd()`.
 
-### `vfile.filename`
+### `vfile.path`
 
-`string` — Name of file.
+`string?` — Path of `vfile`.  Cannot be nullified.
 
-### `vfile.extension`
+### `vfile.basename`
 
-`string` — Last extension, if any, of the file.
+`string?` — Current name (including extension) of `vfile`.  Cannot
+contain path separators.  Cannot be nullified either (use
+`file.path = file.dirname` instead).
 
-### `vfile.messages`
+### `vfile.stem`
 
-`Array.<VFileMessage>` — List messages associated with the file.
+`string?` — Name (without extension) of `vfile`.  Cannot be nullified,
+and cannot contain path separators.
+
+### `vfile.extname`
+
+`string?` — Extension (with dot) of `vfile`.  Cannot be set if
+there’s no `path` yet and cannot contain path separators.
+
+### `vfile.dirname`
+
+`string?` — Path to parent directory of `vfile`.  Cannot be set if
+there’s no `path` yet.
 
 ### `vfile.history`
 
-`Array.<string>` — List of file-paths the file [`#move()`][move]d
-between.
+`Array.<string>` — List of file-paths the file moved between.
 
-### `VFile#toString()`
+### `vfile.messages`
 
-Get contents of `vfile` (`string`).
+`Array.<VFileMessage>` — List of messages associated with the file.
 
-### `VFile#filePath()`
+### `vfile.data`
 
-Get the filename, with extension and directory, if applicable (`string`).
+`Object` — Place to store custom information.  It’s OK to store custom
+data directly on the `vfile`, moving it to `data` gives a _little_ more
+privacy.
 
-### `VFile#basename()`
+### `VFile#toString([encoding='utf8'])`
 
-Get the filename, with extension, if applicable (`string`).
-
-### `VFile#move([options])`
-
-Move a file by passing a new directory, filename, and extension.  When
-these are not given, the current values are kept.  Returns self.
-
-###### `options`
-
-*   `directory` (`string`, optional) — Parent directory;
-*   `filename` (`string?`, optional) — Name, without (final) extension;
-*   `extension` (`string`, optional) — Extension, without initial dot.
-
-### `VFile#namespace(key)`
-
-Access a scope for metadata based on the unique key (`string`).
-Returns an object.
-
-### `VFile#hasFailed()`
-
-Check if a fatal message occurred making the file no longer processable.
-Returns `boolean`.
+Convert contents of `vfile` to string.  If `contents` is a buffer,
+`encoding` is used to stringify buffers (default: `'utf8'`).
 
 ### `VFile#message(reason[, position[, ruleId]])`
 
-Create a message with `reason` at `position`.  When an error is passed
-in as `reason`, copies the stack.  **This does not add a message to
-`messages`**.
+Associates a message with the file for `reason` at `position`.  When an
+error is passed in as `reason`, copies the stack.
 
 *   `reason` (`string` or `Error`)
     — Reason for message, uses the stack and message of the error if given;
@@ -211,18 +204,9 @@ in as `reason`, copies the stack.  **This does not add a message to
 
 [`VFileMessage`][message].
 
-### `VFile#warn(reason[, position[, ruleId]])`
-
-Associates a non-fatal message with the file.
-Calls [`#message()`][messages] internally.
-
-###### Returns
-
-[`VFileMessage`][message].
-
 ### `VFile#fail(reason[, position[, ruleId]])`
 
-Associates a fatal message with the file, then throws it.
+Associates a fatal message with the file, then immediately throws it.
 Note: fatal errors mean a file is no longer processable.
 Calls [`#message()`][messages] internally.
 
@@ -232,24 +216,20 @@ Calls [`#message()`][messages] internally.
 
 ### `VFileMessage`
 
-File-related message describing something at certain point (extends
+File-related message describing something at certain position (extends
 `Error`).
 
 ###### Properties
 
-*   `name` (`string`)
-    — Place in `vfile` of the message, preceded by its file-path when
-    available, and joined by `':'`.  Used by the native
-    [`Error#toString()`][to-string];
 *   `file` (`string`) — File-path (when the message was triggered);
 *   `reason` (`string`) — Reason for message;
-*   `line` (`number?`) — Starting line of error;
-*   `column` (`number?`) — Starting column of error;
-*   `stack` (`string?`) — Stack of message;
 *   `ruleId` (`string?`) — Category of message;
 *   `source` (`string?`) — Namespace of warning;
-*   `fatal` (`boolean?`) — If `true`, marks message as no longer
-    processable.
+*   `stack` (`string?`) — Stack of message;
+*   `fatal` (`boolean?`) — If `true`, marks associated file as no longer
+    processable;
+*   `line` (`number?`) — Starting line of error;
+*   `column` (`number?`) — Starting column of error;
 *   `location` (`object`) — Full range information, when available.  Has
     `start` and `end` properties, both set to an object with `line` and
     `column`, set to `number?`.
@@ -286,16 +266,10 @@ File-related message describing something at certain point (extends
 
 [vinyl]: https://github.com/wearefractal/vinyl
 
-[middleware]: https://github.com/wooorm/trough
-
 [unist]: https://github.com/wooorm/unist#list-of-utilities
-
-[to-string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/name
-
-[metadata]: #vfilenamespacekey
 
 [messages]: #vfilemessagereason-position-ruleid
 
-[move]: #vfilemoveoptions
-
 [message]: #vfilemessage
+
+[1.0.0]: https://github.com/wooorm/vfile/tree/d5abd71
