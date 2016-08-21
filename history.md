@@ -2,6 +2,13 @@
 
 <!--lint disable no-multiple-toplevel-headings-->
 
+2.0.0 / 2016-08-21
+==================
+
+*   Rewrite interface ([`1959856`](https://github.com/wooorm/vfile/commit/1959856))
+*   Rewrite `readme.md` ([`dcb86a6`](https://github.com/wooorm/vfile/commit/dcb86a6))
+*   Refactor code-style to use `xo` ([`019e3fc`](https://github.com/wooorm/vfile/commit/019e3fc))
+
 1.4.0 / 2016-04-18
 ==================
 
