@@ -15,7 +15,7 @@ place to store [messages][] about them.  Plus, they work in the browser.
 **VFile** provides these requirements at a small size, in IE 9 and up.
 
 > **VFile** is different from the excellent [**vinyl**][vinyl]
-> in that it has a smaller API, a smaller size, and focusses on
+> in that it has a smaller API, a smaller size, and focuses on
 > [messages][].
 
 ## Installation
