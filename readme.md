@@ -258,7 +258,7 @@ File-related message describing something at certain position (extends
 
 [author]: http://wooorm.com
 
-[vfile]: https://cdn.rawgit.com/wooorm/vfile/master/logo.svg
+[vfile]: https://cdn.rawgit.com/wooorm/vfile/a20a566/logo.svg
 
 [unified]: https://github.com/wooorm/unified
 
