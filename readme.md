@@ -3,9 +3,6 @@
 [![Build Status][build-badge]][build-status]
 [![Coverage Status][coverage-badge]][coverage-status]
 
-> A lot has changed recently, other tools may still use the [1.0.0][]
-> API.
-
 **VFile** is a virtual file format used by [**unified**][unified],
 a text processing umbrella (it powers [**retext**][retext] for
 natural language, [**remark**][remark] for markdown, and
@@ -278,5 +275,3 @@ File-related message describing something at certain position (extends
 [messages]: #vfilemessagereason-position-ruleid
 
 [message]: #vfilemessage
-
-[1.0.0]: https://github.com/wooorm/vfile/tree/d5abd71
