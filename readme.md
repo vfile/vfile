@@ -39,7 +39,7 @@ npm install vfile
     *   [vfile.history](#vfilehistory)
     *   [vfile.messages](#vfilemessages)
     *   [vfile.data](#vfiledata)
-    *   [VFile#toString(\[encoding='utf8'\])](#vfiletostringencodingutf8)
+    *   [VFile#toString(\[encoding\])](#vfiletostringencoding)
     *   [VFile#message(reason\[, position\[, ruleId\]\])](#vfilemessagereason-position-ruleid)
     *   [VFile#fail(reason\[, position\[, ruleId\]\])](#vfilefailreason-position-ruleid)
     *   [VFileMessage](#vfilemessage)
@@ -187,7 +187,7 @@ there’s no `path` yet.
 data directly on the `vfile`, moving it to `data` gives a _little_ more
 privacy.
 
-### `VFile#toString([encoding='utf8'])`
+### `VFile#toString([encoding])`
 
 Convert contents of `vfile` to string.  If `contents` is a buffer,
 `encoding` is used to stringify buffers (default: `'utf8'`).
