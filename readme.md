@@ -114,6 +114,12 @@ files.  See [**Unist**][unist] for projects working with nodes.
 *   [`sindresorhus/vfile-reporter-pretty`](https://github.com/sindresorhus/vfile-reporter-pretty)
     — Pretty reporter;
 
+*   [`sindresorhus/vfile-to-eslint`](https://github.com/sindresorhus/vfile-to-eslint)
+    — Convert VFiles to ESLint formatter compatible output;
+
+*   [`sindresorhus/vfile-reporter-pretty`](https://github.com/sindresorhus/vfile-reporter-pretty)
+    — Pretty reporter for VFile;
+
 ## API
 
 ### `VFile([options])`
