@@ -27,6 +27,7 @@ npm install vfile
 
 *   [Usage](#usage)
 *   [List of Utilities](#list-of-utilities)
+*   [List of Reporters](#list-of-reporters)
 *   [API](#api)
     *   [VFile(\[options\])](#vfileoptions)
     *   [vfile.contents](#vfilecontents)
@@ -105,14 +106,19 @@ files.  See [**Unist**][unist] for projects working with nodes.
     — Count messages per category;
 *   [`shinnn/vfile-messages-to-vscode-diagnostics`](https://github.com/shinnn/vfile-messages-to-vscode-diagnostics)
     — Convert to VS Code diagnostics;
-*   [`wooorm/vfile-reporter`](https://github.com/wooorm/vfile-reporter)
-    — Stylish reporter.
 *   [`wooorm/vfile-sort`](https://github.com/wooorm/vfile-sort)
     — Sort messages by line/column;
 *   [`sindresorhus/vfile-to-eslint`](https://github.com/sindresorhus/vfile-to-eslint)
-    — Convert VFiles to ESLint formatter compatible output;
+    — Convert VFiles to ESLint formatter compatible output.
+
+## List of Reporters
+
+*   [`wooorm/vfile-reporter`](https://github.com/wooorm/vfile-reporter)
+    — Stylish reporter;
+*   [`wooorm/vfile-reporter-json`](https://github.com/wooorm/vfile-reporter-json)
+    — JSON reporter;
 *   [`sindresorhus/vfile-reporter-pretty`](https://github.com/sindresorhus/vfile-reporter-pretty)
-    — Pretty reporter;
+    — Pretty reporter.
 
 ## API
 
