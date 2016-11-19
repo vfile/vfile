@@ -53,36 +53,36 @@ var vfile = require('vfile');
 
 var file = vfile({path: '~/example.txt', contents: 'Alpha *braavo* charlie.'});
 
-console.log(file.path);
-// '~/example.txt'
-
-console.log(file.dirname);
-// '~'
+file.path; //=> '~/example.txt'
+file.dirname; //=> '~'
 
 file.extname = '.md';
 
-console.log(file.basename);
-// 'example.md'
+file.basename; //=> 'example.md'
 
 file.basename = 'index.text';
 
-console.log(file.history);
-// [ '~/example.txt', '~/example.md', '~/index.text' ]
+file.history; //=> ['~/example.txt', '~/example.md', '~/index.text']
 
 file.message('`braavo` is misspelt; did you mean `bravo`?', {line: 1, column: 8});
-// { [~/index.text:1:8: `braavo` is misspelt; did you mean `bravo`?]
-//   message: '`braavo` is misspelt; did you mean `bravo`?',
-//   name: '~/index.text:1:8',
-//   file: '~/index.text',
-//   reason: '`braavo` is misspelt; did you mean `bravo`?',
-//   line: 1,
-//   column: 8,
-//   location:
-//    { start: { line: 1, column: 8 },
-//      end: { line: null, column: null } },
-//   ruleId: null,
-//   source: null,
-//   fatal: false }
+
+console.log(file.messages);
+```
+
+Yields:
+
+```js
+[ { [~/index.text:1:8: `braavo` is misspelt; did you mean `bravo`?]
+    message: '`braavo` is misspelt; did you mean `bravo`?',
+    name: '~/index.text:1:8',
+    file: '~/index.text',
+    reason: '`braavo` is misspelt; did you mean `bravo`?',
+    line: 1,
+    column: 8,
+    location: { start: [Object], end: [Object] },
+    ruleId: null,
+    source: null,
+    fatal: false } ]
 ```
 
 ## List of Utilities
