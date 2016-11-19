@@ -1,22 +1,11 @@
-/**
- * @author Titus Wormer
- * @copyright 2015 Titus Wormer
- * @license MIT
- * @module vfile
- * @fileoverview Test suite for `vfile`.
- */
-
 'use strict';
 
-/* Dependencies. */
 var test = require('tape');
 var vfile = require('./');
 
-/* Tests. */
 test('vfile([options])', function (t) {
-  /* eslint-disable babel/new-cap */
+  // eslint-disable-next-line new-cap
   t.ok(vfile() instanceof vfile, 'should work with new');
-  /* eslint-enable babel/new-cap */
 
   t.ok(vfile() instanceof vfile, 'should work without `new`');
 

@@ -1,13 +1,3 @@
-/**
- * @author Titus Wormer
- * @copyright 2015 Titus Wormer
- * @license MIT
- * @module vfile
- * @fileoverview Virtual file format to attach additional
- *   information related to processed input.  Similar to
- *   `wearefractal/vinyl`.
- */
-
 'use strict';
 
 /* Dependencies. */
@@ -41,12 +31,7 @@ var order = [
   'dirname'
 ];
 
-/**
- * Construct a new file.
- *
- * @constructor
- * @param {Object|VFile|string} [options] - File, contents, or config.
- */
+/* Construct a new file. */
 function VFile(options) {
   var prop;
   var index;
@@ -89,9 +74,7 @@ function VFile(options) {
   }
 }
 
-/**
- * Access complete path (`~/index.min.js`).
- */
+/* Access full path (`~/index.min.js`). */
 Object.defineProperty(proto, 'path', {
   get: function () {
     return this.history[this.history.length - 1];
@@ -105,9 +88,7 @@ Object.defineProperty(proto, 'path', {
   }
 });
 
-/**
- * Access parent path (`~`).
- */
+/* Access parent path (`~`). */
 Object.defineProperty(proto, 'dirname', {
   get: function () {
     return string(this.path) ? path.dirname(this.path) : undefined;
@@ -118,9 +99,7 @@ Object.defineProperty(proto, 'dirname', {
   }
 });
 
-/**
- * Access basename (`index.min.js`).
- */
+/* Access basename (`index.min.js`). */
 Object.defineProperty(proto, 'basename', {
   get: function () {
     return string(this.path) ? path.basename(this.path) : undefined;
@@ -132,9 +111,7 @@ Object.defineProperty(proto, 'basename', {
   }
 });
 
-/**
- * Access extname (`.js`).
- */
+/* Access extname (`.js`). */
 Object.defineProperty(proto, 'extname', {
   get: function () {
     return string(this.path) ? path.extname(this.path) : undefined;
@@ -159,9 +136,7 @@ Object.defineProperty(proto, 'extname', {
   }
 });
 
-/**
- * Access stem (`index.min`).
- */
+/* Access stem (`index.min`). */
 Object.defineProperty(proto, 'stem', {
   get: function () {
     return string(this.path) ? path.basename(this.path, this.extname) : undefined;
@@ -173,26 +148,15 @@ Object.defineProperty(proto, 'stem', {
   }
 });
 
-/**
- * Get the value of the file.
- *
- * @return {string} - Contents.
- */
+/* Get the value of the file. */
 function toString(encoding) {
   var value = this.contents || '';
   return buffer(value) ? value.toString(encoding) : String(value);
 }
 
-/**
- * Create a message with `reason` at `position`.
+/* Create a message with `reason` at `position`.
  * When an error is passed in as `reason`, copies the
- * stack.  This does not add a message to `messages`.
- *
- * @param {string|Error} reason - Reason for message.
- * @param {Node|Location|Position} [position] - Place of message.
- * @param {string} [ruleId] - Category of message.
- * @return {VMessage} - Message.
- */
+ * stack.  This does not add a message to `messages`. */
 function message(reason, position, ruleId) {
   var filePath = this.path;
   var range = stringify(position) || '1:1';
@@ -242,12 +206,8 @@ function message(reason, position, ruleId) {
   return err;
 }
 
-/**
- * Fail. Creates a vmessage, associates it with the file,
- * and throws it.
- *
- * @throws {VMessage} - Fatal exception.
- */
+/* Fail. Creates a vmessage, associates it with the file,
+ * and throws it. */
 function fail() {
   var message = this.message.apply(this, arguments);
 
@@ -267,16 +227,11 @@ proto = VMessage.prototype;
 proto.file = proto.name = proto.reason = proto.message = proto.stack = '';
 proto.fatal = proto.column = proto.line = null;
 
-/**
- * Construct a new file message.
+/* Construct a new file message.
  *
  * Note: We cannot invoke `Error` on the created context,
  * as that adds readonly `line` and `column` attributes on
- * Safari 9, thus throwing and failing the data.
- *
- * @constructor
- * @param {string} reason - Reason for messaging.
- */
+ * Safari 9, thus throwing and failing the data. */
 function VMessage(reason) {
   this.message = reason;
 }
