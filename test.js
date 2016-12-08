@@ -3,6 +3,35 @@
 var test = require('tape');
 var vfile = require('./');
 
+/* eslint-disable no-undef */
+var exception;
+var changedMessage;
+var multilineException;
+
+try {
+  variable = 1;
+} catch (err) {
+  err.stack = cleanStack(err.stack, 3);
+  exception = err;
+}
+
+try {
+  variable = 1;
+} catch (err) {
+  err.message = 'foo';
+  err.stack = cleanStack(err.stack, 3);
+  changedMessage = err;
+}
+
+try {
+  variable = 1;
+} catch (err) {
+  err.message = 'foo\nbar\nbaz';
+  err.stack = cleanStack(err.stack, 5);
+  multilineException = err;
+}
+/* eslint-enable no-undef */
+
 test('vfile([options])', function (t) {
   // eslint-disable-next-line new-cap
   t.ok(vfile() instanceof vfile, 'should work with new');
@@ -322,7 +351,6 @@ test('vfile([options])', function (t) {
   t.test('#message(reason[, position[, ruleId]])', function (st) {
     var file;
     var message;
-    var err;
     var pos;
 
     st.ok(
@@ -356,11 +384,49 @@ test('vfile([options])', function (t) {
       'should have a pretty `toString()` message'
     );
 
-    err = new Error('foo');
-    message = vfile().message(err);
+    message = vfile().message(exception);
 
-    st.equal(message.stack, err.stack, 'should accept an error (1)');
-    st.equal(message.message, err.message, 'should accept an error (2)');
+    st.equal(message.message, 'variable is not defined', 'should accept an error (1)');
+
+    st.equal(
+      message.stack,
+      [
+        'ReferenceError: variable is not defined',
+        '    at Object.<anonymous> (test.js:1:1)',
+        '    at Module._compile (module.js:1:1)'
+      ].join('\n'),
+      'should accept an error (2)'
+    );
+
+    message = vfile().message(changedMessage);
+
+    st.equal(message.message, 'foo', 'should accept a changed error (1)');
+
+    st.equal(
+      message.stack,
+      [
+        'ReferenceError: foo',
+        '    at Object.<anonymous> (test.js:1:1)',
+        '    at Module._compile (module.js:1:1)'
+      ].join('\n'),
+      'should accept a changed error (2)'
+    );
+
+    message = vfile().message(multilineException);
+
+    st.equal(message.message, 'foo\nbar\nbaz', 'should accept a multiline error (1)');
+
+    st.equal(
+      message.stack,
+      [
+        'ReferenceError: foo',
+        'bar',
+        'baz',
+        '    at Object.<anonymous> (test.js:1:1)',
+        '    at Module._compile (module.js:1:1)'
+      ].join('\n'),
+      'should accept a multiline error (2)'
+    );
 
     pos = {
       position: {
@@ -438,3 +504,9 @@ test('vfile([options])', function (t) {
 
   t.end();
 });
+
+function cleanStack(stack, max) {
+  return stack
+    .replace(/\(\/.+\//g, '(').replace(/\d+:\d+/g, '1:1')
+    .split('\n').slice(0, max).join('\n');
+}
