@@ -96,26 +96,26 @@ files.  See [**Unist**][unist] for projects working with nodes.
     — Check if a value is a `VFileMessage` object;
 *   [`wooorm/to-vfile`](https://github.com/wooorm/to-vfile)
     — Create a virtual file from a file-path (and optionally read it);
-*   [`wooorm/vfile-find-down`](https://github.com/wooorm/vfile-find-down)
+*   [`vfile/vfile-find-down`](https://github.com/vfile/vfile-find-down)
     — Find files by searching the file system downwards;
-*   [`wooorm/vfile-find-up`](https://github.com/wooorm/vfile-find-up)
+*   [`vfile/vfile-find-up`](https://github.com/vfile/vfile-find-up)
     — Find files by searching the file system upwards;
-*   [`wooorm/vfile-location`](https://github.com/wooorm/vfile-location)
+*   [`vfile/vfile-location`](https://github.com/vfile/vfile-location)
     — Convert between line/column- and range-based locations;
-*   [`wooorm/vfile-statistics`](https://github.com/wooorm/vfile-statistics)
+*   [`vfile/vfile-statistics`](https://github.com/vfile/vfile-statistics)
     — Count messages per category;
 *   [`shinnn/vfile-messages-to-vscode-diagnostics`](https://github.com/shinnn/vfile-messages-to-vscode-diagnostics)
     — Convert to VS Code diagnostics;
-*   [`wooorm/vfile-sort`](https://github.com/wooorm/vfile-sort)
+*   [`vfile/vfile-sort`](https://github.com/vfile/vfile-sort)
     — Sort messages by line/column;
 *   [`sindresorhus/vfile-to-eslint`](https://github.com/sindresorhus/vfile-to-eslint)
     — Convert VFiles to ESLint formatter compatible output.
 
 ## List of Reporters
 
-*   [`wooorm/vfile-reporter`](https://github.com/wooorm/vfile-reporter)
+*   [`vfile/vfile-reporter`](https://github.com/vfile/vfile-reporter)
     — Stylish reporter;
-*   [`wooorm/vfile-reporter-json`](https://github.com/wooorm/vfile-reporter-json)
+*   [`vfile/vfile-reporter-json`](https://github.com/vfile/vfile-reporter-json)
     — JSON reporter;
 *   [`sindresorhus/vfile-reporter-pretty`](https://github.com/sindresorhus/vfile-reporter-pretty)
     — Pretty reporter.
@@ -250,13 +250,13 @@ File-related message describing something at certain position (extends
 
 <!-- Definitions -->
 
-[build-badge]: https://img.shields.io/travis/wooorm/vfile.svg
+[build-badge]: https://img.shields.io/travis/vfile/vfile.svg
 
-[build-status]: https://travis-ci.org/wooorm/vfile
+[build-status]: https://travis-ci.org/vfile/vfile
 
-[coverage-badge]: https://img.shields.io/codecov/c/github/wooorm/vfile.svg
+[coverage-badge]: https://img.shields.io/codecov/c/github/vfile/vfile.svg
 
-[coverage-status]: https://codecov.io/github/wooorm/vfile
+[coverage-status]: https://codecov.io/github/vfile/vfile
 
 [npm]: https://docs.npmjs.com/cli/install
 
@@ -264,7 +264,7 @@ File-related message describing something at certain position (extends
 
 [author]: http://wooorm.com
 
-[vfile]: https://cdn.rawgit.com/wooorm/vfile/a20a566/logo.svg
+[vfile]: https://cdn.rawgit.com/vfile/vfile/a20a566/logo.svg
 
 [unified]: https://github.com/wooorm/unified
 

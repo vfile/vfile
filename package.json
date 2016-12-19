@@ -14,8 +14,8 @@
     "remark",
     "retext"
   ],
-  "repository": "https://github.com/wooorm/vfile",
-  "bugs": "https://github.com/wooorm/vfile/issues",
+  "repository": "https://github.com/vfile/vfile",
+  "bugs": "https://github.com/vfile/vfile/issues",
   "author": "Titus Wormer <tituswormer@gmail.com> (http://wooorm.com)",
   "contributors": [
     "Titus Wormer <tituswormer@gmail.com> (http://wooorm.com)"
