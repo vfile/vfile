@@ -94,7 +94,7 @@ files.  See [**Unist**][unist] for projects working with nodes.
     — Convert from [Vinyl][];
 *   [`shinnn/is-vfile-message`](https://github.com/shinnn/is-vfile-message)
     — Check if a value is a `VFileMessage` object;
-*   [`wooorm/to-vfile`](https://github.com/wooorm/to-vfile)
+*   [`vfile/to-vfile`](https://github.com/vfile/to-vfile)
     — Create a virtual file from a file-path (and optionally read it);
 *   [`vfile/vfile-find-down`](https://github.com/vfile/vfile-find-down)
     — Find files by searching the file system downwards;
@@ -276,7 +276,7 @@ File-related message describing something at certain position (extends
 
 [vinyl]: https://github.com/wearefractal/vinyl
 
-[unist]: https://github.com/wooorm/unist#list-of-utilities
+[unist]: https://github.com/syntax-tree/unist#list-of-utilities
 
 [messages]: #vfilemessagereason-position-ruleid
 
