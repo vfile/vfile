@@ -52,7 +52,7 @@ function VFile(options) {
   this.data = {};
   this.messages = [];
   this.history = [];
-  this.cwd = process.cwd();
+  this.cwd = options.cwd || process.cwd();
 
   /* Set path related properties in the correct order. */
   index = -1;
