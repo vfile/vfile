@@ -90,34 +90,34 @@ Yields:
 The following list of projects includes tools for working with virtual
 files.  See [**Unist**][unist] for projects working with nodes.
 
-*   [`dustinspecker/convert-vinyl-to-vfile`](https://github.com/dustinspecker/convert-vinyl-to-vfile)
+*   [`convert-vinyl-to-vfile`](https://github.com/dustinspecker/convert-vinyl-to-vfile)
     — Convert from [Vinyl][];
-*   [`shinnn/is-vfile-message`](https://github.com/shinnn/is-vfile-message)
+*   [`is-vfile-message`](https://github.com/shinnn/is-vfile-message)
     — Check if a value is a `VFileMessage` object;
-*   [`vfile/to-vfile`](https://github.com/vfile/to-vfile)
+*   [`to-vfile`](https://github.com/vfile/to-vfile)
     — Create a virtual file from a file-path (and optionally read it);
-*   [`vfile/vfile-find-down`](https://github.com/vfile/vfile-find-down)
+*   [`vfile-find-down`](https://github.com/vfile/vfile-find-down)
     — Find files by searching the file system downwards;
-*   [`vfile/vfile-find-up`](https://github.com/vfile/vfile-find-up)
+*   [`vfile-find-up`](https://github.com/vfile/vfile-find-up)
     — Find files by searching the file system upwards;
-*   [`vfile/vfile-location`](https://github.com/vfile/vfile-location)
+*   [`vfile-location`](https://github.com/vfile/vfile-location)
     — Convert between line/column- and range-based locations;
-*   [`vfile/vfile-statistics`](https://github.com/vfile/vfile-statistics)
+*   [`vfile-statistics`](https://github.com/vfile/vfile-statistics)
     — Count messages per category;
-*   [`shinnn/vfile-messages-to-vscode-diagnostics`](https://github.com/shinnn/vfile-messages-to-vscode-diagnostics)
+*   [`vfile-messages-to-vscode-diagnostics`](https://github.com/shinnn/vfile-messages-to-vscode-diagnostics)
     — Convert to VS Code diagnostics;
-*   [`vfile/vfile-sort`](https://github.com/vfile/vfile-sort)
+*   [`vfile-sort`](https://github.com/vfile/vfile-sort)
     — Sort messages by line/column;
-*   [`sindresorhus/vfile-to-eslint`](https://github.com/sindresorhus/vfile-to-eslint)
+*   [`vfile-to-eslint`](https://github.com/sindresorhus/vfile-to-eslint)
     — Convert VFiles to ESLint formatter compatible output.
 
 ## List of Reporters
 
-*   [`vfile/vfile-reporter`](https://github.com/vfile/vfile-reporter)
+*   [`vfile-reporter`](https://github.com/vfile/vfile-reporter)
     — Stylish reporter;
-*   [`vfile/vfile-reporter-json`](https://github.com/vfile/vfile-reporter-json)
+*   [`vfile-reporter-json`](https://github.com/vfile/vfile-reporter-json)
     — JSON reporter;
-*   [`sindresorhus/vfile-reporter-pretty`](https://github.com/sindresorhus/vfile-reporter-pretty)
+*   [`vfile-reporter-pretty`](https://github.com/sindresorhus/vfile-reporter-pretty)
     — Pretty reporter.
 
 ## API
