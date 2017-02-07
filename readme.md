@@ -279,7 +279,7 @@ File-related message describing something at certain position (extends
 
 [rehype]: https://github.com/wooorm/rehype
 
-[vinyl]: https://github.com/wearefractal/vinyl
+[vinyl]: https://github.com/gulpjs/vinyl
 
 [unist]: https://github.com/syntax-tree/unist#list-of-utilities
 
