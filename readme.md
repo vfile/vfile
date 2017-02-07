@@ -26,8 +26,8 @@ npm install vfile
 ## Table of Contents
 
 *   [Usage](#usage)
-*   [List of Utilities](#list-of-utilities)
-*   [List of Reporters](#list-of-reporters)
+*   [Utilities](#utilities)
+*   [Reporters](#reporters)
 *   [API](#api)
     *   [VFile(\[options\])](#vfileoptions)
     *   [vfile.contents](#vfilecontents)
@@ -85,7 +85,7 @@ Yields:
     fatal: false } ]
 ```
 
-## List of Utilities
+## Utilities
 
 The following list of projects includes tools for working with virtual
 files.  See [**Unist**][unist] for projects working with nodes.
@@ -111,7 +111,7 @@ files.  See [**Unist**][unist] for projects working with nodes.
 *   [`vfile-to-eslint`](https://github.com/sindresorhus/vfile-to-eslint)
     — Convert VFiles to ESLint formatter compatible output.
 
-## List of Reporters
+## Reporters
 
 *   [`vfile-reporter`](https://github.com/vfile/vfile-reporter)
     — Stylish reporter;
@@ -132,7 +132,7 @@ Path related properties are set in the following order (least specific
 to most specific): `history`, `path`, `basename`, `stem`, `extname`,
 `dirname`.
 
-It’s not possible to either `dirname` or `extname` without setting
+It’s not possible to set either `dirname` or `extname` without setting
 either `history`, `path`, `basename`, or `stem` as well.
 
 ###### Example
