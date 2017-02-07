@@ -44,7 +44,7 @@
     "xo": "^0.17.0"
   },
   "scripts": {
-    "build-md": "remark . --quiet --frail",
+    "build-md": "remark . -qfo",
     "build-bundle": "browserify index.js -s VFile > vfile.js",
     "build-mangle": "esmangle vfile.js > vfile.min.js",
     "build": "npm run build-md && npm run build-bundle && npm run build-mangle",
@@ -61,13 +61,11 @@
   },
   "xo": {
     "space": true,
-    "rules": {},
     "ignores": [
       "vfile.js"
     ]
   },
   "remarkConfig": {
-    "output": true,
     "presets": "wooorm"
   }
 }

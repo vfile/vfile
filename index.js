@@ -1,6 +1,5 @@
 'use strict';
 
-/* Dependencies. */
 var path = require('path');
 var has = require('has');
 var replace = require('replace-ext');
@@ -8,10 +7,8 @@ var stringify = require('unist-util-stringify-position');
 var buffer = require('is-buffer');
 var string = require('x-is-string');
 
-/* Expose. */
 module.exports = VFile;
 
-/* Methods. */
 var proto = VFile.prototype;
 
 proto.toString = toString;
@@ -21,7 +18,9 @@ proto.fail = fail;
 /* Slight backwards compatibility.  Remove in the future. */
 proto.warn = message;
 
-/* Order of setting (least specific to most). */
+/* Order of setting (least specific to most), we need this because
+ * otherwise `{stem: 'a', path: '~/b.js'}` would throw, as a path
+ * is needed before a stem can be set. */
 var order = [
   'history',
   'path',
@@ -180,8 +179,6 @@ function message(reason, position, ruleId) {
     } else {
       /* Position. */
       location.start = position;
-      location.end.line = null;
-      location.end.column = null;
     }
   }
 
@@ -240,9 +237,7 @@ function VMessage(reason) {
  * not contain `path.sep`). */
 function assertPart(part, name) {
   if (part.indexOf(path.sep) !== -1) {
-    throw new Error(
-      '`' + name + '` cannot be a path: did not expect `' + path.sep + '`'
-    );
+    throw new Error('`' + name + '` cannot be a path: did not expect `' + path.sep + '`');
   }
 }
 
@@ -256,8 +251,6 @@ function assertNonEmpty(part, name) {
 /* Assert `path` exists. */
 function assertPath(path, name) {
   if (!path) {
-    throw new Error(
-      'Setting `' + name + '` requires `path` to be set too'
-    );
+    throw new Error('Setting `' + name + '` requires `path` to be set too');
   }
 }
