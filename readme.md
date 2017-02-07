@@ -115,8 +115,8 @@ files.  See [**Unist**][unist] for projects working with nodes.
 
 The following list of projects show linting results for given virtual files.
 Reporters _must_ accept `Array.<VFile>` as their first argument, and return
-`string`.  Reporters _may_ accept other values too, see, in which case it’s
-suggested to stick to `vfile-reporter`s interface.
+`string`.  Reporters _may_ accept other values too, in which case it’s suggested
+to stick to `vfile-reporter`s interface.
 
 *   [`vfile-reporter`](https://github.com/vfile/vfile-reporter)
     — Stylish reporter;
