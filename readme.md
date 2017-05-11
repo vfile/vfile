@@ -91,25 +91,25 @@ The following list of projects includes tools for working with virtual
 files.  See [**Unist**][unist] for projects working with nodes.
 
 *   [`convert-vinyl-to-vfile`](https://github.com/dustinspecker/convert-vinyl-to-vfile)
-    — Convert from [Vinyl][];
+    — Convert from [Vinyl][]
 *   [`is-vfile-message`](https://github.com/shinnn/is-vfile-message)
-    — Check if a value is a `VFileMessage` object;
+    — Check if a value is a `VFileMessage` object
 *   [`to-vfile`](https://github.com/vfile/to-vfile)
-    — Create a virtual file from a file-path (and optionally read it);
+    — Create a virtual file from a file-path (and optionally read it)
 *   [`vfile-find-down`](https://github.com/vfile/vfile-find-down)
-    — Find files by searching the file system downwards;
+    — Find files by searching the file system downwards
 *   [`vfile-find-up`](https://github.com/vfile/vfile-find-up)
-    — Find files by searching the file system upwards;
+    — Find files by searching the file system upwards
 *   [`vfile-location`](https://github.com/vfile/vfile-location)
-    — Convert between line/column- and range-based locations;
+    — Convert between line/column- and range-based locations
 *   [`vfile-statistics`](https://github.com/vfile/vfile-statistics)
-    — Count messages per category;
+    — Count messages per category
 *   [`vfile-messages-to-vscode-diagnostics`](https://github.com/shinnn/vfile-messages-to-vscode-diagnostics)
-    — Convert to VS Code diagnostics;
+    — Convert to VS Code diagnostics
 *   [`vfile-sort`](https://github.com/vfile/vfile-sort)
-    — Sort messages by line/column;
+    — Sort messages by line/column
 *   [`vfile-to-eslint`](https://github.com/sindresorhus/vfile-to-eslint)
-    — Convert VFiles to ESLint formatter compatible output.
+    — Convert VFiles to ESLint formatter compatible output
 
 ## Reporters
 
@@ -119,11 +119,11 @@ Reporters _must_ accept `Array.<VFile>` as their first argument, and return
 to stick to `vfile-reporter`s interface.
 
 *   [`vfile-reporter`](https://github.com/vfile/vfile-reporter)
-    — Stylish reporter;
+    — Stylish reporter
 *   [`vfile-reporter-json`](https://github.com/vfile/vfile-reporter-json)
-    — JSON reporter;
+    — JSON reporter
 *   [`vfile-reporter-pretty`](https://github.com/sindresorhus/vfile-reporter-pretty)
-    — Pretty reporter.
+    — Pretty reporter
 
 ## API
 
@@ -209,11 +209,11 @@ Associates a message with the file for `reason` at `position`.  When an
 error is passed in as `reason`, copies the stack.
 
 *   `reason` (`string` or `Error`)
-    — Reason for message, uses the stack and message of the error if given;
+    — Reason for message, uses the stack and message of the error if given
 *   `position` (`Node`, `Location`, or `Position`, optional)
-    — Place at which the message occurred in `vfile`.
+    — Place at which the message occurred in `vfile`
 *   `ruleId` (`string`, optional)
-    — Category of warning.
+    — Category of warning
 
 ###### Returns
 
@@ -236,18 +236,18 @@ File-related message describing something at certain position (extends
 
 ###### Properties
 
-*   `file` (`string`) — File-path (when the message was triggered);
-*   `reason` (`string`) — Reason for message;
-*   `ruleId` (`string?`) — Category of message;
-*   `source` (`string?`) — Namespace of warning;
-*   `stack` (`string?`) — Stack of message;
+*   `file` (`string`) — File-path (when the message was triggered)
+*   `reason` (`string`) — Reason for message
+*   `ruleId` (`string?`) — Category of message
+*   `source` (`string?`) — Namespace of warning
+*   `stack` (`string?`) — Stack of message
 *   `fatal` (`boolean?`) — If `true`, marks associated file as no longer
-    processable;
-*   `line` (`number?`) — Starting line of error;
-*   `column` (`number?`) — Starting column of error;
+    processable
+*   `line` (`number?`) — Starting line of error
+*   `column` (`number?`) — Starting column of error
 *   `location` (`object`) — Full range information, when available.  Has
     `start` and `end` properties, both set to an object with `line` and
-    `column`, set to `number?`.
+    `column`, set to `number?`
 
 ## License
 
