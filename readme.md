@@ -108,7 +108,7 @@ files.  See [**Unist**][unist] for projects working with nodes.
     — Convert to VS Code diagnostics
 *   [`vfile-sort`](https://github.com/vfile/vfile-sort)
     — Sort messages by line/column
-*   [`vfile-to-eslint`](https://github.com/sindresorhus/vfile-to-eslint)
+*   [`vfile-to-eslint`](https://github.com/vfile/vfile-to-eslint)
     — Convert VFiles to ESLint formatter compatible output
 
 ## Reporters
@@ -122,7 +122,7 @@ to stick to `vfile-reporter`s interface.
     — Stylish reporter
 *   [`vfile-reporter-json`](https://github.com/vfile/vfile-reporter-json)
     — JSON reporter
-*   [`vfile-reporter-pretty`](https://github.com/sindresorhus/vfile-reporter-pretty)
+*   [`vfile-reporter-pretty`](https://github.com/vfile/vfile-reporter-pretty)
     — Pretty reporter
 
 ## API
@@ -271,7 +271,7 @@ File-related message describing something at certain position (extends
 
 [vfile]: https://cdn.rawgit.com/vfile/vfile/a20a566/logo.svg
 
-[unified]: https://github.com/wooorm/unified
+[unified]: https://github.com/unifiedjs/unified
 
 [retext]: https://github.com/wooorm/retext
 
