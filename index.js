@@ -221,8 +221,14 @@ VMessage.prototype = new VMessagePrototype();
 /* Message properties. */
 proto = VMessage.prototype;
 
-proto.file = proto.name = proto.reason = proto.message = proto.stack = '';
-proto.fatal = proto.column = proto.line = null;
+proto.file = '';
+proto.name = '';
+proto.reason = '';
+proto.message = '';
+proto.stack = '';
+proto.fatal = null;
+proto.column = null;
+proto.line = null;
 
 /* Construct a new file message.
  *
