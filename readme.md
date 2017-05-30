@@ -208,6 +208,8 @@ Convert contents of `vfile` to string.  If `contents` is a buffer,
 Associates a message with the file for `reason` at `position`.  When an
 error is passed in as `reason`, copies the stack.
 
+###### Parameters
+
 *   `reason` (`string` or `Error`)
     — Reason for message, uses the stack and message of the error if given
 *   `position` (`Node`, `Location`, or `Position`, optional)
