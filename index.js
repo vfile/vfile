@@ -1,14 +1,13 @@
 'use strict';
 
 var path = require('path');
-var has = require('has');
 var replace = require('replace-ext');
 var stringify = require('unist-util-stringify-position');
 var buffer = require('is-buffer');
-var string = require('x-is-string');
 
 module.exports = VFile;
 
+var own = {}.hasOwnProperty;
 var proto = VFile.prototype;
 
 proto.toString = toString;
@@ -38,7 +37,7 @@ function VFile(options) {
 
   if (!options) {
     options = {};
-  } else if (string(options) || buffer(options)) {
+  } else if (typeof options === 'string' || buffer(options)) {
     options = {contents: options};
   } else if ('message' in options && 'messages' in options) {
     return options;
@@ -60,7 +59,7 @@ function VFile(options) {
   while (++index < length) {
     prop = order[index];
 
-    if (has(options, prop)) {
+    if (own.call(options, prop)) {
       this[prop] = options[prop];
     }
   }
@@ -90,7 +89,7 @@ Object.defineProperty(proto, 'path', {
 /* Access parent path (`~`). */
 Object.defineProperty(proto, 'dirname', {
   get: function () {
-    return string(this.path) ? path.dirname(this.path) : undefined;
+    return typeof this.path === 'string' ? path.dirname(this.path) : undefined;
   },
   set: function (dirname) {
     assertPath(this.path, 'dirname');
@@ -101,7 +100,7 @@ Object.defineProperty(proto, 'dirname', {
 /* Access basename (`index.min.js`). */
 Object.defineProperty(proto, 'basename', {
   get: function () {
-    return string(this.path) ? path.basename(this.path) : undefined;
+    return typeof this.path === 'string' ? path.basename(this.path) : undefined;
   },
   set: function (basename) {
     assertNonEmpty(basename, 'basename');
@@ -113,7 +112,7 @@ Object.defineProperty(proto, 'basename', {
 /* Access extname (`.js`). */
 Object.defineProperty(proto, 'extname', {
   get: function () {
-    return string(this.path) ? path.extname(this.path) : undefined;
+    return typeof this.path === 'string' ? path.extname(this.path) : undefined;
   },
   set: function (extname) {
     var ext = extname || '';
@@ -138,7 +137,7 @@ Object.defineProperty(proto, 'extname', {
 /* Access stem (`index.min`). */
 Object.defineProperty(proto, 'stem', {
   get: function () {
-    return string(this.path) ? path.basename(this.path, this.extname) : undefined;
+    return typeof this.path === 'string' ? path.basename(this.path, this.extname) : undefined;
   },
   set: function (stem) {
     assertNonEmpty(stem, 'stem');

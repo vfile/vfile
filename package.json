@@ -25,11 +25,9 @@
     "Sindre Sorhus <sindresorhus@gmail.com>"
   ],
   "dependencies": {
-    "has": "^1.0.1",
     "is-buffer": "^1.1.4",
     "replace-ext": "1.0.0",
-    "unist-util-stringify-position": "^1.0.0",
-    "x-is-string": "^0.1.0"
+    "unist-util-stringify-position": "^1.0.0"
   },
   "files": [
     "index.js"
