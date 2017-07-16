@@ -154,8 +154,7 @@ function toString(encoding) {
 }
 
 /* Create a message with `reason` at `position`.
- * When an error is passed in as `reason`, copies the stack.
- * Errors are not added as a message to `messages`. */
+ * When an error is passed in as `reason`, copies the stack. */
 function message(reason, position, ruleId) {
   var filePath = this.path;
   var range = stringify(position) || '1:1';
