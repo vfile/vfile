@@ -502,6 +502,32 @@ test('vfile([options])', function (t) {
     st.end();
   });
 
+  t.test('#info(reason[, position[, ruleId]])', function (st) {
+    var file = vfile({path: '~/example.md'});
+    var message;
+
+    file.info('Bar', {line: 1, column: 3}, 'baz');
+
+    st.equal(file.messages.length, 1);
+
+    message = file.messages[0];
+
+    st.equal(message.name, '~/example.md:1:3');
+    st.equal(message.file, '~/example.md');
+    st.equal(message.reason, 'Bar');
+    st.equal(message.ruleId, 'baz');
+    st.equal(message.source, null);
+    st.equal(message.fatal, null);
+    st.equal(message.line, 1);
+    st.equal(message.column, 3);
+    st.deepEqual(message.location, {
+      start: {line: 1, column: 3},
+      end: {line: null, column: null}
+    });
+
+    st.end();
+  });
+
   t.end();
 });
 
