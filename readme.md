@@ -210,16 +210,23 @@ Associates a message with the file for `reason` at `position`.  When an
 error is passed in as `reason`, copies the stack.  Each message has a `fatal`
 property which by default is set to `false` (ie. `warning`).
 
-###### Parameters
+##### Parameters
 
-*   `reason` (`string` or `Error`)
-    — Reason for message, uses the stack and message of the error if given
-*   `position` (`Node`, `Location`, or `Position`, optional)
-    — Place at which the message occurred in `vfile`
-*   `ruleId` (`string`, optional)
-    — Category of message
+###### `reason`
 
-###### Returns
+Reason for message  (`string` or `Error`).  Uses the stack and message of the
+error if given.
+
+###### `position`
+
+Place at which the message occurred in `vfile` (`Node`, `Location`, or
+`Position`, optional).
+
+###### `ruleId`
+
+Category of message (`string`, optional).
+
+##### Returns
 
 [`VFileMessage`][message].
 
@@ -228,7 +235,7 @@ property which by default is set to `false` (ie. `warning`).
 Associates an informational message with the file, where `fatal` is set to
 `null`.  Calls [`#message()`][messages] internally.
 
-###### Returns
+##### Returns
 
 [`VFileMessage`][message].
 
@@ -238,7 +245,7 @@ Associates a fatal message with the file, then immediately throws it.
 Note: fatal errors mean a file is no longer processable.
 Calls [`#message()`][messages] internally.
 
-###### Throws
+##### Throws
 
 [`VFileMessage`][message].
 
@@ -247,20 +254,44 @@ Calls [`#message()`][messages] internally.
 File-related message describing something at certain position (extends
 `Error`).
 
-###### Properties
+##### Properties
 
-*   `file` (`string`) — File-path (when the message was triggered)
-*   `reason` (`string`) — Reason for message
-*   `ruleId` (`string?`) — Category of message
-*   `source` (`string?`) — Namespace of warning
-*   `stack` (`string?`) — Stack of message
-*   `fatal` (`boolean?`) — If `true`, marks associated file as no longer
-    processable
-*   `line` (`number?`) — Starting line of error
-*   `column` (`number?`) — Starting column of error
-*   `location` (`object`) — Full range information, when available.  Has
-    `start` and `end` properties, both set to an object with `line` and
-    `column`, set to `number?`
+###### `file`
+
+File-path, when the message was triggered (`string`).
+
+###### `reason`
+
+Reason for message (`string`).
+
+###### `ruleId`
+
+Category of message (`string?`).
+
+###### `source`
+
+Namespace of warning (`string?`).
+
+###### `stack`
+
+Stack of message (`string?`).
+
+###### `fatal`
+
+If `true`, marks associated file as no longer processable (`boolean?`).
+
+###### `line`
+
+Starting line of error (`number?`).
+
+###### `column`
+
+Starting column of error (`number?`).
+
+###### `location`
+
+Full range information, when available (`object`).  Has `start` and `end`
+properties, both set to an object with `line` and `column`, set to `number?`.
 
 ## License
 
