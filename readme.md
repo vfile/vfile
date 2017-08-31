@@ -313,7 +313,7 @@ properties, both set to an object with `line` and `column`, set to `number?`.
 
 [author]: http://wooorm.com
 
-[vfile]: https://cdn.rawgit.com/vfile/vfile/a20a566/logo.svg
+[vfile]: https://cdn.rawgit.com/vfile/vfile/f65510e/logo.svg
 
 [unified]: https://github.com/unifiedjs/unified
 
