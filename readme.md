@@ -129,7 +129,7 @@ Reporters _must_ accept `Array.<VFile>` as their first argument, and return
 `string`.  Reporters _may_ accept other values too, in which case it’s suggested
 to stick to `vfile-reporter`s interface.
 
-*   [`vfile-reporter`](https://github.com/vfile/vfile-reporter)
+*   [`vfile-reporter`][reporter]
     — Stylish reporter
 *   [`vfile-reporter-json`](https://github.com/vfile/vfile-reporter-json)
     — JSON reporter
@@ -307,6 +307,16 @@ Starting column of error (`number?`).
 Full range information, when available (`object`).  Has `start` and `end`
 properties, both set to an object with `line` and `column`, set to `number?`.
 
+##### Custom properties
+
+It’s OK to store custom data directly on the `VFileMessage`, some of those are
+handled by [utilities][util].
+
+###### `note`
+
+You may add a `note` property on a **VFile** containing a long form
+description of the message (supported by [`vfile-reporter`][reporter]).
+
 ## License
 
 [MIT][license] © [Titus Wormer][author]
@@ -340,6 +350,10 @@ properties, both set to an object with `line` and `column`, set to `number?`.
 [vinyl]: https://github.com/gulpjs/vinyl
 
 [unist]: https://github.com/syntax-tree/unist#list-of-utilities
+
+[reporter]: https://github.com/vfile/vfile-reporter
+
+[util]: #utilities
 
 [messages]: #vfilemessagereason-position-origin
 
