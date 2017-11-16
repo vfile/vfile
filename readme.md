@@ -317,6 +317,11 @@ handled by [utilities][util].
 You may add a `note` property on a **VFile** containing a long form
 description of the message (supported by [`vfile-reporter`][reporter]).
 
+###### `url`
+
+You may add a `url` property on a **VFile** containing a link to documentation
+for the message.
+
 ## License
 
 [MIT][license] © [Titus Wormer][author]
