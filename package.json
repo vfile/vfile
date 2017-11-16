@@ -26,6 +26,7 @@
     "Sindre Sorhus <sindresorhus@gmail.com>"
   ],
   "files": [
+    "core.js",
     "index.js"
   ],
   "dependencies": {
