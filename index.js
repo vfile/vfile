@@ -2,8 +2,8 @@
 
 var path = require('path');
 var replace = require('replace-ext');
-var stringify = require('unist-util-stringify-position');
 var buffer = require('is-buffer');
+var VMessage = require('vfile-message');
 
 module.exports = VFile;
 
@@ -157,58 +157,18 @@ function toString(encoding) {
  * When an error is passed in as `reason`, copies the stack. */
 function message(reason, position, origin) {
   var filePath = this.path;
-  var parts;
-  var range;
-  var location;
-  var err;
+  var message = new VMessage(reason, position, origin);
 
-  if (typeof position === 'string') {
-    origin = position;
-    position = null;
+  if (filePath) {
+    message.name = filePath + ':' + message.name;
+    message.file = filePath;
   }
 
-  parts = parseOrigin(origin);
-  range = stringify(position) || '1:1';
+  message.fatal = false;
 
-  location = {
-    start: {line: null, column: null},
-    end: {line: null, column: null}
-  };
+  this.messages.push(message);
 
-  if (position && position.position) {
-    position = position.position;
-  }
-
-  if (position) {
-    /* Location. */
-    if (position.start) {
-      location = position;
-      position = position.start;
-    } else {
-      /* Position. */
-      location.start = position;
-    }
-  }
-
-  err = new VMessage(reason.message || reason);
-
-  err.name = (filePath ? filePath + ':' : '') + range;
-  err.file = filePath || '';
-  err.reason = reason.message || reason;
-  err.line = position ? position.line : null;
-  err.column = position ? position.column : null;
-  err.location = location;
-  err.ruleId = parts[1];
-  err.source = parts[0];
-  err.fatal = false;
-
-  if (reason.stack) {
-    err.stack = reason.stack;
-  }
-
-  this.messages.push(err);
-
-  return err;
+  return message;
 }
 
 /* Fail. Creates a vmessage, associates it with the file,
@@ -231,32 +191,6 @@ function info() {
   return message;
 }
 
-/* Inherit from `Error#`. */
-function VMessagePrototype() {}
-VMessagePrototype.prototype = Error.prototype;
-VMessage.prototype = new VMessagePrototype();
-
-/* Message properties. */
-proto = VMessage.prototype;
-
-proto.file = '';
-proto.name = '';
-proto.reason = '';
-proto.message = '';
-proto.stack = '';
-proto.fatal = null;
-proto.column = null;
-proto.line = null;
-
-/* Construct a new file message.
- *
- * Note: We cannot invoke `Error` on the created context,
- * as that adds readonly `line` and `column` attributes on
- * Safari 9, thus throwing and failing the data. */
-function VMessage(reason) {
-  this.message = reason;
-}
-
 /* Assert that `part` is not a path (i.e., does
  * not contain `path.sep`). */
 function assertPart(part, name) {
@@ -277,22 +211,4 @@ function assertPath(path, name) {
   if (!path) {
     throw new Error('Setting `' + name + '` requires `path` to be set too');
   }
-}
-
-function parseOrigin(origin) {
-  var result = [null, null];
-  var index;
-
-  if (typeof origin === 'string') {
-    index = origin.indexOf(':');
-
-    if (index === -1) {
-      result[1] = origin;
-    } else {
-      result[0] = origin.slice(0, index);
-      result[1] = origin.slice(index + 1);
-    }
-  }
-
-  return result;
 }

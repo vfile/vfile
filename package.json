@@ -31,7 +31,8 @@
   "dependencies": {
     "is-buffer": "^1.1.4",
     "replace-ext": "1.0.0",
-    "unist-util-stringify-position": "^1.0.0"
+    "unist-util-stringify-position": "^1.0.0",
+    "vfile-message": "^1.0.0"
   },
   "devDependencies": {
     "browserify": "^14.0.0",

@@ -54,7 +54,6 @@ npm install vfile
     *   [VFile#message(reason\[, position\]\[, origin\])](#vfilemessagereason-position-origin)
     *   [VFile#info(reason\[, position\]\[, origin\])](#vfileinforeason-position-origin)
     *   [VFile#fail(reason\[, position\]\[, origin\])](#vfilefailreason-position-origin)
-    *   [VFileMessage](#vfilemessage)
 *   [License](#license)
 
 ## Usage
@@ -104,7 +103,7 @@ files.  See [**Unist**][unist] for projects working with nodes.
 *   [`convert-vinyl-to-vfile`](https://github.com/dustinspecker/convert-vinyl-to-vfile)
     — Convert from [Vinyl][]
 *   [`is-vfile-message`](https://github.com/shinnn/is-vfile-message)
-    — Check if a value is a `VFileMessage` object
+    — Check if a value is a `VMessage` object
 *   [`to-vfile`](https://github.com/vfile/to-vfile)
     — Create a virtual file from a file-path (and optionally read it)
 *   [`vfile-find-down`](https://github.com/vfile/vfile-find-down)
@@ -201,7 +200,7 @@ there’s no `path` yet.
 
 ### `vfile.messages`
 
-`Array.<VFileMessage>` — List of messages associated with the file.
+[`Array.<VMessage>`][message] — List of messages associated with the file.
 
 ### `vfile.data`
 
@@ -216,111 +215,32 @@ Convert contents of `vfile` to string.  If `contents` is a buffer,
 
 ### `VFile#message(reason[, position][, origin])`
 
-Associates a message with the file for `reason` at `position` from `origin`.
-When an error is passed in as `reason`, copies the stack.  Each message has a
-`fatal` property which by default is set to `false` (ie. `warning`).
-
-##### Parameters
-
-###### `reason`
-
-Reason for message  (`string` or `Error`).  Uses the stack and message of the
-error if given.
-
-###### `position`
-
-Place at which the message occurred in `vfile` (`Node`, `Location`, or
-`Position`, optional).
-
-###### `origin`
-
-Place in code the message originates from (`string`, optional).
-
-Can either be the [`ruleId`][ruleid] (`'rule'`), or a string with both a
-[`source`][source] and a [`ruleId`][ruleid] delimited with a colon:
-`'source:rule'`.
+Associates a message with the file, where `fatal` is set to `false`.
+Constructs a new [`VMessage`][vmessage] and adds it to
+[`vfile.messages`][messages].
 
 ##### Returns
 
-[`VFileMessage`][message].
+[`VMessage`][vmessage].
 
 ### `VFile#info(reason[, position][, origin])`
 
 Associates an informational message with the file, where `fatal` is set to
-`null`.  Calls [`#message()`][messages] internally.
+`null`.  Calls [`#message()`][message] internally.
 
 ##### Returns
 
-[`VFileMessage`][message].
+[`VMessage`][vmessage].
 
 ### `VFile#fail(reason[, position][, origin])`
 
 Associates a fatal message with the file, then immediately throws it.
 Note: fatal errors mean a file is no longer processable.
-Calls [`#message()`][messages] internally.
+Calls [`#message()`][message] internally.
 
 ##### Throws
 
-[`VFileMessage`][message].
-
-### `VFileMessage`
-
-File-related message describing something at certain position (extends
-`Error`).
-
-##### Properties
-
-###### `file`
-
-File-path, when the message was triggered (`string`).
-
-###### `reason`
-
-Reason for message (`string`).
-
-###### `ruleId`
-
-Category of message (`string?`).
-
-###### `source`
-
-Namespace of warning (`string?`).
-
-###### `stack`
-
-Stack of message (`string?`).
-
-###### `fatal`
-
-If `true`, marks associated file as no longer processable (`boolean?`).
-
-###### `line`
-
-Starting line of error (`number?`).
-
-###### `column`
-
-Starting column of error (`number?`).
-
-###### `location`
-
-Full range information, when available (`object`).  Has `start` and `end`
-properties, both set to an object with `line` and `column`, set to `number?`.
-
-##### Custom properties
-
-It’s OK to store custom data directly on the `VFileMessage`, some of those are
-handled by [utilities][util].
-
-###### `note`
-
-You may add a `note` property on a **VFile** containing a long form
-description of the message (supported by [`vfile-reporter`][reporter]).
-
-###### `url`
-
-You may add a `url` property on a **VFile** containing a link to documentation
-for the message.
+[`VMessage`][vmessage].
 
 ## License
 
@@ -358,12 +278,8 @@ for the message.
 
 [reporter]: https://github.com/vfile/vfile-reporter
 
-[util]: #utilities
+[vmessage]: https://github.com/vfile/vfile-message
 
-[messages]: #vfilemessagereason-position-origin
+[messages]: #vfilemessages
 
-[message]: #vfilemessage
-
-[ruleid]: #ruleid
-
-[source]: #source
+[message]: #vfilemessagereason-position-origin
