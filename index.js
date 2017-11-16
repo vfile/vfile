@@ -155,11 +155,20 @@ function toString(encoding) {
 
 /* Create a message with `reason` at `position`.
  * When an error is passed in as `reason`, copies the stack. */
-function message(reason, position, ruleId) {
+function message(reason, position, origin) {
   var filePath = this.path;
-  var range = stringify(position) || '1:1';
+  var parts;
+  var range;
   var location;
   var err;
+
+  if (typeof position === 'string') {
+    origin = position;
+    position = null;
+  }
+
+  parts = parseOrigin(origin);
+  range = stringify(position) || '1:1';
 
   location = {
     start: {line: null, column: null},
@@ -189,8 +198,8 @@ function message(reason, position, ruleId) {
   err.line = position ? position.line : null;
   err.column = position ? position.column : null;
   err.location = location;
-  err.ruleId = ruleId || null;
-  err.source = null;
+  err.ruleId = parts[1];
+  err.source = parts[0];
   err.fatal = false;
 
   if (reason.stack) {
@@ -268,4 +277,22 @@ function assertPath(path, name) {
   if (!path) {
     throw new Error('Setting `' + name + '` requires `path` to be set too');
   }
+}
+
+function parseOrigin(origin) {
+  var result = [null, null];
+  var index;
+
+  if (typeof origin === 'string') {
+    index = origin.indexOf(':');
+
+    if (index === -1) {
+      result[1] = origin;
+    } else {
+      result[0] = origin.slice(0, index);
+      result[1] = origin.slice(index + 1);
+    }
+  }
+
+  return result;
 }

@@ -51,9 +51,9 @@ npm install vfile
     *   [vfile.messages](#vfilemessages)
     *   [vfile.data](#vfiledata)
     *   [VFile#toString(\[encoding\])](#vfiletostringencoding)
-    *   [VFile#message(reason\[, position\[, ruleId\]\])](#vfilemessagereason-position-ruleid)
-    *   [VFile#info(reason\[, position\[, ruleId\]\])](#vfileinforeason-position-ruleid)
-    *   [VFile#fail(reason\[, position\[, ruleId\]\])](#vfilefailreason-position-ruleid)
+    *   [VFile#message(reason\[, position\]\[, origin\])](#vfilemessagereason-position-origin)
+    *   [VFile#info(reason\[, position\]\[, origin\])](#vfileinforeason-position-origin)
+    *   [VFile#fail(reason\[, position\]\[, origin\])](#vfilefailreason-position-origin)
     *   [VFileMessage](#vfilemessage)
 *   [License](#license)
 
@@ -214,11 +214,11 @@ privacy.
 Convert contents of `vfile` to string.  If `contents` is a buffer,
 `encoding` is used to stringify buffers (default: `'utf8'`).
 
-### `VFile#message(reason[, position[, ruleId]])`
+### `VFile#message(reason[, position][, origin])`
 
-Associates a message with the file for `reason` at `position`.  When an
-error is passed in as `reason`, copies the stack.  Each message has a `fatal`
-property which by default is set to `false` (ie. `warning`).
+Associates a message with the file for `reason` at `position` from `origin`.
+When an error is passed in as `reason`, copies the stack.  Each message has a
+`fatal` property which by default is set to `false` (ie. `warning`).
 
 ##### Parameters
 
@@ -232,15 +232,19 @@ error if given.
 Place at which the message occurred in `vfile` (`Node`, `Location`, or
 `Position`, optional).
 
-###### `ruleId`
+###### `origin`
 
-Category of message (`string`, optional).
+Place in code the message originates from (`string`, optional).
+
+Can either be the [`ruleId`][ruleid] (`'rule'`), or a string with both a
+[`source`][source] and a [`ruleId`][ruleid] delimited with a colon:
+`'source:rule'`.
 
 ##### Returns
 
 [`VFileMessage`][message].
 
-### `VFile#info(reason[, position[, ruleId]])`
+### `VFile#info(reason[, position][, origin])`
 
 Associates an informational message with the file, where `fatal` is set to
 `null`.  Calls [`#message()`][messages] internally.
@@ -249,7 +253,7 @@ Associates an informational message with the file, where `fatal` is set to
 
 [`VFileMessage`][message].
 
-### `VFile#fail(reason[, position[, ruleId]])`
+### `VFile#fail(reason[, position][, origin])`
 
 Associates a fatal message with the file, then immediately throws it.
 Note: fatal errors mean a file is no longer processable.
@@ -337,6 +341,10 @@ properties, both set to an object with `line` and `column`, set to `number?`.
 
 [unist]: https://github.com/syntax-tree/unist#list-of-utilities
 
-[messages]: #vfilemessagereason-position-ruleid
+[messages]: #vfilemessagereason-position-origin
 
 [message]: #vfilemessage
+
+[ruleid]: #ruleid
+
+[source]: #source

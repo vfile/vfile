@@ -348,7 +348,7 @@ test('vfile([options])', function (t) {
     st.end();
   });
 
-  t.test('#message(reason[, position[, ruleId]])', function (st) {
+  t.test('#message(reason[, position[, origin]])', function (st) {
     var file;
     var message;
     var pos;
@@ -461,21 +461,29 @@ test('vfile([options])', function (t) {
     st.equal(String(message), '2:3: test', 'should accept a position');
 
     st.equal(
-      vfile().message('test', null, 'charlie').ruleId,
+      vfile().message('test', 'charlie').ruleId,
       'charlie',
-      'should accept a `ruleId`'
+      'should accept a `ruleId` as `origin`'
+    );
+
+    message = vfile().message('test', 'delta:echo');
+
+    st.deepEqual(
+      [message.source, message.ruleId],
+      ['delta', 'echo'],
+      'should accept a `source` and `ruleId` in `origin`'
     );
 
     st.end();
   });
 
-  t.test('#fail(reason[, position[, ruleId]])', function (st) {
+  t.test('#fail(reason[, position[, origin]])', function (st) {
     var file = vfile({path: '~/example.md'});
     var message;
 
     st.throws(
       function () {
-        file.fail('Foo', {line: 1, column: 3}, 'baz');
+        file.fail('Foo', {line: 1, column: 3}, 'baz:qux');
       },
       /1:3: Foo/,
       'should throw the message'
@@ -488,8 +496,8 @@ test('vfile([options])', function (t) {
     st.equal(message.name, '~/example.md:1:3');
     st.equal(message.file, '~/example.md');
     st.equal(message.reason, 'Foo');
-    st.equal(message.ruleId, 'baz');
-    st.equal(message.source, null);
+    st.equal(message.source, 'baz');
+    st.equal(message.ruleId, 'qux');
     st.equal(message.stack, '');
     st.equal(message.fatal, true);
     st.equal(message.line, 1);
@@ -506,7 +514,7 @@ test('vfile([options])', function (t) {
     var file = vfile({path: '~/example.md'});
     var message;
 
-    file.info('Bar', {line: 1, column: 3}, 'baz');
+    file.info('Bar', {line: 1, column: 3}, 'baz:qux');
 
     st.equal(file.messages.length, 1);
 
@@ -515,8 +523,8 @@ test('vfile([options])', function (t) {
     st.equal(message.name, '~/example.md:1:3');
     st.equal(message.file, '~/example.md');
     st.equal(message.reason, 'Bar');
-    st.equal(message.ruleId, 'baz');
-    st.equal(message.source, null);
+    st.equal(message.source, 'baz');
+    st.equal(message.ruleId, 'qux');
     st.equal(message.fatal, null);
     st.equal(message.line, 1);
     st.equal(message.column, 3);
