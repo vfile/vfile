@@ -348,7 +348,7 @@ test('vfile([options])', function (t) {
     st.end();
   });
 
-  t.test('#message(reason[, position[, origin]])', function (st) {
+  t.test('#message(reason[, position][, origin])', function (st) {
     var file;
     var message;
     var pos;
@@ -477,7 +477,7 @@ test('vfile([options])', function (t) {
     st.end();
   });
 
-  t.test('#fail(reason[, position[, origin]])', function (st) {
+  t.test('#fail(reason[, position][, origin])', function (st) {
     var file = vfile({path: '~/example.md'});
     var message;
 
@@ -510,7 +510,7 @@ test('vfile([options])', function (t) {
     st.end();
   });
 
-  t.test('#info(reason[, position[, ruleId]])', function (st) {
+  t.test('#info(reason[, position][, origin])', function (st) {
     var file = vfile({path: '~/example.md'});
     var message;
 
