@@ -112,6 +112,8 @@ files.  See [**Unist**][unist] for projects working with nodes.
     — Find files by searching the file system upwards
 *   [`vfile-location`](https://github.com/vfile/vfile-location)
     — Convert between line/column- and range-based locations
+*   [`vfile-message`](https://github.com/vfile/vfile-message)
+    — Create a `VMessage` object (used in `vfile` itself)
 *   [`vfile-statistics`](https://github.com/vfile/vfile-statistics)
     — Count messages per category
 *   [`vfile-messages-to-vscode-diagnostics`](https://github.com/shinnn/vfile-messages-to-vscode-diagnostics)
