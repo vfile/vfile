@@ -1,6 +1,6 @@
 ### Subject of the issue
 
-Describe your issue here.  Remember, this is _not_ a place to ask questions.  For that, go to [Gitter](https://gitter.im/ORG/PROJECT)
+Describe your issue here.  Remember, this is _not_ a place to ask questions.  For that, go to [Gitter](https://gitter.im/vfile/Lobby)
 
 ### Your environment
 
