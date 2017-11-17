@@ -56,7 +56,7 @@ Anything!
 
 ### Improve issues
 
-Some issues are lack information, aren’t reproducible, or are just incorrect.
+Some issues lack information, aren’t reproducible, or are just incorrect.
 Help make them easier to resolve.
 
 ### Give feedback on issues
