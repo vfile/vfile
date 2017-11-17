@@ -2,6 +2,7 @@
 
 [![Build Status][build-badge]][build-status]
 [![Coverage Status][coverage-badge]][coverage-status]
+[![Chat][chat-badge]][chat]
 
 **VFile** is a virtual file format used by [**unified**][unified],
 a text processing umbrella (it powers [**retext**][retext] for
@@ -257,6 +258,10 @@ Calls [`#message()`][message] internally.
 [coverage-badge]: https://img.shields.io/codecov/c/github/vfile/vfile.svg
 
 [coverage-status]: https://codecov.io/github/vfile/vfile
+
+[chat-badge]: https://img.shields.io/gitter/room/unifiedjs/Lobby.svg
+
+[chat]: https://gitter.im/vfile/Lobby
 
 [npm]: https://docs.npmjs.com/cli/install
 
