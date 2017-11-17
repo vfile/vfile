@@ -56,6 +56,7 @@ npm install vfile
     *   [VFile#info(reason\[, position\]\[, origin\])](#vfileinforeason-position-origin)
     *   [VFile#fail(reason\[, position\]\[, origin\])](#vfilefailreason-position-origin)
 *   [Contribute](#contribute)
+*   [Acknowledgments](#acknowledgments)
 *   [License](#license)
 
 ## Usage
@@ -259,6 +260,22 @@ Want to chat with the community and contributors?  Join us in [Gitter][chat]!
 Have an idea for a cool new utility or tool?  That’s great!  If you want
 feedback, help, or just to share it with the world you can do so by creating
 an issue in the [`vfile/ideas`][ideas] repository!
+
+## Acknowledgments
+
+The initial release of this project was authored by
+[**@wooorm**](https://github.com/wooorm).
+
+Thanks to [**@contra**](https://github.com/contra),
+[**@phated**](https://github.com/phated), and others for their work on
+[Vinyl][], which was a huge inspiration.
+
+Thanks to
+[**@brendo**](https://github.com/brendo),
+[**@shinnn**](https://github.com/shinnn),
+[**@KyleAMathews**](https://github.com/KyleAMathews), [**@sindresorhus**](https://github.com/sindresorhus),
+and [**@denysdovhan**](https://github.com/denysdovhan)
+for contributing commits since!
 
 ## License
 
