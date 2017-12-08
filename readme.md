@@ -305,11 +305,11 @@ for contributing commits since!
 
 [unified]: https://github.com/unifiedjs/unified
 
-[retext]: https://github.com/wooorm/retext
+[retext]: https://github.com/retextjs/retext
 
-[remark]: https://github.com/wooorm/remark
+[remark]: https://github.com/remarkjs/remark
 
-[rehype]: https://github.com/wooorm/rehype
+[rehype]: https://github.com/rehypejs/rehype
 
 [vinyl]: https://github.com/gulpjs/vinyl
 
