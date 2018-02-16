@@ -21,7 +21,7 @@ For example, it’s used in:
 
 *   [`documentation`](https://github.com/documentationjs/documentation)
     — The documentation system for modern JavaScript
-*   [`weh`](https://github.com/wehjs/weh)
+*   [`awoo`](https://github.com/awoojs/awoo)
     — Declarative small site generator
 *   [`geojsonhint`](https://github.com/mapbox/geojsonhint)
     — Complete, fast, standards-based validation for geojson
