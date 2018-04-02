@@ -137,6 +137,8 @@ to stick to `vfile-reporter`s interface.
     — Stylish reporter
 *   [`vfile-reporter-json`](https://github.com/vfile/vfile-reporter-json)
     — JSON reporter
+*   [`vfile-reporter-folder-json`](https://github.com/vfile/vfile-reporter-folder-json)
+    — JSON reporter with a folder structure
 *   [`vfile-reporter-pretty`](https://github.com/vfile/vfile-reporter-pretty)
     — Pretty reporter
 
@@ -250,7 +252,7 @@ Calls [`#message()`][message] internally.
 ## Contribute
 
 **VFile** is built by people just like you!  Check out
-[`contribute.md`][contribute] for ways to get started.
+[`contributing.md`][contribute] for ways to get started.
 
 This project has a [Code of Conduct][coc].  By interacting with this repository,
 organisation, or community you agree to abide by its terms.
