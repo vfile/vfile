@@ -51,6 +51,7 @@ npm install vfile
     *   [vfile.history](#vfilehistory)
     *   [vfile.messages](#vfilemessages)
     *   [vfile.data](#vfiledata)
+    *   [vfile.posix](#vfileposix)
     *   [VFile#toString(\[encoding\])](#vfiletostringencoding)
     *   [VFile#message(reason\[, position\]\[, origin\])](#vfilemessagereason-position-origin)
     *   [VFile#info(reason\[, position\]\[, origin\])](#vfileinforeason-position-origin)
@@ -214,6 +215,11 @@ there’s no `path` yet.
 `Object` — Place to store custom information.  It’s OK to store custom
 data directly on the `vfile`, moving it to `data` gives a _little_ more
 privacy.
+
+### `vfile.posix`
+
+`boolean` — Controls whether paths are constructed as POSIX paths, independent
+of host platform (default: `false`).
 
 ### `VFile#toString([encoding])`
 

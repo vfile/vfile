@@ -45,6 +45,7 @@ function VFile(options) {
   this.messages = [];
   this.history = [];
   this.cwd = process.cwd();
+  this.posix = 'posix' in options ? options.posix : false;
 
   /* Set path related properties in the correct order. */
   index = -1;
@@ -87,7 +88,7 @@ Object.defineProperty(proto, 'dirname', {
   },
   set: function (dirname) {
     assertPath(this.path, 'dirname');
-    this.path = path.join(dirname || '', this.basename);
+    this.path = joinPath(dirname || '', this.basename, this.posix);
   }
 });
 
@@ -99,7 +100,7 @@ Object.defineProperty(proto, 'basename', {
   set: function (basename) {
     assertNonEmpty(basename, 'basename');
     assertPart(basename, 'basename');
-    this.path = path.join(this.dirname || '', basename);
+    this.path = joinPath(this.dirname || '', basename, this.posix);
   }
 });
 
@@ -136,7 +137,7 @@ Object.defineProperty(proto, 'stem', {
   set: function (stem) {
     assertNonEmpty(stem, 'stem');
     assertPart(stem, 'stem');
-    this.path = path.join(this.dirname || '', stem + (this.extname || ''));
+    this.path = joinPath(this.dirname || '', stem + (this.extname || ''), this.posix);
   }
 });
 
@@ -166,4 +167,23 @@ function assertPath(path, name) {
   if (!path) {
     throw new Error('Setting `' + name + '` requires `path` to be set too');
   }
+}
+
+/* Joins two path parts, honoring the posix option */
+function joinPath(a, b, posix) {
+  if (posix) {
+    if (!b) {
+      return a;
+    } else if (a) {
+      if (a.charAt(a.length - 1) === '/') {
+        a = a.substr(0, a.length - 1);
+      }
+      if (b.charAt() === '/') {
+        b = b.substr(1);
+      }
+      return a + '/' + b;
+    }
+    return b;
+  }
+  return path.join(a, b);
 }
