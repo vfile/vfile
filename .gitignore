@@ -5,3 +5,4 @@ node_modules/
 coverage/
 vfile.js
 vfile.min.js
+yarn.lock
