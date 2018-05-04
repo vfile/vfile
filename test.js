@@ -389,11 +389,10 @@ test('vfile([options])', function (t) {
     st.equal(message.message, 'variable is not defined', 'should accept an error (1)');
 
     st.equal(
-      message.stack,
+      message.stack.split('\n').slice(0, 2).join('\n'),
       [
         'ReferenceError: variable is not defined',
-        '    at Object.<anonymous> (test.js:1:1)',
-        '    at Module._compile (module.js:1:1)'
+        '    at Object.<anonymous> (test.js:1:1)'
       ].join('\n'),
       'should accept an error (2)'
     );
@@ -403,11 +402,10 @@ test('vfile([options])', function (t) {
     st.equal(message.message, 'foo', 'should accept a changed error (1)');
 
     st.equal(
-      message.stack,
+      message.stack.split('\n').slice(0, 2).join('\n'),
       [
         'ReferenceError: foo',
-        '    at Object.<anonymous> (test.js:1:1)',
-        '    at Module._compile (module.js:1:1)'
+        '    at Object.<anonymous> (test.js:1:1)'
       ].join('\n'),
       'should accept a changed error (2)'
     );
@@ -417,13 +415,12 @@ test('vfile([options])', function (t) {
     st.equal(message.message, 'foo\nbar\nbaz', 'should accept a multiline error (1)');
 
     st.equal(
-      message.stack,
+      message.stack.split('\n').slice(0, 4).join('\n'),
       [
         'ReferenceError: foo',
         'bar',
         'baz',
-        '    at Object.<anonymous> (test.js:1:1)',
-        '    at Module._compile (module.js:1:1)'
+        '    at Object.<anonymous> (test.js:1:1)'
       ].join('\n'),
       'should accept a multiline error (2)'
     );
