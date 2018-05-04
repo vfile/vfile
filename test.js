@@ -1,7 +1,7 @@
 'use strict';
 
 var test = require('tape');
-var vfile = require('./');
+var vfile = require('.');
 
 /* eslint-disable no-undef */
 var exception;
@@ -137,13 +137,13 @@ test('vfile([options])', function (t) {
     );
 
     st.equal(
-      vfile(new Buffer('bar')).toString(),
+      vfile(Buffer.from('bar')).toString(),
       'bar',
       'buffer: should return the internal value'
     );
 
     st.equal(
-      vfile(new Buffer('bar')).toString('hex'),
+      vfile(Buffer.from('bar')).toString('hex'),
       '626172',
       'buffer encoding: should return the internal value'
     );
