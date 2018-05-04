@@ -62,24 +62,27 @@ npm install vfile
 ## Usage
 
 ```js
-var vfile = require('vfile');
+var vfile = require('vfile')
 
-var file = vfile({path: '~/example.txt', contents: 'Alpha *braavo* charlie.'});
+var file = vfile({path: '~/example.txt', contents: 'Alpha *braavo* charlie.'})
 
-file.path; //=> '~/example.txt'
-file.dirname; //=> '~'
+file.path // => '~/example.txt'
+file.dirname // => '~'
 
-file.extname = '.md';
+file.extname = '.md'
 
-file.basename; //=> 'example.md'
+file.basename // => 'example.md'
 
-file.basename = 'index.text';
+file.basename = 'index.text'
 
-file.history; //=> ['~/example.txt', '~/example.md', '~/index.text']
+file.history // => ['~/example.txt', '~/example.md', '~/index.text']
 
-file.message('`braavo` is misspelt; did you mean `bravo`?', {line: 1, column: 8});
+file.message('`braavo` is misspelt; did you mean `bravo`?', {
+  line: 1,
+  column: 8
+})
 
-console.log(file.messages);
+console.log(file.messages)
 ```
 
 Yields:
@@ -160,12 +163,12 @@ either `history`, `path`, `basename`, or `stem` as well.
 ###### Example
 
 ```js
-vfile();
-vfile('console.log("alpha");');
-vfile(Buffer.from('exit 1'));
-vfile({path: path.join(__dirname, 'readme.md')});
-vfile({stem: 'readme', extname: '.md', dirname: __dirname});
-vfile({other: 'properties', are: 'copied', ov: {e: 'r'}});
+vfile()
+vfile('console.log("alpha");')
+vfile(Buffer.from('exit 1'))
+vfile({path: path.join(__dirname, 'readme.md')})
+vfile({stem: 'readme', extname: '.md', dirname: __dirname})
+vfile({other: 'properties', are: 'copied', ov: {e: 'r'}})
 ```
 
 ### `vfile.contents`
