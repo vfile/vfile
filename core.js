@@ -22,6 +22,9 @@ function VFile(options) {
   var index
   var length
 
+  if (typeof options === 'number') {
+    options = options.toString();
+  }
   if (!options) {
     options = {}
   } else if (typeof options === 'string' || buffer(options)) {
