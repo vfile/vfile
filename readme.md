@@ -1,7 +1,9 @@
 # ![vfile][]
 
-[![Build Status][build-badge]][build-status]
-[![Coverage Status][coverage-badge]][coverage-status]
+[![Travis][build-badge]][build]
+[![Coverage][coverage-badge]][coverage]
+[![Downloads][downloads-badge]][downloads]
+[![Size][size-badge]][size]
 [![Chat][chat-badge]][chat]
 
 **VFile** is a virtual file format used by [**unified**][unified],
@@ -288,15 +290,23 @@ for contributing commits since!
 
 <!-- Definitions -->
 
-[build-badge]: https://img.shields.io/travis/vfile/vfile.svg
+[build-badge]: https://img.shields.io/travis/vfile/vfile/master.svg
 
-[build-status]: https://travis-ci.org/vfile/vfile
+[build]: https://travis-ci.org/vfile/vfile
 
 [coverage-badge]: https://img.shields.io/codecov/c/github/vfile/vfile.svg
 
-[coverage-status]: https://codecov.io/github/vfile/vfile
+[coverage]: https://codecov.io/github/vfile/vfile
 
-[chat-badge]: https://img.shields.io/gitter/room/unifiedjs/Lobby.svg
+[downloads-badge]: https://img.shields.io/npm/dm/vfile.svg
+
+[downloads]: https://www.npmjs.com/package/vfile
+
+[size-badge]: https://img.shields.io/bundlephobia/minzip/vfile.svg
+
+[size]: https://bundlephobia.com/result?p=vfile
+
+[chat-badge]: https://img.shields.io/gitter/room/vfile/Lobby.svg
 
 [chat]: https://gitter.im/vfile/Lobby
 
