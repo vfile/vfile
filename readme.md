@@ -118,6 +118,8 @@ files.  See [**Unist**][unist] for projects working with nodes.
     — Find files by searching the file system downwards
 *   [`vfile-find-up`](https://github.com/vfile/vfile-find-up)
     — Find files by searching the file system upwards
+*   [`vfile-glob`](https://github.com/shinnn/vfile-glob)
+    — Find files by glob patterns
 *   [`vfile-location`](https://github.com/vfile/vfile-location)
     — Convert between line/column- and range-based locations
 *   [`vfile-message`](https://github.com/vfile/vfile-message)
