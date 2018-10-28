@@ -304,7 +304,7 @@ for contributing commits since!
 
 [license]: license
 
-[author]: http://wooorm.com
+[author]: https://wooorm.com
 
 [vfile]: https://cdn.rawgit.com/vfile/vfile/f65510e/logo.svg
 
