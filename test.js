@@ -10,25 +10,25 @@ var multilineException
 
 try {
   variable = 1
-} catch (err) {
-  err.stack = cleanStack(err.stack, 3)
-  exception = err
+} catch (error) {
+  error.stack = cleanStack(error.stack, 3)
+  exception = error
 }
 
 try {
   variable = 1
-} catch (err) {
-  err.message = 'foo'
-  err.stack = cleanStack(err.stack, 3)
-  changedMessage = err
+} catch (error) {
+  error.message = 'foo'
+  error.stack = cleanStack(error.stack, 3)
+  changedMessage = error
 }
 
 try {
   variable = 1
-} catch (err) {
-  err.message = 'foo\nbar\nbaz'
-  err.stack = cleanStack(err.stack, 5)
-  multilineException = err
+} catch (error) {
+  error.message = 'foo\nbar\nbaz'
+  error.stack = cleanStack(error.stack, 5)
+  multilineException = error
 }
 /* eslint-enable no-undef */
 
