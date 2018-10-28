@@ -306,7 +306,7 @@ for contributing commits since!
 
 [author]: https://wooorm.com
 
-[vfile]: https://cdn.rawgit.com/vfile/vfile/f65510e/logo.svg
+[vfile]: https://raw.githubusercontent.com/vfile/vfile/7e1e6a6/logo.svg?sanitize=true
 
 [unified]: https://github.com/unifiedjs/unified
 
