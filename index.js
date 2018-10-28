@@ -11,11 +11,11 @@ proto.message = message
 proto.info = info
 proto.fail = fail
 
-/* Slight backwards compatibility.  Remove in the future. */
+// Slight backwards compatibility.  Remove in the future.
 proto.warn = message
 
-/* Create a message with `reason` at `position`.
- * When an error is passed in as `reason`, copies the stack. */
+// Create a message with `reason` at `position`.  When an error is passed in as
+// `reason`, copies the stack.
 function message(reason, position, origin) {
   var filePath = this.path
   var message = new VMessage(reason, position, origin)
@@ -32,8 +32,7 @@ function message(reason, position, origin) {
   return message
 }
 
-/* Fail. Creates a vmessage, associates it with the file,
- * and throws it. */
+// Fail.  Creates a vmessage, associates it with the file, and throws it.
 function fail() {
   var message = this.message.apply(this, arguments)
 
@@ -42,8 +41,8 @@ function fail() {
   throw message
 }
 
-/* Info. Creates a vmessage, associates it with the file,
- * and marks the fatality as null. */
+// Info.  Creates a vmessage, associates it with the file, and marks the
+// fatality as null.
 function info() {
   var message = this.message.apply(this, arguments)
 

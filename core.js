@@ -11,12 +11,12 @@ var proto = VFile.prototype
 
 proto.toString = toString
 
-/* Order of setting (least specific to most), we need this because
- * otherwise `{stem: 'a', path: '~/b.js'}` would throw, as a path
- * is needed before a stem can be set. */
+// Order of setting (least specific to most), we need this because otherwise
+// `{stem: 'a', path: '~/b.js'}` would throw, as a path is needed before a
+// stem can be set.
 var order = ['history', 'path', 'basename', 'stem', 'extname', 'dirname']
 
-/* Construct a new file. */
+// Construct a new file.
 function VFile(options) {
   var prop
   var index
@@ -39,7 +39,7 @@ function VFile(options) {
   this.history = []
   this.cwd = process.cwd()
 
-  /* Set path related properties in the correct order. */
+  // Set path related properties in the correct order.
   index = -1
   length = order.length
 
@@ -51,7 +51,7 @@ function VFile(options) {
     }
   }
 
-  /* Set non-path related properties. */
+  // Set non-path related properties.
   for (prop in options) {
     if (order.indexOf(prop) === -1) {
       this[prop] = options[prop]
@@ -59,7 +59,7 @@ function VFile(options) {
   }
 }
 
-/* Access full path (`~/index.min.js`). */
+// Access full path (`~/index.min.js`).
 Object.defineProperty(proto, 'path', {
   get: function() {
     return this.history[this.history.length - 1]
@@ -73,7 +73,7 @@ Object.defineProperty(proto, 'path', {
   }
 })
 
-/* Access parent path (`~`). */
+// Access parent path (`~`).
 Object.defineProperty(proto, 'dirname', {
   get: function() {
     return typeof this.path === 'string' ? path.dirname(this.path) : undefined
@@ -84,7 +84,7 @@ Object.defineProperty(proto, 'dirname', {
   }
 })
 
-/* Access basename (`index.min.js`). */
+// Access basename (`index.min.js`).
 Object.defineProperty(proto, 'basename', {
   get: function() {
     return typeof this.path === 'string' ? path.basename(this.path) : undefined
@@ -96,7 +96,7 @@ Object.defineProperty(proto, 'basename', {
   }
 })
 
-/* Access extname (`.js`). */
+// Access extname (`.js`).
 Object.defineProperty(proto, 'extname', {
   get: function() {
     return typeof this.path === 'string' ? path.extname(this.path) : undefined
@@ -121,7 +121,7 @@ Object.defineProperty(proto, 'extname', {
   }
 })
 
-/* Access stem (`index.min`). */
+// Access stem (`index.min`).
 Object.defineProperty(proto, 'stem', {
   get: function() {
     return typeof this.path === 'string'
@@ -135,14 +135,13 @@ Object.defineProperty(proto, 'stem', {
   }
 })
 
-/* Get the value of the file. */
+// Get the value of the file.
 function toString(encoding) {
   var value = this.contents || ''
   return buffer(value) ? value.toString(encoding) : String(value)
 }
 
-/* Assert that `part` is not a path (i.e., does
- * not contain `path.sep`). */
+// Assert that `part` is not a path (i.e., does not contain `path.sep`).
 function assertPart(part, name) {
   if (part.indexOf(path.sep) !== -1) {
     throw new Error(
@@ -151,14 +150,14 @@ function assertPart(part, name) {
   }
 }
 
-/* Assert that `part` is not empty. */
+// Assert that `part` is not empty.
 function assertNonEmpty(part, name) {
   if (!part) {
     throw new Error('`' + name + '` cannot be empty')
   }
 }
 
-/* Assert `path` exists. */
+// Assert `path` exists.
 function assertPath(path, name) {
   if (!path) {
     throw new Error('Setting `' + name + '` requires `path` to be set too')
