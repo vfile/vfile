@@ -1,4 +1,4 @@
-# ![vfile][]
+# [![vfile][]][unified]
 
 [![Travis][build-badge]][build]
 [![Coverage][coverage-badge]][coverage]
@@ -6,19 +6,65 @@
 [![Size][size-badge]][size]
 [![Chat][chat-badge]][chat]
 
-**VFile** is a virtual file format used by [**unified**][unified],
-a text processing umbrella (it powers [**retext**][retext] for
-natural language, [**remark**][remark] for markdown, and
-[**rehype**][rehype] for HTML).  Each processors that parse, transform,
-and compile text, and need a virtual representation of files and a
-place to store [messages][] about them.  Plus, they work in the browser.
-**VFile** provides these requirements at a small size, in IE 9 and up.
+**vfile** is a virtual file format part of the
+[unified][] [collective][].
 
-> **VFile** is different from the excellent [**vinyl**][vinyl]
-> in that it has a smaller API, a smaller size, and focuses on
-> [messages][].
+* * *
 
-VFile can be used anywhere where files need a lightweight representation.
+**Announcing the unified collective!  🎉
+[Read more about it on Medium »][announcement]**
+
+## Sponsors
+
+<!--lint ignore no-html maximum-line-length-->
+
+<table>
+  <tr valign="top">
+    <td width="20%" align="center">
+      <a href="https://zeit.co"><img src="https://avatars1.githubusercontent.com/u/14985020?s=400&v=4"></a>
+      <br><br>🥇
+      <a href="https://zeit.co">ZEIT</a>
+    </td>
+    <td width="20%" align="center">
+      <a href="https://www.gatsbyjs.org"><img src="https://avatars1.githubusercontent.com/u/12551863?s=400&v=4"></a>
+      <br><br>🥇
+      <a href="https://www.gatsbyjs.org">Gatsby</a></td>
+    <td width="20%" align="center">
+      <a href="https://compositor.io"><img src="https://avatars1.githubusercontent.com/u/19245838?s=400&v=4"></a>
+      <br><br>🥉
+      <a href="https://compositor.io">Compositor</a>
+    </td>
+    <td width="20%" align="center">
+      <a href="https://www.holloway.com"><img src="https://avatars1.githubusercontent.com/u/35904294?s=400&v=4"></a>
+      <br><br>
+      <a href="https://www.holloway.com">Holloway</a>
+    </td>
+    <td width="20%" align="center">
+      <br><br><br><br>
+      <a href="https://opencollective.com/unified"><strong>You?</strong>
+    </td>
+  </tr>
+</table>
+
+## Intro
+
+**vfile** is a virtual file format used by [**unified**][unified], a text
+processing umbrella (it powers [**retext**][retext] for natural language,
+[**remark**][remark] for markdown, and [**rehype**][rehype] for HTML).
+Each processors that parse, transform, and compile text, and need a virtual
+representation of files and a place to store [messages][] about them.
+Plus, they work in the browser.
+**vfile** provides these requirements at a small size.
+
+*   Visit [`unified.js.org`][website] and try its [guides][] for an overview
+*   Read [unified][]’s readme for a technical intro
+*   Follow us on [Medium][] and [Twitter][] to see what we’re up to
+*   Check out [Contribute][] below to find out how to help out
+
+> **vfile** is different from the excellent [**vinyl**][vinyl] in that it has
+> a smaller API, a smaller size, and focuses on [messages][].
+
+vfile can be used anywhere where files need a lightweight representation.
 For example, it’s used in:
 
 *   [`documentation`](https://github.com/documentationjs/documentation)
@@ -106,7 +152,8 @@ Yields:
 ## Utilities
 
 The following list of projects includes tools for working with virtual
-files.  See [**Unist**][unist] for projects working with nodes.
+files.
+See **[unist][]** for projects working with nodes.
 
 *   [`convert-vinyl-to-vfile`](https://github.com/dustinspecker/convert-vinyl-to-vfile)
     — Convert from [Vinyl][]
@@ -131,14 +178,15 @@ files.  See [**Unist**][unist] for projects working with nodes.
 *   [`vfile-sort`](https://github.com/vfile/vfile-sort)
     — Sort messages by line/column
 *   [`vfile-to-eslint`](https://github.com/vfile/vfile-to-eslint)
-    — Convert VFiles to ESLint formatter compatible output
+    — Convert vfiles to ESLint formatter compatible output
 
 ## Reporters
 
 The following list of projects show linting results for given virtual files.
 Reporters _must_ accept `Array.<VFile>` as their first argument, and return
-`string`.  Reporters _may_ accept other values too, in which case it’s suggested
-to stick to `vfile-reporter`s interface.
+`string`.
+Reporters _may_ accept other values too, in which case it’s suggested to stick
+to `vfile-reporter`s interface.
 
 *   [`vfile-reporter`][reporter]
     — Stylish reporter
@@ -153,8 +201,9 @@ to stick to `vfile-reporter`s interface.
 
 ### `VFile([options])`
 
-Create a new virtual file.  If `options` is `string` or `Buffer`, treats
-it as `{contents: options}`.  If `options` is a `VFile`, returns it.
+Create a new virtual file.
+If `options` is `string` or `Buffer`, treats it as `{contents: options}`.
+If `options` is a `VFile`, returns it.
 All other options are set on the newly created `vfile`.
 
 Path related properties are set in the following order (least specific
@@ -181,32 +230,34 @@ vfile({other: 'properties', are: 'copied', ov: {e: 'r'}})
 
 ### `vfile.cwd`
 
-`string` — Base of `path`.  Defaults to `process.cwd()`.
+`string` — Base of `path`.
+Defaults to `process.cwd()`.
 
 ### `vfile.path`
 
-`string?` — Path of `vfile`.  Cannot be nullified.
+`string?` — Path of `vfile`.
+Cannot be nullified.
 
 ### `vfile.basename`
 
-`string?` — Current name (including extension) of `vfile`.  Cannot
-contain path separators.  Cannot be nullified either (use
-`file.path = file.dirname` instead).
+`string?` — Current name (including extension) of `vfile`.
+Cannot contain path separators.
+Cannot be nullified either (use `file.path = file.dirname` instead).
 
 ### `vfile.stem`
 
-`string?` — Name (without extension) of `vfile`.  Cannot be nullified,
-and cannot contain path separators.
+`string?` — Name (without extension) of `vfile`.
+Cannot be nullified, and cannot contain path separators.
 
 ### `vfile.extname`
 
-`string?` — Extension (with dot) of `vfile`.  Cannot be set if
-there’s no `path` yet and cannot contain path separators.
+`string?` — Extension (with dot) of `vfile`.
+Cannot be set if there’s no `path` yet and cannot contain path separators.
 
 ### `vfile.dirname`
 
-`string?` — Path to parent directory of `vfile`.  Cannot be set if
-there’s no `path` yet.
+`string?` — Path to parent directory of `vfile`.
+Cannot be set if there’s no `path` yet.
 
 ### `vfile.history`
 
@@ -218,14 +269,15 @@ there’s no `path` yet.
 
 ### `vfile.data`
 
-`Object` — Place to store custom information.  It’s OK to store custom
-data directly on the `vfile`, moving it to `data` gives a _little_ more
-privacy.
+`Object` — Place to store custom information.
+It’s OK to store custom data directly on the `vfile`, moving it to `data` gives
+a _little_ more privacy.
 
 ### `VFile#toString([encoding])`
 
-Convert contents of `vfile` to string.  If `contents` is a buffer,
-`encoding` is used to stringify buffers (default: `'utf8'`).
+Convert contents of `vfile` to string.
+If `contents` is a buffer, `encoding` is used to stringify buffers (default:
+`'utf8'`).
 
 ### `VFile#message(reason[, position][, origin])`
 
@@ -240,7 +292,8 @@ Constructs a new [`VMessage`][vmessage] and adds it to
 ### `VFile#info(reason[, position][, origin])`
 
 Associates an informational message with the file, where `fatal` is set to
-`null`.  Calls [`#message()`][message] internally.
+`null`.
+Calls [`#message()`][message] internally.
 
 ##### Returns
 
@@ -258,17 +311,20 @@ Calls [`#message()`][message] internally.
 
 ## Contribute
 
-**VFile** is built by people just like you!  Check out
-[`contributing.md`][contribute] for ways to get started.
+**vfile** is built by people just like you!
+Check out [`contributing.md`][contributing] for ways to get started.
 
-This project has a [Code of Conduct][coc].  By interacting with this repository,
-organisation, or community you agree to abide by its terms.
+This project has a [Code of Conduct][coc].
+By interacting with this repository, organisation, or community you agree to
+abide by its terms.
 
-Want to chat with the community and contributors?  Join us in [Gitter][chat]!
+Want to chat with the community and contributors?
+Join us in [spectrum][chat]!
 
-Have an idea for a cool new utility or tool?  That’s great!  If you want
-feedback, help, or just to share it with the world you can do so by creating
-an issue in the [`vfile/ideas`][ideas] repository!
+Have an idea for a cool new utility or tool?
+That’s great!
+If you want feedback, help, or just to share it with the world you can do so by
+creating an issue in the [`vfile/ideas`][ideas] repository!
 
 ## Acknowledgments
 
@@ -282,7 +338,8 @@ Thanks to [**@contra**](https://github.com/contra),
 Thanks to
 [**@brendo**](https://github.com/brendo),
 [**@shinnn**](https://github.com/shinnn),
-[**@KyleAMathews**](https://github.com/KyleAMathews), [**@sindresorhus**](https://github.com/sindresorhus),
+[**@KyleAMathews**](https://github.com/KyleAMathews),
+[**@sindresorhus**](https://github.com/sindresorhus),
 and [**@denysdovhan**](https://github.com/denysdovhan)
 for contributing commits since!
 
@@ -340,8 +397,22 @@ for contributing commits since!
 
 [message]: #vfilemessagereason-position-origin
 
-[contribute]: contributing.md
+[website]: https://unified.js.org
+
+[guides]: https://unified.js.org/#guides
+
+[contribute]: #contribute
+
+[contributing]: contributing.md
 
 [coc]: code-of-conduct.md
 
 [ideas]: https://github.com/vfile/ideas
+
+[collective]: https://opencollective.com/unified
+
+[medium]: https://medium.com/unifiedjs
+
+[announcement]: https://medium.com/unifiedjs/collectively-evolving-through-crowdsourcing-22c359ea95cc
+
+[twitter]: https://twitter.com/unifiedjs
