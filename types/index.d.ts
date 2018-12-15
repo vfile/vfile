@@ -5,6 +5,7 @@ import * as vfileMessage from 'vfile-message'
 
 declare namespace vfile {
   type VFileContents = string | Buffer
+  type VFileCompatible = VFile | VFileOptions | VFileContents
 
   interface VFileOptions {
     contents?: VFileContents
