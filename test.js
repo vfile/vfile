@@ -559,7 +559,7 @@ test('vfile([options])', function(t) {
 
 function cleanStack(stack, max) {
   return stack
-    .replace(new RegExp('\\(\\' + sep + '.+\\' + sep, 'g'), '(')
+    .replace(new RegExp('\\(.+\\' + sep, 'g'), '(')
     .replace(/\d+:\d+/g, '1:1')
     .split('\n')
     .slice(0, max)
