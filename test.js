@@ -1,5 +1,6 @@
 'use strict'
 
+var sep = require('path').sep
 var test = require('tape')
 var vfile = require('.')
 
@@ -72,11 +73,11 @@ test('vfile([options])', function(t) {
   })
 
   t.test('should accept an object (1)', function(st) {
-    var file = vfile({path: '~/example.md'})
+    var file = vfile({path: '~' + sep + 'example.md'})
 
-    st.deepEqual(file.history, ['~/example.md'])
+    st.deepEqual(file.history, ['~' + sep + 'example.md'])
     st.equal(file.contents, undefined)
-    st.equal(file.path, '~/example.md')
+    st.equal(file.path, '~' + sep + 'example.md')
     st.equal(file.dirname, '~')
     st.equal(file.basename, 'example.md')
     st.equal(file.stem, 'example')
@@ -102,9 +103,13 @@ test('vfile([options])', function(t) {
   t.test('should accept a object (2)', function(st) {
     var file = vfile({stem: 'example', extname: '.md', dirname: '~'})
 
-    st.deepEqual(file.history, ['example', 'example.md', '~/example.md'])
+    st.deepEqual(file.history, [
+      'example',
+      'example.md',
+      '~' + sep + 'example.md'
+    ])
     st.equal(file.contents, undefined)
-    st.equal(file.path, '~/example.md')
+    st.equal(file.path, '~' + sep + 'example.md')
     st.equal(file.dirname, '~')
     st.equal(file.basename, 'example.md')
     st.equal(file.stem, 'example')
@@ -160,25 +165,29 @@ test('vfile([options])', function(t) {
 
     st.equal(file.path, undefined, 'should start `undefined`')
 
-    file.path = '~/example.md'
+    file.path = '~' + sep + 'example.md'
 
-    st.equal(file.path, '~/example.md', 'should set `path`s')
+    st.equal(file.path, '~' + sep + 'example.md', 'should set `path`s')
 
-    file.path = '~/example/example.txt'
+    file.path = '~' + sep + 'example' + sep + 'example.txt'
 
-    st.equal(file.path, '~/example/example.txt', 'should change `path`s')
+    st.equal(
+      file.path,
+      '~' + sep + 'example' + sep + 'example.txt',
+      'should change `path`s'
+    )
 
     st.deepEqual(
       file.history,
-      ['~/example.md', '~/example/example.txt'],
+      ['~' + sep + 'example.md', '~' + sep + 'example' + sep + 'example.txt'],
       'should record changes'
     )
 
-    file.path = '~/example/example.txt'
+    file.path = '~' + sep + 'example' + sep + 'example.txt'
 
     st.deepEqual(
       file.history,
-      ['~/example.md', '~/example/example.txt'],
+      ['~' + sep + 'example.md', '~' + sep + 'example' + sep + 'example.txt'],
       'should not record setting the same path'
     )
 
@@ -212,7 +221,7 @@ test('vfile([options])', function(t) {
       'should record changes'
     )
 
-    file = vfile({path: '~/alpha/bravo.md'})
+    file = vfile({path: '~' + sep + 'alpha' + sep + 'bravo.md'})
 
     st.throws(
       function() {
@@ -224,9 +233,11 @@ test('vfile([options])', function(t) {
 
     st.throws(
       function() {
-        file.basename = 'charlie/delta.js'
+        file.basename = 'charlie' + sep + 'delta.js'
       },
-      /Error: `basename` cannot be a path: did not expect `\/`/,
+      new RegExp(
+        'Error: `basename` cannot be a path: did not expect `\\' + sep + '`'
+      ),
       'should throw when setting a path'
     )
 
@@ -240,20 +251,23 @@ test('vfile([options])', function(t) {
 
     st.throws(
       function() {
-        file.dirname = '~/alpha/bravo'
+        file.dirname = '~' + sep + 'alpha' + sep + 'bravo'
       },
       /Error: Setting `dirname` requires `path` to be set too/,
       'should throw when setting without path'
     )
 
-    file.path = '~/alpha/bravo'
-    file.dirname = '~/charlie'
+    file.path = '~' + sep + 'alpha' + sep + 'bravo'
+    file.dirname = '~' + sep + 'charlie'
 
-    st.equal(file.dirname, '~/charlie', 'should change paths')
+    st.equal(file.dirname, '~' + sep + 'charlie', 'should change paths')
 
     st.deepEqual(
       file.history,
-      ['~/alpha/bravo', '~/charlie/bravo'],
+      [
+        '~' + sep + 'alpha' + sep + 'bravo',
+        '~' + sep + 'charlie' + sep + 'bravo'
+      ],
       'should record changes'
     )
 
@@ -277,7 +291,7 @@ test('vfile([options])', function(t) {
       'should throw when setting without `path`'
     )
 
-    file.path = '~/alpha/bravo'
+    file.path = '~' + sep + 'alpha' + sep + 'bravo'
     st.equal(file.extname, '', 'should return empty without extension')
 
     file.extname = '.md'
@@ -285,7 +299,10 @@ test('vfile([options])', function(t) {
 
     st.deepEqual(
       file.history,
-      ['~/alpha/bravo', '~/alpha/bravo.md'],
+      [
+        '~' + sep + 'alpha' + sep + 'bravo',
+        '~' + sep + 'alpha' + sep + 'bravo.md'
+      ],
       'should record changes'
     )
 
@@ -309,7 +326,7 @@ test('vfile([options])', function(t) {
     st.equal(file.extname, '', 'should support removing `extname` (1)')
     st.equal(
       file.path,
-      '~/alpha/bravo',
+      '~' + sep + 'alpha' + sep + 'bravo',
       'should support removing `extname` (2)'
     )
 
@@ -339,9 +356,11 @@ test('vfile([options])', function(t) {
 
     st.throws(
       function() {
-        file.stem = 'charlie/delta.js'
+        file.stem = 'charlie' + sep + 'delta.js'
       },
-      /Error: `stem` cannot be a path: did not expect `\/`/,
+      new RegExp(
+        'Error: `stem` cannot be a path: did not expect `\\' + sep + '`'
+      ),
       'should throw when setting a path'
     )
 
@@ -355,14 +374,14 @@ test('vfile([options])', function(t) {
 
     st.ok(vfile().message('') instanceof Error, 'should return an Error')
 
-    file = vfile({path: '~/example.md'})
+    file = vfile({path: '~' + sep + 'example.md'})
     message = file.message('Foo')
 
     st.equal(file.messages.length, 1)
     st.equal(file.messages[0], message)
 
-    st.equal(message.name, '~/example.md:1:1')
-    st.equal(message.file, '~/example.md')
+    st.equal(message.name, '~' + sep + 'example.md:1:1')
+    st.equal(message.file, '~' + sep + 'example.md')
     st.equal(message.reason, 'Foo')
     st.equal(message.ruleId, null)
     st.equal(message.source, null)
@@ -377,7 +396,7 @@ test('vfile([options])', function(t) {
 
     st.equal(
       String(message),
-      '~/example.md:1:1: Foo',
+      '~' + sep + 'example.md:1:1: Foo',
       'should have a pretty `toString()` message'
     )
 
@@ -488,7 +507,7 @@ test('vfile([options])', function(t) {
   })
 
   t.test('#fail(reason[, position][, origin])', function(st) {
-    var file = vfile({path: '~/example.md'})
+    var file = vfile({path: '~' + sep + 'example.md'})
     var message
 
     st.throws(
@@ -503,8 +522,8 @@ test('vfile([options])', function(t) {
 
     message = file.messages[0]
 
-    st.equal(message.name, '~/example.md:1:3')
-    st.equal(message.file, '~/example.md')
+    st.equal(message.name, '~' + sep + 'example.md:1:3')
+    st.equal(message.file, '~' + sep + 'example.md')
     st.equal(message.reason, 'Foo')
     st.equal(message.source, 'baz')
     st.equal(message.ruleId, 'qux')
@@ -521,7 +540,7 @@ test('vfile([options])', function(t) {
   })
 
   t.test('#info(reason[, position][, origin])', function(st) {
-    var file = vfile({path: '~/example.md'})
+    var file = vfile({path: '~' + sep + 'example.md'})
     var message
 
     file.info('Bar', {line: 1, column: 3}, 'baz:qux')
@@ -530,8 +549,8 @@ test('vfile([options])', function(t) {
 
     message = file.messages[0]
 
-    st.equal(message.name, '~/example.md:1:3')
-    st.equal(message.file, '~/example.md')
+    st.equal(message.name, '~' + sep + 'example.md:1:3')
+    st.equal(message.file, '~' + sep + 'example.md')
     st.equal(message.reason, 'Bar')
     st.equal(message.source, 'baz')
     st.equal(message.ruleId, 'qux')
