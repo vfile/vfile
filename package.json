@@ -46,7 +46,7 @@
     "xo": "^0.23.0"
   },
   "scripts": {
-    "format": "remark . -qfo && prettier --write '**/*.js' && xo --fix",
+    "format": "remark . -qfo && prettier --write \"**/*.js\" && xo --fix",
     "build-bundle": "browserify . -s VFile > vfile.js",
     "build-mangle": "browserify . -s VFile -p tinyify > vfile.min.js",
     "build": "npm run build-bundle && npm run build-mangle",
