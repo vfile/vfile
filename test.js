@@ -1,8 +1,11 @@
 'use strict'
 
-var sep = require('path').sep
+var path = require('path')
 var test = require('tape')
 var vfile = require('.')
+
+var sep = path.sep
+var join = path.join
 
 /* eslint-disable no-undef */
 var exception
@@ -73,11 +76,12 @@ test('vfile([options])', function(t) {
   })
 
   t.test('should accept an object (1)', function(st) {
-    var file = vfile({path: '~' + sep + 'example.md'})
+    var fp = join('~', 'example.md')
+    var file = vfile({path: fp})
 
-    st.deepEqual(file.history, ['~' + sep + 'example.md'])
+    st.deepEqual(file.history, [fp])
     st.equal(file.contents, undefined)
-    st.equal(file.path, '~' + sep + 'example.md')
+    st.equal(file.path, fp)
     st.equal(file.dirname, '~')
     st.equal(file.basename, 'example.md')
     st.equal(file.stem, 'example')
@@ -106,10 +110,10 @@ test('vfile([options])', function(t) {
     st.deepEqual(file.history, [
       'example',
       'example.md',
-      '~' + sep + 'example.md'
+      join('~', 'example.md')
     ])
     st.equal(file.contents, undefined)
-    st.equal(file.path, '~' + sep + 'example.md')
+    st.equal(file.path, join('~', 'example.md'))
     st.equal(file.dirname, '~')
     st.equal(file.basename, 'example.md')
     st.equal(file.stem, 'example')
@@ -161,33 +165,27 @@ test('vfile([options])', function(t) {
   })
 
   t.test('.path', function(st) {
+    var fp = join('~', 'example.md')
+    var ofp = join('~', 'example', 'example.txt')
     var file = vfile()
 
     st.equal(file.path, undefined, 'should start `undefined`')
 
-    file.path = '~' + sep + 'example.md'
+    file.path = fp
 
-    st.equal(file.path, '~' + sep + 'example.md', 'should set `path`s')
+    st.equal(file.path, fp, 'should set `path`s')
 
-    file.path = '~' + sep + 'example' + sep + 'example.txt'
+    file.path = ofp
 
-    st.equal(
-      file.path,
-      '~' + sep + 'example' + sep + 'example.txt',
-      'should change `path`s'
-    )
+    st.equal(file.path, ofp, 'should change `path`s')
 
-    st.deepEqual(
-      file.history,
-      ['~' + sep + 'example.md', '~' + sep + 'example' + sep + 'example.txt'],
-      'should record changes'
-    )
+    st.deepEqual(file.history, [fp, ofp], 'should record changes')
 
-    file.path = '~' + sep + 'example' + sep + 'example.txt'
+    file.path = ofp
 
     st.deepEqual(
       file.history,
-      ['~' + sep + 'example.md', '~' + sep + 'example' + sep + 'example.txt'],
+      [fp, ofp],
       'should not record setting the same path'
     )
 
@@ -221,7 +219,7 @@ test('vfile([options])', function(t) {
       'should record changes'
     )
 
-    file = vfile({path: '~' + sep + 'alpha' + sep + 'bravo.md'})
+    file = vfile({path: join('~', 'alpha', 'bravo.md')})
 
     st.throws(
       function() {
@@ -233,7 +231,7 @@ test('vfile([options])', function(t) {
 
     st.throws(
       function() {
-        file.basename = 'charlie' + sep + 'delta.js'
+        file.basename = join('charlie', 'delta.js')
       },
       new RegExp(
         'Error: `basename` cannot be a path: did not expect `\\' + sep + '`'
@@ -245,29 +243,27 @@ test('vfile([options])', function(t) {
   })
 
   t.test('.dirname', function(st) {
+    var fp = join('~', 'alpha', 'bravo')
     var file = vfile()
 
     st.equal(file.dirname, undefined, 'should start undefined')
 
     st.throws(
       function() {
-        file.dirname = '~' + sep + 'alpha' + sep + 'bravo'
+        file.dirname = fp
       },
       /Error: Setting `dirname` requires `path` to be set too/,
       'should throw when setting without path'
     )
 
-    file.path = '~' + sep + 'alpha' + sep + 'bravo'
-    file.dirname = '~' + sep + 'charlie'
+    file.path = fp
+    file.dirname = join('~', 'charlie')
 
-    st.equal(file.dirname, '~' + sep + 'charlie', 'should change paths')
+    st.equal(file.dirname, join('~', 'charlie'), 'should change paths')
 
     st.deepEqual(
       file.history,
-      [
-        '~' + sep + 'alpha' + sep + 'bravo',
-        '~' + sep + 'charlie' + sep + 'bravo'
-      ],
+      [fp, join('~', 'charlie', 'bravo')],
       'should record changes'
     )
 
@@ -279,6 +275,7 @@ test('vfile([options])', function(t) {
   })
 
   t.test('.extname', function(st) {
+    var fp = join('~', 'alpha', 'bravo')
     var file = vfile()
 
     st.equal(file.extname, undefined, 'should start `undefined`')
@@ -291,20 +288,13 @@ test('vfile([options])', function(t) {
       'should throw when setting without `path`'
     )
 
-    file.path = '~' + sep + 'alpha' + sep + 'bravo'
+    file.path = fp
     st.equal(file.extname, '', 'should return empty without extension')
 
     file.extname = '.md'
     st.equal(file.extname, '.md', 'should set extensions')
 
-    st.deepEqual(
-      file.history,
-      [
-        '~' + sep + 'alpha' + sep + 'bravo',
-        '~' + sep + 'alpha' + sep + 'bravo.md'
-      ],
-      'should record changes'
-    )
+    st.deepEqual(file.history, [fp, fp + '.md'], 'should record changes')
 
     st.throws(
       function() {
@@ -324,11 +314,7 @@ test('vfile([options])', function(t) {
 
     file.extname = null
     st.equal(file.extname, '', 'should support removing `extname` (1)')
-    st.equal(
-      file.path,
-      '~' + sep + 'alpha' + sep + 'bravo',
-      'should support removing `extname` (2)'
-    )
+    st.equal(file.path, fp, 'should support removing `extname` (2)')
 
     st.end()
   })
@@ -356,7 +342,7 @@ test('vfile([options])', function(t) {
 
     st.throws(
       function() {
-        file.stem = 'charlie' + sep + 'delta.js'
+        file.stem = join('charlie', 'delta.js')
       },
       new RegExp(
         'Error: `stem` cannot be a path: did not expect `\\' + sep + '`'
@@ -368,20 +354,21 @@ test('vfile([options])', function(t) {
   })
 
   t.test('#message(reason[, position][, origin])', function(st) {
+    var fp = join('~', 'example.md')
     var file
     var message
     var pos
 
     st.ok(vfile().message('') instanceof Error, 'should return an Error')
 
-    file = vfile({path: '~' + sep + 'example.md'})
+    file = vfile({path: fp})
     message = file.message('Foo')
 
     st.equal(file.messages.length, 1)
     st.equal(file.messages[0], message)
 
-    st.equal(message.name, '~' + sep + 'example.md:1:1')
-    st.equal(message.file, '~' + sep + 'example.md')
+    st.equal(message.name, fp + ':1:1')
+    st.equal(message.file, fp)
     st.equal(message.reason, 'Foo')
     st.equal(message.ruleId, null)
     st.equal(message.source, null)
@@ -396,7 +383,7 @@ test('vfile([options])', function(t) {
 
     st.equal(
       String(message),
-      '~' + sep + 'example.md:1:1: Foo',
+      fp + ':1:1: Foo',
       'should have a pretty `toString()` message'
     )
 
@@ -507,7 +494,8 @@ test('vfile([options])', function(t) {
   })
 
   t.test('#fail(reason[, position][, origin])', function(st) {
-    var file = vfile({path: '~' + sep + 'example.md'})
+    var fp = join('~', 'example.md')
+    var file = vfile({path: fp})
     var message
 
     st.throws(
@@ -522,8 +510,8 @@ test('vfile([options])', function(t) {
 
     message = file.messages[0]
 
-    st.equal(message.name, '~' + sep + 'example.md:1:3')
-    st.equal(message.file, '~' + sep + 'example.md')
+    st.equal(message.name, fp + ':1:3')
+    st.equal(message.file, fp)
     st.equal(message.reason, 'Foo')
     st.equal(message.source, 'baz')
     st.equal(message.ruleId, 'qux')
@@ -540,7 +528,8 @@ test('vfile([options])', function(t) {
   })
 
   t.test('#info(reason[, position][, origin])', function(st) {
-    var file = vfile({path: '~' + sep + 'example.md'})
+    var fp = join('~', 'example.md')
+    var file = vfile({path: fp})
     var message
 
     file.info('Bar', {line: 1, column: 3}, 'baz:qux')
@@ -549,8 +538,8 @@ test('vfile([options])', function(t) {
 
     message = file.messages[0]
 
-    st.equal(message.name, '~' + sep + 'example.md:1:3')
-    st.equal(message.file, '~' + sep + 'example.md')
+    st.equal(message.name, fp + ':1:3')
+    st.equal(message.file, fp)
     st.equal(message.reason, 'Bar')
     st.equal(message.source, 'baz')
     st.equal(message.ruleId, 'qux')
