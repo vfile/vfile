@@ -173,10 +173,10 @@ See **[unist][]** for projects working with nodes.
     — Convert between line/column- and range-based locations
 *   [`vfile-message`](https://github.com/vfile/vfile-message)
     — Create a `VMessage` object (used in `vfile` itself)
-*   [`vfile-statistics`](https://github.com/vfile/vfile-statistics)
-    — Count messages per category
 *   [`vfile-messages-to-vscode-diagnostics`](https://github.com/shinnn/vfile-messages-to-vscode-diagnostics)
     — Convert to VS Code diagnostics
+*   [`vfile-statistics`](https://github.com/vfile/vfile-statistics)
+    — Count messages per category
 *   [`vfile-sort`](https://github.com/vfile/vfile-sort)
     — Sort messages by line/column
 *   [`vfile-to-eslint`](https://github.com/vfile/vfile-to-eslint)
