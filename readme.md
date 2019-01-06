@@ -167,6 +167,8 @@ See **[unist][]** for projects working with nodes.
     — Find files by searching the file system upwards
 *   [`vfile-glob`](https://github.com/shinnn/vfile-glob)
     — Find files by glob patterns
+*   [`vfile-is`](https://github.com/vfile/vfile-is)
+    — Check if a file passes a test
 *   [`vfile-location`](https://github.com/vfile/vfile-location)
     — Convert between line/column- and range-based locations
 *   [`vfile-message`](https://github.com/vfile/vfile-message)
