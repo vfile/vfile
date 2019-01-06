@@ -365,9 +365,9 @@ for contributing commits since!
 
 [size]: https://bundlephobia.com/result?p=vfile
 
-[chat-badge]: https://img.shields.io/gitter/room/vfile/Lobby.svg
+[chat-badge]: https://img.shields.io/badge/join%20the%20community-on%20spectrum-7b16ff.svg
 
-[chat]: https://gitter.im/vfile/Lobby
+[chat]: https://spectrum.chat/unified/vfile
 
 [npm]: https://docs.npmjs.com/cli/install
 
