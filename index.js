@@ -11,9 +11,6 @@ proto.message = message
 proto.info = info
 proto.fail = fail
 
-// Slight backwards compatibility.  Remove in the future.
-proto.warn = message
-
 // Create a message with `reason` at `position`.  When an error is passed in as
 // `reason`, copies the stack.
 function message(reason, position, origin) {

@@ -167,14 +167,16 @@ See **[unist][]** for projects working with nodes.
     — Find files by searching the file system upwards
 *   [`vfile-glob`](https://github.com/shinnn/vfile-glob)
     — Find files by glob patterns
+*   [`vfile-is`](https://github.com/vfile/vfile-is)
+    — Check if a file passes a test
 *   [`vfile-location`](https://github.com/vfile/vfile-location)
     — Convert between line/column- and range-based locations
 *   [`vfile-message`](https://github.com/vfile/vfile-message)
     — Create a `VMessage` object (used in `vfile` itself)
-*   [`vfile-statistics`](https://github.com/vfile/vfile-statistics)
-    — Count messages per category
 *   [`vfile-messages-to-vscode-diagnostics`](https://github.com/shinnn/vfile-messages-to-vscode-diagnostics)
     — Convert to VS Code diagnostics
+*   [`vfile-statistics`](https://github.com/vfile/vfile-statistics)
+    — Count messages per category
 *   [`vfile-sort`](https://github.com/vfile/vfile-sort)
     — Sort messages by line/column
 *   [`vfile-to-eslint`](https://github.com/vfile/vfile-to-eslint)
@@ -365,9 +367,9 @@ for contributing commits since!
 
 [size]: https://bundlephobia.com/result?p=vfile
 
-[chat-badge]: https://img.shields.io/gitter/room/vfile/Lobby.svg
+[chat-badge]: https://img.shields.io/badge/join%20the%20community-on%20spectrum-7b16ff.svg
 
-[chat]: https://gitter.im/vfile/Lobby
+[chat]: https://spectrum.chat/unified/vfile
 
 [npm]: https://docs.npmjs.com/cli/install
 

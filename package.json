@@ -35,7 +35,7 @@
     "@types/unist": "^2.0.2",
     "is-buffer": "^2.0.0",
     "replace-ext": "1.0.0",
-    "unist-util-stringify-position": "^1.0.0",
+    "unist-util-stringify-position": "^2.0.0",
     "vfile-message": "^2.0.0"
   },
   "devDependencies": {
