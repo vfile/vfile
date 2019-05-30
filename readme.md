@@ -185,9 +185,9 @@ See **[unist][]** for projects working with nodes.
 ## Reporters
 
 The following list of projects show linting results for given virtual files.
-Reporters _must_ accept `Array.<VFile>` as their first argument, and return
+Reporters *must* accept `Array.<VFile>` as their first argument, and return
 `string`.
-Reporters _may_ accept other values too, in which case it’s suggested to stick
+Reporters *may* accept other values too, in which case it’s suggested to stick
 to `vfile-reporter`s interface.
 
 *   [`vfile-reporter`][reporter]
@@ -273,7 +273,7 @@ Cannot be set if there’s no `path` yet.
 
 `Object` — Place to store custom information.
 It’s OK to store custom data directly on the `vfile`, moving it to `data` gives
-a _little_ more privacy.
+a *little* more privacy.
 
 ### `VFile#toString([encoding])`
 

@@ -37,7 +37,6 @@ try {
 /* eslint-enable no-undef */
 
 test('vfile([options])', function(t) {
-  // eslint-disable-next-line new-cap
   t.ok(vfile() instanceof vfile, 'should work with new')
 
   t.ok(vfile() instanceof vfile, 'should work without `new`')
