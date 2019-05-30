@@ -9,12 +9,27 @@ module.exports = VFile
 var own = {}.hasOwnProperty
 var proto = VFile.prototype
 
-proto.toString = toString
-
 // Order of setting (least specific to most), we need this because otherwise
 // `{stem: 'a', path: '~/b.js'}` would throw, as a path is needed before a
 // stem can be set.
 var order = ['history', 'path', 'basename', 'stem', 'extname', 'dirname']
+
+proto.toString = toString
+
+// Access full path (`~/index.min.js`).
+Object.defineProperty(proto, 'path', {get: getPath, set: setPath})
+
+// Access parent path (`~`).
+Object.defineProperty(proto, 'dirname', {get: getDirname, set: setDirname})
+
+// Access basename (`index.min.js`).
+Object.defineProperty(proto, 'basename', {get: getBasename, set: setBasename})
+
+// Access extname (`.js`).
+Object.defineProperty(proto, 'extname', {get: getExtname, set: setExtname})
+
+// Access stem (`index.min`).
+Object.defineProperty(proto, 'stem', {get: getStem, set: setStem})
 
 // Construct a new file.
 function VFile(options) {
@@ -59,81 +74,71 @@ function VFile(options) {
   }
 }
 
-// Access full path (`~/index.min.js`).
-Object.defineProperty(proto, 'path', {
-  get: function() {
-    return this.history[this.history.length - 1]
-  },
-  set: function(path) {
-    assertNonEmpty(path, 'path')
+function getPath() {
+  return this.history[this.history.length - 1]
+}
 
-    if (path !== this.path) {
-      this.history.push(path)
-    }
+function setPath(path) {
+  assertNonEmpty(path, 'path')
+
+  if (path !== this.path) {
+    this.history.push(path)
   }
-})
+}
 
-// Access parent path (`~`).
-Object.defineProperty(proto, 'dirname', {
-  get: function() {
-    return typeof this.path === 'string' ? path.dirname(this.path) : undefined
-  },
-  set: function(dirname) {
-    assertPath(this.path, 'dirname')
-    this.path = path.join(dirname || '', this.basename)
-  }
-})
+function getDirname() {
+  return typeof this.path === 'string' ? path.dirname(this.path) : undefined
+}
 
-// Access basename (`index.min.js`).
-Object.defineProperty(proto, 'basename', {
-  get: function() {
-    return typeof this.path === 'string' ? path.basename(this.path) : undefined
-  },
-  set: function(basename) {
-    assertNonEmpty(basename, 'basename')
-    assertPart(basename, 'basename')
-    this.path = path.join(this.dirname || '', basename)
-  }
-})
+function setDirname(dirname) {
+  assertPath(this.path, 'dirname')
+  this.path = path.join(dirname || '', this.basename)
+}
 
-// Access extname (`.js`).
-Object.defineProperty(proto, 'extname', {
-  get: function() {
-    return typeof this.path === 'string' ? path.extname(this.path) : undefined
-  },
-  set: function(extname) {
-    var ext = extname || ''
+function getBasename() {
+  return typeof this.path === 'string' ? path.basename(this.path) : undefined
+}
 
-    assertPart(ext, 'extname')
-    assertPath(this.path, 'extname')
+function setBasename(basename) {
+  assertNonEmpty(basename, 'basename')
+  assertPart(basename, 'basename')
+  this.path = path.join(this.dirname || '', basename)
+}
 
-    if (ext) {
-      if (ext.charAt(0) !== '.') {
-        throw new Error('`extname` must start with `.`')
-      }
+function getExtname() {
+  return typeof this.path === 'string' ? path.extname(this.path) : undefined
+}
 
-      if (ext.indexOf('.', 1) !== -1) {
-        throw new Error('`extname` cannot contain multiple dots')
-      }
+function setExtname(extname) {
+  var ext = extname || ''
+
+  assertPart(ext, 'extname')
+  assertPath(this.path, 'extname')
+
+  if (ext) {
+    if (ext.charAt(0) !== '.') {
+      throw new Error('`extname` must start with `.`')
     }
 
-    this.path = replace(this.path, ext)
+    if (ext.indexOf('.', 1) !== -1) {
+      throw new Error('`extname` cannot contain multiple dots')
+    }
   }
-})
 
-// Access stem (`index.min`).
-Object.defineProperty(proto, 'stem', {
-  get: function() {
-    return typeof this.path === 'string'
-      ? path.basename(this.path, this.extname)
-      : undefined
-  },
-  set: function(stem) {
-    assertNonEmpty(stem, 'stem')
-    assertPart(stem, 'stem')
-    this.path = path.join(this.dirname || '', stem + (this.extname || ''))
-  }
-})
+  this.path = replace(this.path, ext)
+}
+
+function getStem() {
+  return typeof this.path === 'string'
+    ? path.basename(this.path, this.extname)
+    : undefined
+}
+
+function setStem(stem) {
+  assertNonEmpty(stem, 'stem')
+  assertPart(stem, 'stem')
+  this.path = path.join(this.dirname || '', stem + (this.extname || ''))
+}
 
 // Get the value of the file.
 function toString(encoding) {
