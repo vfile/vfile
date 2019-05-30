@@ -77,11 +77,6 @@
   "xo": {
     "prettier": true,
     "esnext": false,
-    "rules": {
-      "no-var": "off",
-      "prefer-arrow-callback": "off",
-      "object-shorthand": "off"
-    },
     "ignores": [
       "vfile.js"
     ]
