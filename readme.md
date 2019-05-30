@@ -1,18 +1,42 @@
 # [![vfile][]][unified]
 
-[![Travis][build-badge]][build]
+[![Build][build-badge]][build]
 [![Coverage][coverage-badge]][coverage]
 [![Downloads][downloads-badge]][downloads]
 [![Size][size-badge]][size]
+[![Sponsors][sponsors-badge]][collective]
+[![Backers][backers-badge]][collective]
 [![Chat][chat-badge]][chat]
 
-**vfile** is a virtual file format part of the
-[unified][] [collective][].
+**vfile** is a virtual file format part of the [unified][] [collective][].
 
-* * *
+## Intro
 
-**Announcing the unified collective!  🎉
-[Read more about it on Medium »][announcement]**
+**vfile** is a virtual file format used by [**unified**][unified], a text
+processing umbrella (it powers [**retext**][retext] for natural language,
+[**remark**][remark] for markdown, and [**rehype**][rehype] for HTML).
+Each processors that parse, transform, and compile text, and need a virtual
+representation of files and a place to store [messages][] about them.
+Plus, they work in the browser.
+**vfile** provides these requirements at a small size.
+
+*   Visit [`unified.js.org`][website] and try its [guides][] for an overview
+*   Read [unified][]’s readme for a technical intro
+*   Follow us on [Medium][] and [Twitter][] to see what we’re up to
+*   Check out [Contribute][] below to find out how to help out
+
+> **vfile** is different from the excellent [**vinyl**][vinyl] in that it has
+> a smaller API, a smaller size, and focuses on [messages][].
+
+vfile can be used anywhere where files need a lightweight representation.
+For example, it’s used in:
+
+*   [`documentation`](https://github.com/documentationjs/documentation)
+    — The documentation system for modern JavaScript
+*   [`awoo`](https://github.com/awoojs/awoo)
+    — Declarative small site generator
+*   [`geojsonhint`](https://github.com/mapbox/geojsonhint)
+    — Complete, fast, standards-based validation for geojson
 
 ## Sponsors
 
@@ -46,47 +70,19 @@
   </tr>
 </table>
 
-## Intro
+[**Read more about the unified collective on Medium »**][announcement]
 
-**vfile** is a virtual file format used by [**unified**][unified], a text
-processing umbrella (it powers [**retext**][retext] for natural language,
-[**remark**][remark] for markdown, and [**rehype**][rehype] for HTML).
-Each processors that parse, transform, and compile text, and need a virtual
-representation of files and a place to store [messages][] about them.
-Plus, they work in the browser.
-**vfile** provides these requirements at a small size.
-
-*   Visit [`unified.js.org`][website] and try its [guides][] for an overview
-*   Read [unified][]’s readme for a technical intro
-*   Follow us on [Medium][] and [Twitter][] to see what we’re up to
-*   Check out [Contribute][] below to find out how to help out
-
-> **vfile** is different from the excellent [**vinyl**][vinyl] in that it has
-> a smaller API, a smaller size, and focuses on [messages][].
-
-vfile can be used anywhere where files need a lightweight representation.
-For example, it’s used in:
-
-*   [`documentation`](https://github.com/documentationjs/documentation)
-    — The documentation system for modern JavaScript
-*   [`awoo`](https://github.com/awoojs/awoo)
-    — Declarative small site generator
-*   [`geojsonhint`](https://github.com/mapbox/geojsonhint)
-    — Complete, fast, standards-based validation for geojson
-
-## Installation
+## Install
 
 [npm][]:
 
-```bash
+```sh
 npm install vfile
 ```
 
 ## Table of Contents
 
 *   [Usage](#usage)
-*   [Utilities](#utilities)
-*   [Reporters](#reporters)
 *   [API](#api)
     *   [VFile(\[options\])](#vfileoptions)
     *   [vfile.contents](#vfilecontents)
@@ -103,6 +99,8 @@ npm install vfile
     *   [VFile#message(reason\[, position\]\[, origin\])](#vfilemessagereason-position-origin)
     *   [VFile#info(reason\[, position\]\[, origin\])](#vfileinforeason-position-origin)
     *   [VFile#fail(reason\[, position\]\[, origin\])](#vfilefailreason-position-origin)
+*   [Utilities](#utilities)
+*   [Reporters](#reporters)
 *   [Contribute](#contribute)
 *   [Acknowledgments](#acknowledgments)
 *   [License](#license)
@@ -149,56 +147,6 @@ Yields:
     fatal: false } ]
 ```
 
-## Utilities
-
-The following list of projects includes tools for working with virtual
-files.
-See **[unist][]** for projects working with nodes.
-
-*   [`convert-vinyl-to-vfile`](https://github.com/dustinspecker/convert-vinyl-to-vfile)
-    — Convert from [Vinyl][]
-*   [`is-vfile-message`](https://github.com/shinnn/is-vfile-message)
-    — Check if a value is a `VMessage` object
-*   [`to-vfile`](https://github.com/vfile/to-vfile)
-    — Create a virtual file from a file-path (and optionally read it)
-*   [`vfile-find-down`](https://github.com/vfile/vfile-find-down)
-    — Find files by searching the file system downwards
-*   [`vfile-find-up`](https://github.com/vfile/vfile-find-up)
-    — Find files by searching the file system upwards
-*   [`vfile-glob`](https://github.com/shinnn/vfile-glob)
-    — Find files by glob patterns
-*   [`vfile-is`](https://github.com/vfile/vfile-is)
-    — Check if a file passes a test
-*   [`vfile-location`](https://github.com/vfile/vfile-location)
-    — Convert between line/column- and range-based locations
-*   [`vfile-message`](https://github.com/vfile/vfile-message)
-    — Create a `VMessage` object (used in `vfile` itself)
-*   [`vfile-messages-to-vscode-diagnostics`](https://github.com/shinnn/vfile-messages-to-vscode-diagnostics)
-    — Convert to VS Code diagnostics
-*   [`vfile-statistics`](https://github.com/vfile/vfile-statistics)
-    — Count messages per category
-*   [`vfile-sort`](https://github.com/vfile/vfile-sort)
-    — Sort messages by line/column
-*   [`vfile-to-eslint`](https://github.com/vfile/vfile-to-eslint)
-    — Convert vfiles to ESLint formatter compatible output
-
-## Reporters
-
-The following list of projects show linting results for given virtual files.
-Reporters *must* accept `Array.<VFile>` as their first argument, and return
-`string`.
-Reporters *may* accept other values too, in which case it’s suggested to stick
-to `vfile-reporter`s interface.
-
-*   [`vfile-reporter`][reporter]
-    — Stylish reporter
-*   [`vfile-reporter-json`](https://github.com/vfile/vfile-reporter-json)
-    — JSON reporter
-*   [`vfile-reporter-folder-json`](https://github.com/vfile/vfile-reporter-folder-json)
-    — JSON reporter with a folder structure
-*   [`vfile-reporter-pretty`](https://github.com/vfile/vfile-reporter-pretty)
-    — Pretty reporter
-
 ## API
 
 ### `VFile([options])`
@@ -208,12 +156,11 @@ If `options` is `string` or `Buffer`, treats it as `{contents: options}`.
 If `options` is a `VFile`, returns it.
 All other options are set on the newly created `vfile`.
 
-Path related properties are set in the following order (least specific
-to most specific): `history`, `path`, `basename`, `stem`, `extname`,
-`dirname`.
+Path related properties are set in the following order (least specific to most
+specific): `history`, `path`, `basename`, `stem`, `extname`, `dirname`.
 
-It’s not possible to set either `dirname` or `extname` without setting
-either `history`, `path`, `basename`, or `stem` as well.
+It’s not possible to set either `dirname` or `extname` without setting either
+`history`, `path`, `basename`, or `stem` as well.
 
 ###### Example
 
@@ -311,22 +258,65 @@ Calls [`#message()`][message] internally.
 
 [`VMessage`][vmessage].
 
+## Utilities
+
+The following list of projects includes tools for working with virtual files.
+See **[unist][]** for projects working with nodes.
+
+*   [`convert-vinyl-to-vfile`](https://github.com/dustinspecker/convert-vinyl-to-vfile)
+    — Convert from [Vinyl][]
+*   [`is-vfile-message`](https://github.com/shinnn/is-vfile-message)
+    — Check if a value is a `VMessage` object
+*   [`to-vfile`](https://github.com/vfile/to-vfile)
+    — Create a virtual file from a file-path (and optionally read it)
+*   [`vfile-find-down`](https://github.com/vfile/vfile-find-down)
+    — Find files by searching the file system downwards
+*   [`vfile-find-up`](https://github.com/vfile/vfile-find-up)
+    — Find files by searching the file system upwards
+*   [`vfile-glob`](https://github.com/shinnn/vfile-glob)
+    — Find files by glob patterns
+*   [`vfile-is`](https://github.com/vfile/vfile-is)
+    — Check if a file passes a test
+*   [`vfile-location`](https://github.com/vfile/vfile-location)
+    — Convert between line/column- and range-based locations
+*   [`vfile-message`](https://github.com/vfile/vfile-message)
+    — Create a `VMessage` object (used in `vfile` itself)
+*   [`vfile-messages-to-vscode-diagnostics`](https://github.com/shinnn/vfile-messages-to-vscode-diagnostics)
+    — Convert to VS Code diagnostics
+*   [`vfile-statistics`](https://github.com/vfile/vfile-statistics)
+    — Count messages per category
+*   [`vfile-sort`](https://github.com/vfile/vfile-sort)
+    — Sort messages by line/column
+*   [`vfile-to-eslint`](https://github.com/vfile/vfile-to-eslint)
+    — Convert vfiles to ESLint formatter compatible output
+
+## Reporters
+
+The following list of projects show linting results for given virtual files.
+Reporters *must* accept `Array.<VFile>` as their first argument, and return
+`string`.
+Reporters *may* accept other values too, in which case it’s suggested to stick
+to `vfile-reporter`s interface.
+
+*   [`vfile-reporter`][reporter]
+    — Stylish reporter
+*   [`vfile-reporter-json`](https://github.com/vfile/vfile-reporter-json)
+    — JSON reporter
+*   [`vfile-reporter-folder-json`](https://github.com/vfile/vfile-reporter-folder-json)
+    — JSON reporter with a folder structure
+*   [`vfile-reporter-pretty`](https://github.com/vfile/vfile-reporter-pretty)
+    — Pretty reporter
+
 ## Contribute
 
-**vfile** is built by people just like you!
-Check out [`contributing.md`][contributing] for ways to get started.
+See [`contributing.md`][contributing] in [`vfile/.github`][health] for ways to
+get started.
+See [`support.md`][support] for ways to get help.
+Ideas for new utilities and tools can be posted in [`vfile/ideas`][ideas].
 
 This project has a [Code of Conduct][coc].
 By interacting with this repository, organisation, or community you agree to
 abide by its terms.
-
-Want to chat with the community and contributors?
-Join us in [spectrum][chat]!
-
-Have an idea for a cool new utility or tool?
-That’s great!
-If you want feedback, help, or just to share it with the world you can do so by
-creating an issue in the [`vfile/ideas`][ideas] repository!
 
 ## Acknowledgments
 
@@ -341,8 +331,8 @@ Thanks to
 [**@brendo**](https://github.com/brendo),
 [**@shinnn**](https://github.com/shinnn),
 [**@KyleAMathews**](https://github.com/KyleAMathews),
-[**@sindresorhus**](https://github.com/sindresorhus),
-and [**@denysdovhan**](https://github.com/denysdovhan)
+[**@sindresorhus**](https://github.com/sindresorhus), and
+[**@denysdovhan**](https://github.com/denysdovhan)
 for contributing commits since!
 
 ## License
@@ -351,7 +341,7 @@ for contributing commits since!
 
 <!-- Definitions -->
 
-[build-badge]: https://img.shields.io/travis/vfile/vfile/master.svg
+[build-badge]: https://img.shields.io/travis/vfile/vfile.svg
 
 [build]: https://travis-ci.org/vfile/vfile
 
@@ -367,11 +357,25 @@ for contributing commits since!
 
 [size]: https://bundlephobia.com/result?p=vfile
 
+[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
+
+[backers-badge]: https://opencollective.com/unified/backers/badge.svg
+
+[collective]: https://opencollective.com/unified
+
 [chat-badge]: https://img.shields.io/badge/join%20the%20community-on%20spectrum-7b16ff.svg
 
 [chat]: https://spectrum.chat/unified/vfile
 
 [npm]: https://docs.npmjs.com/cli/install
+
+[contributing]: https://github.com/vfile/.github/blob/master/contributing.md
+
+[support]: https://github.com/vfile/.github/blob/master/support.md
+
+[health]: https://github.com/vfile/.github
+
+[coc]: https://github.com/vfile/.github/blob/master/code-of-conduct.md
 
 [license]: license
 
@@ -405,13 +409,7 @@ for contributing commits since!
 
 [contribute]: #contribute
 
-[contributing]: contributing.md
-
-[coc]: code-of-conduct.md
-
 [ideas]: https://github.com/vfile/ideas
-
-[collective]: https://opencollective.com/unified
 
 [medium]: https://medium.com/unifiedjs
 
