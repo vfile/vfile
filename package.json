@@ -32,13 +32,13 @@
     "index.js"
   ],
   "dependencies": {
-    "@types/unist": "^2.0.0",
     "is-buffer": "^2.0.0",
     "replace-ext": "1.0.0",
     "unist-util-stringify-position": "^2.0.0",
     "vfile-message": "^2.0.0"
   },
   "devDependencies": {
+    "@types/unist": "^2.0.0",
     "browserify": "^16.0.0",
     "dtslint": "^0.7.0",
     "nyc": "^14.0.0",
