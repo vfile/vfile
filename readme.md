@@ -54,9 +54,9 @@ For example, it’s used in:
       <br><br>🥇
       <a href="https://www.gatsbyjs.org">Gatsby</a></td>
     <td width="20%" align="center">
-      <a href="https://compositor.io"><img src="https://avatars1.githubusercontent.com/u/19245838?s=400&v=4"></a>
-      <br><br>🥉
-      <a href="https://compositor.io">Compositor</a>
+      <a href="https://www.netlify.com"><img src="https://avatars1.githubusercontent.com/u/7892489?s=400&v=4"></a>
+      <br><br>🥇
+      <a href="https://www.netlify.com">Netlify</a>
     </td>
     <td width="20%" align="center">
       <a href="https://www.holloway.com"><img src="https://avatars1.githubusercontent.com/u/35904294?s=400&v=4"></a>
