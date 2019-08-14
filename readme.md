@@ -20,7 +20,7 @@ representation of files and a place to store [messages][] about them.
 Plus, they work in the browser.
 **vfile** provides these requirements at a small size.
 
-*   Visit [`unified.js.org`][website] and try its [guides][] for an overview
+*   Visit [`unifiedjs.com`][website] and try its [guides][] for an overview
 *   Read [unified][]’s readme for a technical intro
 *   Follow us on [Medium][] and [Twitter][] to see what we’re up to
 *   Check out [Contribute][] below to find out how to help out
@@ -403,9 +403,9 @@ for contributing commits since!
 
 [message]: #vfilemessagereason-position-origin
 
-[website]: https://unified.js.org
+[website]: https://unifiedjs.com
 
-[guides]: https://unified.js.org/#guides
+[guides]: https://unifiedjs.com/#guides
 
 [contribute]: #contribute
 
