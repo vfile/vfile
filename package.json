@@ -16,6 +16,10 @@
   ],
   "repository": "vfile/vfile",
   "bugs": "https://github.com/vfile/vfile/issues",
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/unified"
+  },
   "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
   "contributors": [
     "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
