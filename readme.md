@@ -1,5 +1,6 @@
 # [![vfile][]][unified]
 
+[![GitHub CI][github-ci-badge]][github-ci]
 [![Build][build-badge]][build]
 [![Coverage][coverage-badge]][coverage]
 [![Downloads][downloads-badge]][downloads]
@@ -340,6 +341,10 @@ for contributing commits since!
 [MIT][license] © [Titus Wormer][author]
 
 <!-- Definitions -->
+
+[github-ci-badge]: https://github.com/vfile/vfile/workflows/CI/badge.svg
+
+[github-ci]: https://github.com/vfile/vfile/actions
 
 [build-badge]: https://img.shields.io/travis/vfile/vfile.svg
 
