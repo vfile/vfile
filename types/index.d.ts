@@ -5,10 +5,13 @@ import * as vfileMessage from 'vfile-message'
 
 declare namespace vfile {
   type VFileContents = string | Buffer
-  type VFileCompatible = VFile | VFileOptions | VFileContents
+  type VFileCompatible<Contents = VFileContents> =
+    | VFile<Contents>
+    | VFileOptions<Contents>
+    | Contents
 
-  interface VFileOptions {
-    contents?: VFileContents
+  interface VFileOptions<Contents = VFileContents> {
+    contents?: Contents
     path?: string
     basename?: string
     stem?: string
@@ -19,7 +22,7 @@ declare namespace vfile {
     [key: string]: any
   }
 
-  interface VFile {
+  interface VFile<Contents = VFileContents> {
     /**
      * Create a new virtual file. If `options` is `string` or `Buffer`, treats it as `{contents: options}`.
      * If `options` is a `VFile`, returns it. All other options are set on the newly created `vfile`.
@@ -30,7 +33,9 @@ declare namespace vfile {
      *
      * @param options If `options` is `string` or `Buffer`, treats it as `{contents: options}`. If `options` is a `VFile`, returns it. All other options are set on the newly created `vfile`.
      */
-    <F extends VFile>(input?: VFileContents | F | VFileOptions): F
+    <C = VFileContents, F extends VFile<C> = VFile<C>>(
+      input?: (C extends VFileContents ? VFileContents : never) | F | VFileOptions<C>
+    ): F
     /**
      * List of file-paths the file moved between.
      */
@@ -47,7 +52,7 @@ declare namespace vfile {
     /**
      * Raw value.
      */
-    contents: VFileContents
+    contents: Contents
     /**
      * Path of `vfile`.
      * Cannot be nullified.

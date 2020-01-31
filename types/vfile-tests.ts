@@ -78,7 +78,7 @@ interface CustomVFile extends vfile.VFile {
   }
 }
 
-const customVFile = vfile<CustomVFile>({
+const customVFile = vfile<CustomVFile["contents"], CustomVFile>({
   path: '~/example.txt',
   contents: 'Alpha *braavo* charlie.',
   custom: 'Custom tango',
@@ -91,3 +91,23 @@ customVFile.custom = 'test'
 customVFile.data.custom = 1234
 
 const copiedFile: CustomVFile = vfile(customVFile)
+
+interface CustomContent {
+  foo: string
+}
+
+const customContentVFile = vfile<CustomContent>({
+  contents: {
+    foo: 'bar'
+  }
+})
+customContentVFile.contents.foo = 'baz'
+customContentVFile.contents.baz = 'foobar' // $ExpectError
+
+const invalidContent = {contents: {baz: 'foobar'}}
+vfile<CustomContent>(invalidContent) // $ExpectError
+
+const testContentsType = vfile('foo')
+testContentsType.contents.baz = 'foobar' // $ExpectError
+
+vfile<CustomContent>('foo'); // $ExpectError
