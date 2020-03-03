@@ -308,6 +308,8 @@ to `vfile-reporter`s interface.
     — JSON reporter with a folder structure
 *   [`vfile-reporter-pretty`](https://github.com/vfile/vfile-reporter-pretty)
     — Pretty reporter
+*   [`vfile-reporter-junit`](https://github.com/kellyselden/vfile-reporter-junit)
+    — jUnit reporter
 
 ## Contribute
 
