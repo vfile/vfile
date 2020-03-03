@@ -21,12 +21,13 @@ representation of files and a place to store [messages][] about them.
 Plus, they work in the browser.
 **vfile** provides these requirements at a small size.
 
-*   Visit [`unifiedjs.com`][website] and try its [guides][] for an overview
+*   Visit [`unifiedjs.com`][website] and see its [learn][] section for an
+    overview
 *   Read [unified][]’s readme for a technical intro
 *   Follow us on [Medium][] and [Twitter][] to see what we’re up to
 *   Check out [Contribute][] below to find out how to help out
 
-> **vfile** is different from the excellent [**vinyl**][vinyl] in that it has
+> **vfile** is different from the excellent [`vinyl`][vinyl] in that it has
 > a smaller API, a smaller size, and focuses on [messages][].
 
 vfile can be used anywhere where files need a lightweight representation.
@@ -81,9 +82,9 @@ For example, it’s used in:
 npm install vfile
 ```
 
-## Table of Contents
+## Contents
 
-*   [Usage](#usage)
+*   [Use](#use)
 *   [API](#api)
     *   [`VFile([options])`](#vfileoptions)
     *   [`vfile.contents`](#vfilecontents)
@@ -106,7 +107,7 @@ npm install vfile
 *   [Acknowledgments](#acknowledgments)
 *   [License](#license)
 
-## Usage
+## Use
 
 ```js
 var vfile = require('vfile')
@@ -315,8 +316,8 @@ get started.
 See [`support.md`][support] for ways to get help.
 Ideas for new utilities and tools can be posted in [`vfile/ideas`][ideas].
 
-This project has a [Code of Conduct][coc].
-By interacting with this repository, organisation, or community you agree to
+This project has a [code of conduct][coc].
+By interacting with this repository, organization, or community you agree to
 abide by its terms.
 
 ## Acknowledgments
@@ -368,7 +369,7 @@ for contributing commits since!
 
 [collective]: https://opencollective.com/unified
 
-[chat-badge]: https://img.shields.io/badge/join%20the%20community-on%20spectrum-7b16ff.svg
+[chat-badge]: https://img.shields.io/badge/chat-spectrum-7b16ff.svg
 
 [chat]: https://spectrum.chat/unified/vfile
 
@@ -410,7 +411,7 @@ for contributing commits since!
 
 [website]: https://unifiedjs.com
 
-[guides]: https://unifiedjs.com/#guides
+[learn]: https://unifiedjs.com/learn/
 
 [contribute]: #contribute
 
