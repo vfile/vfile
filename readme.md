@@ -316,7 +316,7 @@ to `vfile-reporter`s interface.
     — create a jUnit report
 *   [`vfile-reporter-position`](https://github.com/Hocdoc/vfile-reporter-position)
     — create a report with content excerpts
-    
+
 ## Contribute
 
 See [`contributing.md`][contributing] in [`vfile/.github`][health] for ways to
