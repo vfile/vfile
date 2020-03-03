@@ -55,8 +55,9 @@ interface CustomData {
   message: string
 }
 function isCustomData(data: any): data is CustomData {
-  return data != null && typeof data.message === 'string'
+  return data !== null && data !== undefined && typeof data.message === 'string'
 }
+
 function doSomethingWithCustomData(data: CustomData) {}
 const customData: CustomData = {
   message: 'tango'
@@ -68,6 +69,7 @@ const fileWithData = vfile({
 if (isCustomData(fileWithData.data)) {
   doSomethingWithCustomData(fileWithData.data)
 }
+
 doSomethingWithCustomData(fileWithData.data) // $ExpectError
 
 // Extending vfile
