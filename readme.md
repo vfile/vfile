@@ -266,31 +266,35 @@ The following list of projects includes tools for working with virtual files.
 See **[unist][]** for projects working with nodes.
 
 *   [`convert-vinyl-to-vfile`](https://github.com/dustinspecker/convert-vinyl-to-vfile)
-    — Convert from [Vinyl][]
-*   [`is-vfile-message`](https://github.com/shinnn/is-vfile-message)
-    — Check if a value is a `VMessage` object
+    — transform from [Vinyl][] to vfile
 *   [`to-vfile`](https://github.com/vfile/to-vfile)
-    — Create a virtual file from a file-path (and optionally read it)
+    — create a vfile from a filepath
 *   [`vfile-find-down`](https://github.com/vfile/vfile-find-down)
-    — Find files by searching the file system downwards
+    — find files by searching the file system downwards
 *   [`vfile-find-up`](https://github.com/vfile/vfile-find-up)
-    — Find files by searching the file system upwards
+    — find files by searching the file system upwards
 *   [`vfile-glob`](https://github.com/shinnn/vfile-glob)
-    — Find files by glob patterns
+    — find files by glob patterns
 *   [`vfile-is`](https://github.com/vfile/vfile-is)
-    — Check if a file passes a test
+    — check if a vfile passes a test
 *   [`vfile-location`](https://github.com/vfile/vfile-location)
-    — Convert between line/column- and range-based locations
+    — convert between positional and offset locations
+*   [`vfile-matter`](https://github.com/vfile/vfile-matter)
+    — parse the YAML front matter
 *   [`vfile-message`](https://github.com/vfile/vfile-message)
-    — Create a `VMessage` object (used in `vfile` itself)
+    — create a vfile message
 *   [`vfile-messages-to-vscode-diagnostics`](https://github.com/shinnn/vfile-messages-to-vscode-diagnostics)
-    — Convert to VS Code diagnostics
-*   [`vfile-statistics`](https://github.com/vfile/vfile-statistics)
-    — Count messages per category
+    — transform vfile messages to VS Code diagnostics
+*   [`vfile-mkdirp`](https://github.com/vfile/vfile-mkdirp)
+    — make sure the directory of a vfile exists on the file system
+*   [`vfile-rename`](https://github.com/vfile/vfile-rename)
+    — rename the path parts of a vfile
 *   [`vfile-sort`](https://github.com/vfile/vfile-sort)
-    — Sort messages by line/column
+    — sort messages by line/column
+*   [`vfile-statistics`](https://github.com/vfile/vfile-statistics)
+    — count messages per category: failures, warnings, etc
 *   [`vfile-to-eslint`](https://github.com/vfile/vfile-to-eslint)
-    — Convert vfiles to ESLint formatter compatible output
+    — convert to ESLint formatter compatible output
 
 ## Reporters
 
@@ -301,15 +305,15 @@ Reporters *may* accept other values too, in which case it’s suggested to stick
 to `vfile-reporter`s interface.
 
 *   [`vfile-reporter`][reporter]
-    — Stylish reporter
+    — create a report
 *   [`vfile-reporter-json`](https://github.com/vfile/vfile-reporter-json)
-    — JSON reporter
+    — create a JSON report
 *   [`vfile-reporter-folder-json`](https://github.com/vfile/vfile-reporter-folder-json)
-    — JSON reporter with a folder structure
+    — create a JSON representation of vfiles
 *   [`vfile-reporter-pretty`](https://github.com/vfile/vfile-reporter-pretty)
-    — Pretty reporter
+    — create a pretty report
 *   [`vfile-reporter-junit`](https://github.com/kellyselden/vfile-reporter-junit)
-    — jUnit reporter
+    — create a jUnit report
 
 ## Contribute
 
