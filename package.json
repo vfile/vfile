@@ -4,6 +4,7 @@
   "description": "Virtual file format for text processing",
   "license": "MIT",
   "keywords": [
+    "vfile",
     "virtual",
     "file",
     "text",
@@ -12,7 +13,8 @@
     "warning",
     "error",
     "remark",
-    "retext"
+    "retext",
+    "rehype"
   ],
   "repository": "vfile/vfile",
   "bugs": "https://github.com/vfile/vfile/issues",
