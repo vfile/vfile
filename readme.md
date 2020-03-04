@@ -314,6 +314,8 @@ to `vfile-reporter`s interface.
     — create a pretty report
 *   [`vfile-reporter-junit`](https://github.com/kellyselden/vfile-reporter-junit)
     — create a jUnit report
+*   [`vfile-reporter-position`](https://github.com/Hocdoc/vfile-reporter-position)
+    — create a report with content excerpts
 
 ## Contribute
 
