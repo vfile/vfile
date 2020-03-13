@@ -4,11 +4,11 @@ import * as Unist from 'unist'
 import * as vfileMessage from 'vfile-message'
 
 declare namespace vfile {
-  type VFileContents = string | Buffer
-  type VFileCompatible = VFile | VFileOptions | VFileContents
+  type VFileValue = string | Buffer
+  type VFileCompatible = VFile | VFileOptions | VFileValue
 
   interface VFileOptions {
-    contents?: VFileContents
+    value?: VFileValue
     path?: string
     basename?: string
     stem?: string
@@ -21,16 +21,16 @@ declare namespace vfile {
 
   interface VFile {
     /**
-     * Create a new virtual file. If `options` is `string` or `Buffer`, treats it as `{contents: options}`.
+     * Create a new virtual file. If `options` is `string` or `Buffer`, treats it as `{value: options}`.
      * If `options` is a `VFile`, returns it. All other options are set on the newly created `vfile`.
      *
      * Path related properties are set in the following order (least specific to most specific): `history`, `path`, `basename`, `stem`, `extname`, `dirname`.
      *
      * It’s not possible to set either `dirname` or `extname` without setting either `history`, `path`, `basename`, or `stem` as well.
      *
-     * @param options If `options` is `string` or `Buffer`, treats it as `{contents: options}`. If `options` is a `VFile`, returns it. All other options are set on the newly created `vfile`.
+     * @param options If `options` is `string` or `Buffer`, treats it as `{value: options}`. If `options` is a `VFile`, returns it. All other options are set on the newly created `vfile`.
      */
-    <F extends VFile>(input?: VFileContents | F | VFileOptions): F
+    <F extends VFile>(input?: VFileValue | F | VFileOptions): F
     /**
      * List of file-paths the file moved between.
      */
@@ -47,7 +47,7 @@ declare namespace vfile {
     /**
      * Raw value.
      */
-    contents: VFileContents
+    value: VFileValue
     /**
      * Path of `vfile`.
      * Cannot be nullified.
@@ -80,8 +80,8 @@ declare namespace vfile {
      */
     cwd: string
     /**
-     * Convert contents of `vfile` to string.
-     * @param encoding If `contents` is a buffer, `encoding` is used to stringify buffers (default: `'utf8'`).
+     * Convert value of `vfile` to string.
+     * @param encoding If `value` is a buffer, `encoding` is used to stringify buffers (default: `'utf8'`).
      */
     toString: (encoding?: BufferEncoding) => string
     /**

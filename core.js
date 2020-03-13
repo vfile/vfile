@@ -40,7 +40,7 @@ function VFile(options) {
   if (!options) {
     options = {}
   } else if (typeof options === 'string' || buffer(options)) {
-    options = {contents: options}
+    options = {value: options}
   } else if ('message' in options && 'messages' in options) {
     return options
   }
@@ -142,7 +142,7 @@ function setStem(stem) {
 
 // Get the value of the file.
 function toString(encoding) {
-  var value = this.contents || ''
+  var value = this.value || ''
   return buffer(value) ? value.toString(encoding) : String(value)
 }
 

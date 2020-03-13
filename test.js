@@ -47,7 +47,7 @@ test('vfile([options])', function(t) {
     st.deepEqual(file.history, [])
     st.deepEqual(file.data, {})
     st.deepEqual(file.messages, [])
-    st.equal(file.contents, undefined)
+    st.equal(file.value, undefined)
     st.equal(file.path, undefined)
     st.equal(file.dirname, undefined)
     st.equal(file.basename, undefined)
@@ -60,7 +60,7 @@ test('vfile([options])', function(t) {
   t.test('should accept a string', function(st) {
     var file = vfile('alpha')
 
-    st.equal(file.contents, 'alpha')
+    st.equal(file.value, 'alpha')
 
     st.end()
   })
@@ -79,7 +79,7 @@ test('vfile([options])', function(t) {
     var file = vfile({path: fp})
 
     st.deepEqual(file.history, [fp])
-    st.equal(file.contents, undefined)
+    st.equal(file.value, undefined)
     st.equal(file.path, fp)
     st.equal(file.dirname, '~')
     st.equal(file.basename, 'example.md')
@@ -93,7 +93,7 @@ test('vfile([options])', function(t) {
     var file = vfile({basename: 'example.md'})
 
     st.deepEqual(file.history, ['example.md'])
-    st.equal(file.contents, undefined)
+    st.equal(file.value, undefined)
     st.equal(file.path, 'example.md')
     st.equal(file.dirname, '.')
     st.equal(file.basename, 'example.md')
@@ -111,7 +111,7 @@ test('vfile([options])', function(t) {
       'example.md',
       join('~', 'example.md')
     ])
-    st.equal(file.contents, undefined)
+    st.equal(file.value, undefined)
     st.equal(file.path, join('~', 'example.md'))
     st.equal(file.dirname, '~')
     st.equal(file.basename, 'example.md')
