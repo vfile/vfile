@@ -6,6 +6,10 @@ import * as vfileMessage from 'vfile-message'
 declare namespace vfile {
   type VFileContents = string | Buffer
   type VFileCompatible = VFile | VFileOptions | VFileContents
+  interface Settings {
+    [key: string]: unknown
+  }
+  type VFileReporter<T = Settings> = (files: VFile[], options: T) => string
 
   interface VFileOptions {
     contents?: VFileContents
