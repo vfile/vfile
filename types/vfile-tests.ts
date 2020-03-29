@@ -97,11 +97,14 @@ const copiedFile: CustomVFile = vfile(customVFile)
 const exampleSettings = {
   example: true
 }
-const settings: vfile.Settings = exampleSettings;
+const settings: vfile.Settings = exampleSettings
 
 interface CustomReporterSettings {
   example: boolean
 }
-const customReporter = (file: vfile.VFile[], settings: CustomReporterSettings) => "example"
+const customReporter = (
+  file: vfile.VFile[],
+  settings: CustomReporterSettings
+) => 'example'
 
-const reporter: vfile.VFileReporter<CustomReporterSettings> = customReporter;
+const reporter: vfile.VFileReporter<CustomReporterSettings> = customReporter
