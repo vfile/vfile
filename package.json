@@ -1,6 +1,6 @@
 {
   "name": "vfile",
-  "version": "4.0.3",
+  "version": "4.1.0",
   "description": "Virtual file format for text processing",
   "license": "MIT",
   "keywords": [
