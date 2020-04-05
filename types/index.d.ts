@@ -53,6 +53,12 @@ declare namespace vfile {
      */
     contents: VFileContents
     /**
+     * Associates the return value of an executed processor function.
+     * The property is only defined if the return value of the function
+     * is not undefined, null or of type VFileContents.
+     */
+    result?: unknown
+    /**
      * Path of `vfile`.
      * Cannot be nullified.
      */

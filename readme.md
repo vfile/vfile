@@ -88,6 +88,7 @@ npm install vfile
 *   [API](#api)
     *   [`VFile([options])`](#vfileoptions)
     *   [`vfile.contents`](#vfilecontents)
+    *   [`vfile.result`](#vfileresult)
     *   [`vfile.cwd`](#vfilecwd)
     *   [`vfile.path`](#vfilepath)
     *   [`vfile.basename`](#vfilebasename)
@@ -178,6 +179,10 @@ vfile({other: 'properties', are: 'copied', ov: {e: 'r'}})
 ### `vfile.contents`
 
 `Buffer`, `string`, `null` — Raw value.
+
+### `vfile.result`
+
+`unknown` — Associates the return value of an executed processor function.
 
 ### `vfile.cwd`
 
