@@ -36,12 +36,12 @@ try {
 }
 /* eslint-enable no-undef */
 
-test('vfile([options])', function(t) {
+test('vfile([options])', function (t) {
   t.ok(vfile() instanceof vfile, 'should work with new')
 
   t.ok(vfile() instanceof vfile, 'should work without `new`')
 
-  t.test('should accept missing options', function(st) {
+  t.test('should accept missing options', function (st) {
     var file = vfile()
 
     st.deepEqual(file.history, [])
@@ -57,7 +57,7 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('should accept a string', function(st) {
+  t.test('should accept a string', function (st) {
     var file = vfile('alpha')
 
     st.equal(file.contents, 'alpha')
@@ -65,7 +65,7 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('should accept a vfile', function(st) {
+  t.test('should accept a vfile', function (st) {
     var left = vfile()
     var right = vfile(left)
 
@@ -74,7 +74,7 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('should accept an object (1)', function(st) {
+  t.test('should accept an object (1)', function (st) {
     var fp = join('~', 'example.md')
     var file = vfile({path: fp})
 
@@ -89,7 +89,7 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('should accept a object (2)', function(st) {
+  t.test('should accept a object (2)', function (st) {
     var file = vfile({basename: 'example.md'})
 
     st.deepEqual(file.history, ['example.md'])
@@ -103,7 +103,7 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('should accept a object (2)', function(st) {
+  t.test('should accept a object (2)', function (st) {
     var file = vfile({stem: 'example', extname: '.md', dirname: '~'})
 
     st.deepEqual(file.history, [
@@ -121,7 +121,7 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('should set custom props', function(st) {
+  t.test('should set custom props', function (st) {
     var testing = [1, 2, 3]
     var file = vfile({custom: true, testing: testing})
 
@@ -131,7 +131,7 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('#toString()', function(st) {
+  t.test('#toString()', function (st) {
     st.equal(vfile().toString(), '', 'should return `""` without content')
 
     st.equal(
@@ -155,7 +155,7 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('.cwd', function(st) {
+  t.test('.cwd', function (st) {
     st.equal(vfile().cwd, process.cwd(), 'should start at `process.cwd()`')
 
     st.equal(vfile({cwd: '/'}).cwd, '/', 'should be settable')
@@ -163,7 +163,7 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('.path', function(st) {
+  t.test('.path', function (st) {
     var fp = join('~', 'example.md')
     var ofp = join('~', 'example', 'example.txt')
     var file = vfile()
@@ -189,7 +189,7 @@ test('vfile([options])', function(t) {
     )
 
     st.throws(
-      function() {
+      function () {
         file.path = null
       },
       /Error: `path` cannot be empty/,
@@ -199,7 +199,7 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('.basename', function(st) {
+  t.test('.basename', function (st) {
     var file = vfile()
 
     st.equal(file.basename, undefined, 'should start `undefined`')
@@ -221,7 +221,7 @@ test('vfile([options])', function(t) {
     file = vfile({path: join('~', 'alpha', 'bravo.md')})
 
     st.throws(
-      function() {
+      function () {
         file.basename = null
       },
       /Error: `basename` cannot be empty/,
@@ -229,7 +229,7 @@ test('vfile([options])', function(t) {
     )
 
     st.throws(
-      function() {
+      function () {
         file.basename = join('charlie', 'delta.js')
       },
       new RegExp(
@@ -241,14 +241,14 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('.dirname', function(st) {
+  t.test('.dirname', function (st) {
     var fp = join('~', 'alpha', 'bravo')
     var file = vfile()
 
     st.equal(file.dirname, undefined, 'should start undefined')
 
     st.throws(
-      function() {
+      function () {
         file.dirname = fp
       },
       /Error: Setting `dirname` requires `path` to be set too/,
@@ -273,14 +273,14 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('.extname', function(st) {
+  t.test('.extname', function (st) {
     var fp = join('~', 'alpha', 'bravo')
     var file = vfile()
 
     st.equal(file.extname, undefined, 'should start `undefined`')
 
     st.throws(
-      function() {
+      function () {
         file.extname = '.git'
       },
       /Error: Setting `extname` requires `path` to be set too/,
@@ -296,7 +296,7 @@ test('vfile([options])', function(t) {
     st.deepEqual(file.history, [fp, fp + '.md'], 'should record changes')
 
     st.throws(
-      function() {
+      function () {
         file.extname = 'txt'
       },
       /Error: `extname` must start with `.`/,
@@ -304,7 +304,7 @@ test('vfile([options])', function(t) {
     )
 
     st.throws(
-      function() {
+      function () {
         file.extname = '..md'
       },
       /Error: `extname` cannot contain multiple dots/,
@@ -318,7 +318,7 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('.stem', function(st) {
+  t.test('.stem', function (st) {
     var file = vfile()
 
     st.equal(file.stem, undefined, 'should start `undefined`')
@@ -332,7 +332,7 @@ test('vfile([options])', function(t) {
     st.equal(file.stem, 'charlie', 'should change')
 
     st.throws(
-      function() {
+      function () {
         file.stem = null
       },
       /Error: `stem` cannot be empty/,
@@ -340,7 +340,7 @@ test('vfile([options])', function(t) {
     )
 
     st.throws(
-      function() {
+      function () {
         file.stem = join('charlie', 'delta.js')
       },
       new RegExp(
@@ -352,7 +352,7 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('#message(reason[, position][, origin])', function(st) {
+  t.test('#message(reason[, position][, origin])', function (st) {
     var fp = join('~', 'example.md')
     var file
     var message
@@ -395,10 +395,7 @@ test('vfile([options])', function(t) {
     )
 
     st.equal(
-      message.stack
-        .split('\n')
-        .slice(0, 2)
-        .join('\n'),
+      message.stack.split('\n').slice(0, 2).join('\n'),
       [
         'ReferenceError: variable is not defined',
         '    at Object.<anonymous> (test.js:1:1)'
@@ -411,10 +408,7 @@ test('vfile([options])', function(t) {
     st.equal(message.message, 'foo', 'should accept a changed error (1)')
 
     st.equal(
-      message.stack
-        .split('\n')
-        .slice(0, 2)
-        .join('\n'),
+      message.stack.split('\n').slice(0, 2).join('\n'),
       ['ReferenceError: foo', '    at Object.<anonymous> (test.js:1:1)'].join(
         '\n'
       ),
@@ -430,10 +424,7 @@ test('vfile([options])', function(t) {
     )
 
     st.equal(
-      message.stack
-        .split('\n')
-        .slice(0, 4)
-        .join('\n'),
+      message.stack.split('\n').slice(0, 4).join('\n'),
       [
         'ReferenceError: foo',
         'bar',
@@ -492,13 +483,13 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('#fail(reason[, position][, origin])', function(st) {
+  t.test('#fail(reason[, position][, origin])', function (st) {
     var fp = join('~', 'example.md')
     var file = vfile({path: fp})
     var message
 
     st.throws(
-      function() {
+      function () {
         file.fail('Foo', {line: 1, column: 3}, 'baz:qux')
       },
       /1:3: Foo/,
@@ -526,7 +517,7 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('#info(reason[, position][, origin])', function(st) {
+  t.test('#info(reason[, position][, origin])', function (st) {
     var fp = join('~', 'example.md')
     var file = vfile({path: fp})
     var message
