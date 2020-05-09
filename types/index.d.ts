@@ -5,15 +5,12 @@ import * as vfileMessage from 'vfile-message'
 
 declare namespace vfile {
   /**
-   * Type must have the same base as Node.js Buffer
+   * VFileContents can either be text, or a `Buffer`-like structure
+   * @remarks
+   * This does not directly use type `Buffer`, because it can also be used in a browser context.
+   * Instead this leverages `Uint8Array` which is the base type for `Buffer`, and a native JavaScript construct.
    */
-  type BufferLike = Uint8Array
-  /**
-   * Type must have same base as Node.js BufferEncoding
-   */
-  type BufferEncodingLike = string
-
-  type VFileContents = string | BufferLike
+  type VFileContents = string | Uint8Array
   type VFileCompatible = VFile | VFileOptions | VFileContents
   interface Settings {
     [key: string]: unknown
@@ -95,8 +92,11 @@ declare namespace vfile {
     /**
      * Convert contents of `vfile` to string.
      * @param encoding If `contents` is a buffer, `encoding` is used to stringify buffers (default: `'utf8'`).
+     * @remarks
+     * This can also be used in a browser context, this accepts the same values as Node's `BufferEncoding`,
+     * but does not directly reference the type for compatibility.
      */
-    toString: (encoding?: BufferEncodingLike) => string
+    toString: (encoding?: string) => string
     /**
      * Associates a message with the file for `reason` at `position`.
      * When an error is passed in as `reason`, copies the stack.
