@@ -4,7 +4,16 @@ import * as Unist from 'unist'
 import * as vfileMessage from 'vfile-message'
 
 declare namespace vfile {
-  type VFileContents = string | Buffer
+  /**
+   * Type must have the same base as Node.js Buffer
+   */
+  type BufferLike = Uint8Array
+  /**
+   * Type must have same base as Node.js BufferEncoding
+   */
+  type BufferEncodingLike = string
+
+  type VFileContents = string | BufferLike
   type VFileCompatible = VFile | VFileOptions | VFileContents
   interface Settings {
     [key: string]: unknown
@@ -87,7 +96,7 @@ declare namespace vfile {
      * Convert contents of `vfile` to string.
      * @param encoding If `contents` is a buffer, `encoding` is used to stringify buffers (default: `'utf8'`).
      */
-    toString: (encoding?: BufferEncoding) => string
+    toString: (encoding?: BufferEncodingLike) => string
     /**
      * Associates a message with the file for `reason` at `position`.
      * When an error is passed in as `reason`, copies the stack.
