@@ -6,12 +6,22 @@ import * as vfileMessage from 'vfile-message'
 declare namespace vfile {
   /**
    * Encodings supported by the buffer class
-   * 
+   *
    * @remarks
    * This is a copy of the typing from Node, copied to prevent Node globals from being needed.
    * Copied from https://github.com/DefinitelyTyped/DefinitelyTyped/blob/a2bc1d868d81733a8969236655fa600bd3651a7b/types/node/globals.d.ts#L174
    */
-  type BufferEncoding = "ascii" | "utf8" | "utf-8" | "utf16le" | "ucs2" | "ucs-2" | "base64" | "latin1" | "binary" | "hex";
+  type BufferEncoding =
+    | 'ascii'
+    | 'utf8'
+    | 'utf-8'
+    | 'utf16le'
+    | 'ucs2'
+    | 'ucs-2'
+    | 'base64'
+    | 'latin1'
+    | 'binary'
+    | 'hex'
 
   /**
    * VFileContents can either be text, or a Buffer like structure
