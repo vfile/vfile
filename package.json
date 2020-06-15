@@ -53,10 +53,10 @@
     "remark-preset-wooorm": "^7.0.0",
     "tape": "^5.0.0",
     "tinyify": "^2.0.0",
-    "xo": "^0.30.0"
+    "xo": "^0.32.0"
   },
   "scripts": {
-    "format": "remark . -qfo && prettier --write \"**/*.{js,ts}\" && xo --fix",
+    "format": "remark . -qfo && prettier . --write && xo --fix",
     "build-bundle": "browserify . -s VFile > vfile.js",
     "build-mangle": "browserify . -s VFile -p tinyify > vfile.min.js",
     "build": "npm run build-bundle && npm run build-mangle",
