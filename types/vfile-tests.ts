@@ -108,3 +108,5 @@ const customReporter = (
 ) => 'example'
 
 const reporter: vfile.VFileReporter<CustomReporterSettings> = customReporter
+
+const result: unknown = file.result
