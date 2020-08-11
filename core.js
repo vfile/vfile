@@ -1,6 +1,7 @@
 'use strict'
 
 var path = require('path')
+var process = require('process')
 var replace = require('replace-ext')
 var buffer = require('is-buffer')
 
