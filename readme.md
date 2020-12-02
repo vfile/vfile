@@ -1,6 +1,5 @@
 # [![vfile][]][unified]
 
-[![GitHub CI][github-ci-badge]][github-ci]
 [![Build][build-badge]][build]
 [![Coverage][coverage-badge]][coverage]
 [![Downloads][downloads-badge]][downloads]
@@ -364,13 +363,9 @@ for contributing commits since!
 
 <!-- Definitions -->
 
-[github-ci-badge]: https://github.com/vfile/vfile/workflows/CI/badge.svg
+[build-badge]: https://github.com/vfile/vfile/workflows/main/badge.svg
 
-[github-ci]: https://github.com/vfile/vfile/actions
-
-[build-badge]: https://img.shields.io/travis/vfile/vfile.svg
-
-[build]: https://travis-ci.org/vfile/vfile
+[build]: https://github.com/vfile/vfile/actions
 
 [coverage-badge]: https://img.shields.io/codecov/c/github/vfile/vfile.svg
 
