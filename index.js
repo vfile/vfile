@@ -5,21 +5,18 @@ var VFile = require('./core.js')
 
 module.exports = VFile
 
-var proto = VFile.prototype
-
-proto.message = message
-proto.info = info
-proto.fail = fail
+VFile.prototype.message = message
+VFile.prototype.info = info
+VFile.prototype.fail = fail
 
 // Create a message with `reason` at `position`.
 // When an error is passed in as `reason`, copies the stack.
 function message(reason, position, origin) {
-  var filePath = this.path
   var message = new VMessage(reason, position, origin)
 
-  if (filePath) {
-    message.name = filePath + ':' + message.name
-    message.file = filePath
+  if (this.path) {
+    message.name = this.path + ':' + message.name
+    message.file = this.path
   }
 
   message.fatal = false
