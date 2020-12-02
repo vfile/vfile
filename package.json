@@ -53,12 +53,12 @@
     "remark-preset-wooorm": "^8.0.0",
     "tape": "^5.0.0",
     "tinyify": "^3.0.0",
-    "xo": "^0.34.0"
+    "xo": "^0.35.0"
   },
   "scripts": {
     "format": "remark . -qfo && prettier . --write && xo --fix",
-    "build-bundle": "browserify . -s VFile > vfile.js",
-    "build-mangle": "browserify . -s VFile -p tinyify > vfile.min.js",
+    "build-bundle": "browserify . -s VFile -o vfile.js",
+    "build-mangle": "browserify . -s VFile -o vfile.min.js -p tinyify",
     "build": "npm run build-bundle && npm run build-mangle",
     "test-api": "node test",
     "test-coverage": "nyc --reporter lcov tape test.js",
@@ -93,13 +93,7 @@
   },
   "remarkConfig": {
     "plugins": [
-      "preset-wooorm",
-      [
-        "toc",
-        {
-          "heading": "contents"
-        }
-      ]
+      "preset-wooorm"
     ]
   }
 }
