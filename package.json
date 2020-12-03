@@ -32,15 +32,26 @@
     "Sindre Sorhus <sindresorhus@gmail.com>"
   ],
   "types": "types/index.d.ts",
+  "browser": {
+    "./minpath.js": "./minpath.browser.js",
+    "./minproc.js": "./minproc.browser.js"
+  },
+  "react-native": {
+    "./minpath.js": "./minpath.browser.js",
+    "./minproc.js": "./minproc.browser.js"
+  },
   "files": [
     "types/index.d.ts",
     "core.js",
-    "index.js"
+    "index.js",
+    "minpath.browser.js",
+    "minpath.js",
+    "minproc.browser.js",
+    "minproc.js"
   ],
   "dependencies": {
     "@types/unist": "^2.0.0",
     "is-buffer": "^2.0.0",
-    "replace-ext": "1.0.0",
     "unist-util-stringify-position": "^2.0.0",
     "vfile-message": "^2.0.0"
   },
@@ -87,8 +98,12 @@
       "vfile.js"
     ],
     "rules": {
+      "unicorn/explicit-length-check": "off",
       "unicorn/prefer-includes": "off",
-      "unicorn/prefer-reflect-apply": "off"
+      "unicorn/prefer-reflect-apply": "off",
+      "unicorn/prefer-number-properties": "off",
+      "max-depth": "off",
+      "complexity": "off"
     }
   },
   "remarkConfig": {

@@ -3,6 +3,7 @@
 var path = require('path')
 var test = require('tape')
 var vfile = require('.')
+var p = require('./minpath.browser')
 
 var sep = path.sep
 var join = path.join
@@ -542,6 +543,250 @@ test('vfile([options])', function (t) {
     })
 
     st.end()
+  })
+
+  t.end()
+})
+
+// Mostly from `path-browserify` with some extra tests to reach coverage, and
+// some cleaning.
+// <https://github.com/browserify/path-browserify/tree/master/test>
+test('p (POSIX path for browsers)', function (t) {
+  var typeErrorTests = [true, false, 7, null, {}, undefined, [], NaN]
+
+  t.test('basename', function (t) {
+    typeErrorTests.forEach(function (test) {
+      t.throws(
+        function () {
+          p.basename(test)
+        },
+        TypeError,
+        'should fail on `' + test + '`'
+      )
+
+      // `undefined` is a valid value as the second argument to basename.
+      if (test !== undefined) {
+        t.throws(
+          function () {
+            p.basename('x', test)
+          },
+          TypeError,
+          'should fail on `' + test + '` as `ext`'
+        )
+      }
+    })
+
+    t.strictEqual(p.basename(__filename), 'test.js')
+    t.strictEqual(p.basename(__filename, '.js'), 'test')
+    t.strictEqual(p.basename('.js', '.js'), '')
+    t.strictEqual(p.basename(''), '')
+    t.strictEqual(p.basename('/dir/basename.ext'), 'basename.ext')
+    t.strictEqual(p.basename('/basename.ext'), 'basename.ext')
+    t.strictEqual(p.basename('basename.ext'), 'basename.ext')
+    t.strictEqual(p.basename('basename.ext/'), 'basename.ext')
+    t.strictEqual(p.basename('basename.ext//'), 'basename.ext')
+    t.strictEqual(p.basename('aaa/bbb', '/bbb'), 'bbb')
+    t.strictEqual(p.basename('aaa/bbb', 'a/bbb'), 'bbb')
+    t.strictEqual(p.basename('aaa/bbb', 'bbb'), 'bbb')
+    t.strictEqual(p.basename('aaa/bbb//', 'bbb'), 'bbb')
+    t.strictEqual(p.basename('aaa/bbb', 'bb'), 'b')
+    t.strictEqual(p.basename('aaa/bbb', 'b'), 'bb')
+    t.strictEqual(p.basename('/aaa/bbb', '/bbb'), 'bbb')
+    t.strictEqual(p.basename('/aaa/bbb', 'a/bbb'), 'bbb')
+    t.strictEqual(p.basename('/aaa/bbb', 'bbb'), 'bbb')
+    t.strictEqual(p.basename('/aaa/bbb//', 'bbb'), 'bbb')
+    t.strictEqual(p.basename('/aaa/bbb', 'bb'), 'b')
+    t.strictEqual(p.basename('/aaa/bbb', 'b'), 'bb')
+    t.strictEqual(p.basename('/aaa/bbb'), 'bbb')
+    t.strictEqual(p.basename('/aaa/'), 'aaa')
+    t.strictEqual(p.basename('/aaa/b'), 'b')
+    t.strictEqual(p.basename('/a/b'), 'b')
+    t.strictEqual(p.basename('//a'), 'a')
+
+    // Backslashes are normal characters.
+    t.strictEqual(p.basename('\\dir\\basename.ext'), '\\dir\\basename.ext')
+    t.strictEqual(p.basename('\\basename.ext'), '\\basename.ext')
+    t.strictEqual(p.basename('basename.ext'), 'basename.ext')
+    t.strictEqual(p.basename('basename.ext\\'), 'basename.ext\\')
+    t.strictEqual(p.basename('basename.ext\\\\'), 'basename.ext\\\\')
+    t.strictEqual(p.basename('foo'), 'foo')
+
+    t.strictEqual(
+      p.basename('/a/b/Icon\r'),
+      'Icon\r',
+      'should support control characters in filenames'
+    )
+
+    // Extra tests for `vfile` to reach coverage.
+    t.strictEqual(p.basename('a.b', 'a'), 'a.b')
+
+    t.end()
+  })
+
+  t.test('dirname', function (t) {
+    typeErrorTests.forEach(function (test) {
+      t.throws(
+        function () {
+          p.dirname(test)
+        },
+        TypeError,
+        'should fail on `' + test + '`'
+      )
+    })
+
+    t.strictEqual(p.dirname('/a/b/'), '/a')
+    t.strictEqual(p.dirname('/a/b'), '/a')
+    t.strictEqual(p.dirname('/a'), '/')
+    t.strictEqual(p.dirname(''), '.')
+    t.strictEqual(p.dirname('/'), '/')
+    t.strictEqual(p.dirname('////'), '/')
+    t.strictEqual(p.dirname('//a'), '//')
+    t.strictEqual(p.dirname('foo'), '.')
+    t.end()
+  })
+
+  t.test('extname', function (t) {
+    typeErrorTests.forEach(function (test) {
+      t.throws(
+        function () {
+          p.extname(test)
+        },
+        TypeError,
+        'should fail on `' + test + '`'
+      )
+    })
+    ;[
+      [__filename, '.js'],
+      ['', ''],
+      ['/path/to/file', ''],
+      ['/path/to/file.ext', '.ext'],
+      ['/path.to/file.ext', '.ext'],
+      ['/path.to/file', ''],
+      ['/path.to/.file', ''],
+      ['/path.to/.file.ext', '.ext'],
+      ['/path/to/f.ext', '.ext'],
+      ['/path/to/..ext', '.ext'],
+      ['/path/to/..', ''],
+      ['file', ''],
+      ['file.ext', '.ext'],
+      ['.file', ''],
+      ['.file.ext', '.ext'],
+      ['/file', ''],
+      ['/file.ext', '.ext'],
+      ['/.file', ''],
+      ['/.file.ext', '.ext'],
+      ['.path/file.ext', '.ext'],
+      ['file.ext.ext', '.ext'],
+      ['file.', '.'],
+      ['.', ''],
+      ['./', ''],
+      ['.file.ext', '.ext'],
+      ['.file', ''],
+      ['.file.', '.'],
+      ['.file..', '.'],
+      ['..', ''],
+      ['../', ''],
+      ['..file.ext', '.ext'],
+      ['..file', '.file'],
+      ['..file.', '.'],
+      ['..file..', '.'],
+      ['...', '.'],
+      ['...ext', '.ext'],
+      ['....', '.'],
+      ['file.ext/', '.ext'],
+      ['file.ext//', '.ext'],
+      ['file/', ''],
+      ['file//', ''],
+      ['file./', '.'],
+      ['file.//', '.']
+    ].forEach(function (pair) {
+      t.strictEqual(pair[1], p.extname(pair[0]))
+    })
+
+    // On *nix, backslash is a valid name component like any other character.
+    t.strictEqual(p.extname('.\\'), '')
+    t.strictEqual(p.extname('..\\'), '.\\')
+    t.strictEqual(p.extname('file.ext\\'), '.ext\\')
+    t.strictEqual(p.extname('file.ext\\\\'), '.ext\\\\')
+    t.strictEqual(p.extname('file\\'), '')
+    t.strictEqual(p.extname('file\\\\'), '')
+    t.strictEqual(p.extname('file.\\'), '.\\')
+    t.strictEqual(p.extname('file.\\\\'), '.\\\\')
+
+    t.end()
+  })
+
+  t.test('join', function (t) {
+    typeErrorTests.forEach(function (test) {
+      t.throws(
+        function () {
+          p.join(test)
+        },
+        TypeError,
+        'should fail on `' + test + '`'
+      )
+    })
+    ;[
+      [['.', 'x/b', '..', '/b/c.js'], 'x/b/c.js'],
+      [[], '.'],
+      [['/.', 'x/b', '..', '/b/c.js'], '/x/b/c.js'],
+      [['/foo', '../../../bar'], '/bar'],
+      [['foo', '../../../bar'], '../../bar'],
+      [['foo/', '../../../bar'], '../../bar'],
+      [['foo/x', '../../../bar'], '../bar'],
+      [['foo/x', './bar'], 'foo/x/bar'],
+      [['foo/x/', './bar'], 'foo/x/bar'],
+      [['foo/x/', '.', 'bar'], 'foo/x/bar'],
+      [['./'], './'],
+      [['.', './'], './'],
+      [['.', '.', '.'], '.'],
+      [['.', './', '.'], '.'],
+      [['.', '/./', '.'], '.'],
+      [['.', '/////./', '.'], '.'],
+      [['.'], '.'],
+      [['', '.'], '.'],
+      [['', 'foo'], 'foo'],
+      [['foo', '/bar'], 'foo/bar'],
+      [['', '/foo'], '/foo'],
+      [['', '', '/foo'], '/foo'],
+      [['', '', 'foo'], 'foo'],
+      [['foo', ''], 'foo'],
+      [['foo/', ''], 'foo/'],
+      [['foo', '', '/bar'], 'foo/bar'],
+      [['./', '..', '/foo'], '../foo'],
+      [['./', '..', '..', '/foo'], '../../foo'],
+      [['.', '..', '..', '/foo'], '../../foo'],
+      [['', '..', '..', '/foo'], '../../foo'],
+      [['/'], '/'],
+      [['/', '.'], '/'],
+      [['/', '..'], '/'],
+      [['/', '..', '..'], '/'],
+      [[''], '.'],
+      [['', ''], '.'],
+      [[' /foo'], ' /foo'],
+      [[' ', 'foo'], ' /foo'],
+      [[' ', '.'], ' '],
+      [[' ', '/'], ' /'],
+      [[' ', ''], ' '],
+      [['/', 'foo'], '/foo'],
+      [['/', '/foo'], '/foo'],
+      [['/', '//foo'], '/foo'],
+      [['/', '', '/foo'], '/foo'],
+      [['', '/', 'foo'], '/foo'],
+      [['', '/', '/foo'], '/foo']
+    ].forEach(function (pair) {
+      t.strictEqual(p.join.apply(null, pair[0]), pair[1])
+    })
+
+    // Join will internally ignore all the zero-length strings and it will return
+    // '.' if the joined string is a zero-length string.
+    t.strictEqual(p.join(''), '.')
+    t.strictEqual(p.join('', ''), '.')
+
+    // Extra tests for `vfile` to reach coverage.
+    t.strictEqual(p.join('a', '..'), '.')
+
+    t.end()
   })
 
   t.end()

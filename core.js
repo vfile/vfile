@@ -1,7 +1,7 @@
 'use strict'
 
-var path = require('path')
-var replace = require('replace-ext')
+var p = require('./minpath')
+var proc = require('./minproc')
 var buffer = require('is-buffer')
 
 module.exports = VFile
@@ -59,7 +59,7 @@ function VFile(options) {
   this.data = {}
   this.messages = []
   this.history = []
-  this.cwd = process.cwd()
+  this.cwd = proc.cwd()
 
   // Set path related properties in the correct order.
   index = -1
@@ -93,26 +93,26 @@ function setPath(path) {
 }
 
 function getDirname() {
-  return typeof this.path === 'string' ? path.dirname(this.path) : undefined
+  return typeof this.path === 'string' ? p.dirname(this.path) : undefined
 }
 
 function setDirname(dirname) {
   assertPath(this.path, 'dirname')
-  this.path = path.join(dirname || '', this.basename)
+  this.path = p.join(dirname || '', this.basename)
 }
 
 function getBasename() {
-  return typeof this.path === 'string' ? path.basename(this.path) : undefined
+  return typeof this.path === 'string' ? p.basename(this.path) : undefined
 }
 
 function setBasename(basename) {
   assertNonEmpty(basename, 'basename')
   assertPart(basename, 'basename')
-  this.path = path.join(this.dirname || '', basename)
+  this.path = p.join(this.dirname || '', basename)
 }
 
 function getExtname() {
-  return typeof this.path === 'string' ? path.extname(this.path) : undefined
+  return typeof this.path === 'string' ? p.extname(this.path) : undefined
 }
 
 function setExtname(extname) {
@@ -129,19 +129,19 @@ function setExtname(extname) {
     }
   }
 
-  this.path = replace(this.path, extname || '')
+  this.path = p.join(this.dirname, this.stem + (extname || ''))
 }
 
 function getStem() {
   return typeof this.path === 'string'
-    ? path.basename(this.path, this.extname)
+    ? p.basename(this.path, this.extname)
     : undefined
 }
 
 function setStem(stem) {
   assertNonEmpty(stem, 'stem')
   assertPart(stem, 'stem')
-  this.path = path.join(this.dirname || '', stem + (this.extname || ''))
+  this.path = p.join(this.dirname || '', stem + (this.extname || ''))
 }
 
 // Get the value of the file.
@@ -149,11 +149,11 @@ function toString(encoding) {
   return (this.contents || '').toString(encoding)
 }
 
-// Assert that `part` is not a path (i.e., does not contain `path.sep`).
+// Assert that `part` is not a path (i.e., does not contain `p.sep`).
 function assertPart(part, name) {
-  if (part && part.indexOf(path.sep) > -1) {
+  if (part && part.indexOf(p.sep) > -1) {
     throw new Error(
-      '`' + name + '` cannot be a path: did not expect `' + path.sep + '`'
+      '`' + name + '` cannot be a path: did not expect `' + p.sep + '`'
     )
   }
 }
