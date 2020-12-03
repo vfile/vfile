@@ -576,8 +576,6 @@ test('p (POSIX path for browsers)', function (t) {
       }
     })
 
-    t.strictEqual(p.basename(__filename), 'test.js')
-    t.strictEqual(p.basename(__filename, '.js'), 'test')
     t.strictEqual(p.basename('.js', '.js'), '')
     t.strictEqual(p.basename(''), '')
     t.strictEqual(p.basename('/dir/basename.ext'), 'basename.ext')
