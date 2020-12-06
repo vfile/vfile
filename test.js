@@ -2,8 +2,8 @@
 
 var path = require('path')
 var test = require('tape')
+var p = require('./lib/minpath.browser')
 var vfile = require('.')
-var p = require('./minpath.browser')
 
 var sep = path.sep
 var join = path.join

@@ -33,21 +33,18 @@
   ],
   "types": "types/index.d.ts",
   "browser": {
-    "./minpath.js": "./minpath.browser.js",
-    "./minproc.js": "./minproc.browser.js"
+    "./lib/minpath.js": "./lib/minpath.browser.js",
+    "./lib/minproc.js": "./lib/minproc.browser.js"
   },
   "react-native": {
-    "./minpath.js": "./minpath.browser.js",
-    "./minproc.js": "./minproc.browser.js"
+    "./lib/minpath.js": "./lib/minpath.browser.js",
+    "./lib/minproc.js": "./lib/minproc.browser.js"
   },
   "files": [
+    "lib/",
     "types/index.d.ts",
-    "core.js",
     "index.js",
-    "minpath.browser.js",
-    "minpath.js",
-    "minproc.browser.js",
-    "minproc.js"
+    "core.js"
   ],
   "dependencies": {
     "@types/unist": "^2.0.0",
