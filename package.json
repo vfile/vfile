@@ -105,7 +105,11 @@
   },
   "remarkConfig": {
     "plugins": [
-      "preset-wooorm"
+      "preset-wooorm",
+      [
+        "lint-no-html",
+        false
+      ]
     ]
   }
 }
