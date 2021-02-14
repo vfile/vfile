@@ -1,5 +1,5 @@
 <h1>
-  <img src="https://raw.githubusercontent.com/vfile/vfile/7e1e6a6/logo.svg?sanitize=true" alt="vfile" width="400" />
+  <img src="https://raw.githubusercontent.com/vfile/vfile/fc8164b/logo.svg?sanitize=true" alt="vfile" />
 </h1>
 
 [![Build][build-badge]][build]
