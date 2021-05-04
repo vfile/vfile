@@ -82,7 +82,7 @@ interface CustomVFile extends vfile.VFile {
 
 const customVFile = vfile<CustomVFile>({
   path: '~/example.txt',
-  contents: 'Alpha *braavo* charlie.',
+  value: 'Alpha *braavo* charlie.',
   custom: 'Custom tango',
   data: {
     custom: 12345

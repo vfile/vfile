@@ -11,7 +11,7 @@
 [![Chat][chat-badge]][chat]
 
 **vfile** is a small and browser friendly virtual file format that tracks
-metadata (such as a file’s `path` and `contents`) and [messages][].
+metadata (such as a file’s `path` and `value`) and [messages][].
 
 It was made specifically for **[unified][]** and generally for the common task
 of parsing, transforming, and serializing data, where `vfile` handles everything
@@ -34,7 +34,7 @@ generators, or other build tools.
 *   [Use](#use)
 *   [API](#api)
     *   [`VFile(options?)`](#vfileoptions)
-    *   [`vfile.contents`](#vfilecontents)
+    *   [`vfile.value`](#vfilevalue)
     *   [`vfile.cwd`](#vfilecwd)
     *   [`vfile.path`](#vfilepath)
     *   [`vfile.basename`](#vfilebasename)
@@ -68,7 +68,7 @@ npm install vfile
 ```js
 var vfile = require('vfile')
 
-var file = vfile({path: '~/example.txt', contents: 'Alpha *braavo* charlie.'})
+var file = vfile({path: '~/example.txt', value: 'Alpha *braavo* charlie.'})
 
 file.path // => '~/example.txt'
 file.dirname // => '~'
@@ -110,7 +110,7 @@ Yields:
 ### `VFile(options?)`
 
 Create a new virtual file.
-If `options` is `string` or `Buffer`, treats it as `{contents: options}`.
+If `options` is `string` or `Buffer`, treats it as `{value: options}`.
 If `options` is a `VFile`, returns it.
 All other options are set on the newly created `vfile`.
 
@@ -131,7 +131,7 @@ vfile({stem: 'readme', extname: '.md', dirname: __dirname})
 vfile({other: 'properties', are: 'copied', ov: {e: 'r'}})
 ```
 
-### `vfile.contents`
+### `vfile.value`
 
 `Buffer`, `string`, `null` — Raw value.
 
@@ -182,9 +182,9 @@ a *little* more privacy.
 
 ### `VFile#toString(encoding?)`
 
-Convert contents of `vfile` to string.
-When `contents` is a [`Buffer`][buffer], `encoding` is a
-[character encoding][encoding] to understand `doc` as (`string`, default:
+Convert value of `vfile` to string.
+When `value` is a [`Buffer`][buffer], `encoding` is a
+[character encoding][encoding] to understand it as (`string`, default:
 `'utf8'`).
 
 ### `VFile#message(reason[, position][, origin])`
