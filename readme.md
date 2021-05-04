@@ -11,7 +11,7 @@
 [![Chat][chat-badge]][chat]
 
 **vfile** is a small and browser friendly virtual file format that tracks
-metadata (such as a file’s `path` and `contents`) and [messages][].
+metadata (such as a file’s `path` and `value`) and [messages][].
 
 It was made specifically for **[unified][]** and generally for the common task
 of parsing, transforming, and serializing data, where `vfile` handles everything
