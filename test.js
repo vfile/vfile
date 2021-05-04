@@ -1,14 +1,25 @@
+/**
+ * @typedef {import('unist').Node} Node
+ * @typedef {import('unist').Position} Position
+ * @typedef {import('unist').Point} Point
+ * @typedef {import('vfile-message').VFileMessage} VFileMessage
+ */
+
 import path from 'path'
 import test from 'tape'
 import {path as p} from './lib/minpath.browser.js'
 import {VFile} from './index.js'
 
 /* eslint-disable no-undef */
+/** @type {Error} */
 var exception
+/** @type {Error} */
 var changedMessage
+/** @type {Error} */
 var multilineException
 
 try {
+  // @ts-ignore
   variable = 1
 } catch (error) {
   error.stack = cleanStack(error.stack, 3)
@@ -16,6 +27,7 @@ try {
 }
 
 try {
+  // @ts-ignore
   variable = 1
 } catch (error) {
   error.message = 'foo'
@@ -24,6 +36,7 @@ try {
 }
 
 try {
+  // @ts-ignore
   variable = 1
 } catch (error) {
   error.message = 'foo\nbar\nbaz'
@@ -130,7 +143,9 @@ test('new VFile(options?)', function (t) {
     var testing = [1, 2, 3]
     var file = new VFile({custom: true, testing})
 
+    // @ts-ignore It’s recommended to use `data` for custom fields, but it works in the runtime.
     st.equal(file.custom, true)
+    // @ts-ignore It’s recommended to use `data` for custom fields, but it works in the runtime.
     st.equal(file.testing, testing)
 
     st.end()
@@ -361,9 +376,12 @@ test('new VFile(options?)', function (t) {
 
   t.test('#message(reason[, position][, origin])', function (st) {
     var fp = path.join('~', 'example.md')
+    /** @type {VFile} */
     var file
+    /** @type {VFileMessage} */
     var message
-    var pos
+    /** @type {Node|Position|Point} */
+    var place
 
     st.ok(new VFile().message('') instanceof Error, 'should return an Error')
 
@@ -431,31 +449,32 @@ test('new VFile(options?)', function (t) {
       'should accept a multiline error (2)'
     )
 
-    pos = {
+    place = {
+      type: 'x',
       position: {
         start: {line: 2, column: 3},
         end: {line: 2, column: 5}
       }
     }
 
-    message = new VFile().message('test', pos)
+    message = new VFile().message('test', place)
 
-    st.deepEqual(message.position, pos.position, 'should accept a node (1)')
+    st.deepEqual(message.position, place.position, 'should accept a node (1)')
     st.equal(String(message), '2:3-2:5: test', 'should accept a node (2)')
 
-    pos = pos.position
-    message = new VFile().message('test', pos)
+    place = place.position
+    message = new VFile().message('test', place)
 
-    st.deepEqual(message.position, pos, 'should accept a position (1)')
+    st.deepEqual(message.position, place, 'should accept a position (1)')
     st.equal(String(message), '2:3-2:5: test', 'should accept a position (2)')
 
-    pos = pos.start
-    message = new VFile().message('test', pos)
+    place = place.start
+    message = new VFile().message('test', place)
 
     st.deepEqual(
       message.position,
       {
-        start: pos,
+        start: place,
         end: {line: null, column: null}
       },
       'should accept a position (1)'
@@ -464,11 +483,13 @@ test('new VFile(options?)', function (t) {
     st.equal(String(message), '2:3: test', 'should accept a position')
 
     st.equal(
+      // @ts-ignore runtime allow omitting `place`.
       new VFile().message('test', 'charlie').ruleId,
       'charlie',
       'should accept a `ruleId` as `origin`'
     )
 
+    // @ts-ignore runtime allow omitting `place`.
     message = new VFile().message('test', 'delta:echo')
 
     st.deepEqual(
@@ -483,6 +504,7 @@ test('new VFile(options?)', function (t) {
   t.test('#fail(reason[, position][, origin])', function (st) {
     var fp = path.join('~', 'example.md')
     var file = new VFile({path: fp})
+    /** @type {VFileMessage} */
     var message
 
     st.throws(
@@ -517,6 +539,7 @@ test('new VFile(options?)', function (t) {
   t.test('#info(reason[, position][, origin])', function (st) {
     var fp = path.join('~', 'example.md')
     var file = new VFile({path: fp})
+    /** @type {VFileMessage} */
     var message
 
     file.info('Bar', {line: 1, column: 3}, 'baz:qux')
@@ -554,6 +577,7 @@ test('p (POSIX path for browsers)', function (t) {
     typeErrorTests.forEach(function (test) {
       t.throws(
         function () {
+          // @ts-ignore runtime.
           p.basename(test)
         },
         TypeError,
@@ -564,6 +588,7 @@ test('p (POSIX path for browsers)', function (t) {
       if (test !== undefined) {
         t.throws(
           function () {
+            // @ts-ignore runtime.
             p.basename('x', test)
           },
           TypeError,
@@ -621,6 +646,7 @@ test('p (POSIX path for browsers)', function (t) {
     typeErrorTests.forEach(function (test) {
       t.throws(
         function () {
+          // @ts-ignore runtime.
           p.dirname(test)
         },
         TypeError,
@@ -643,6 +669,7 @@ test('p (POSIX path for browsers)', function (t) {
     typeErrorTests.forEach(function (test) {
       t.throws(
         function () {
+          // @ts-ignore runtime.
           p.extname(test)
         },
         TypeError,
@@ -714,6 +741,7 @@ test('p (POSIX path for browsers)', function (t) {
     typeErrorTests.forEach(function (test) {
       t.throws(
         function () {
+          // @ts-ignore runtime.
           p.join(test)
         },
         TypeError,
@@ -786,6 +814,11 @@ test('p (POSIX path for browsers)', function (t) {
   t.end()
 })
 
+/**
+ * @param {string} stack
+ * @param {number} max
+ * @returns {string}
+ */
 function cleanStack(stack, max) {
   return stack
     .replace(new RegExp('\\(.+\\' + path.sep, 'g'), '(')

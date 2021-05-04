@@ -115,8 +115,8 @@ There is no default export.
 
 Create a new virtual file.
 If `options` is `string` or `Buffer`, treats it as `{value: options}`.
-If `options` is a `VFile`, shallow copies it’s data over to the new file.
-All other options are set on the newly created `VFile`.
+If `options` is a `VFile`, shallow copies its data over to the new file.
+All other given fields are set on the newly created `VFile`.
 
 Path related properties are set in the following order (least specific to most
 specific): `history`, `path`, `basename`, `stem`, `extname`, `dirname`.
