@@ -46,7 +46,6 @@
   "files": [
     "lib/",
     "types/index.d.ts",
-    "core.js",
     "index.js"
   ],
   "dependencies": {
