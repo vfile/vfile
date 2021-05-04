@@ -2,6 +2,7 @@
 
 var path = require('path')
 var test = require('tape')
+var p = require('./lib/minpath.browser')
 var vfile = require('.')
 
 var sep = path.sep
@@ -36,12 +37,12 @@ try {
 }
 /* eslint-enable no-undef */
 
-test('vfile([options])', function(t) {
+test('vfile([options])', function (t) {
   t.ok(vfile() instanceof vfile, 'should work with new')
 
   t.ok(vfile() instanceof vfile, 'should work without `new`')
 
-  t.test('should accept missing options', function(st) {
+  t.test('should accept missing options', function (st) {
     var file = vfile()
 
     st.deepEqual(file.history, [])
@@ -57,7 +58,7 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('should accept a string', function(st) {
+  t.test('should accept a string', function (st) {
     var file = vfile('alpha')
 
     st.equal(file.value, 'alpha')
@@ -65,7 +66,7 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('should accept a vfile', function(st) {
+  t.test('should accept a vfile', function (st) {
     var left = vfile()
     var right = vfile(left)
 
@@ -74,7 +75,7 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('should accept an object (1)', function(st) {
+  t.test('should accept an object (1)', function (st) {
     var fp = join('~', 'example.md')
     var file = vfile({path: fp})
 
@@ -89,7 +90,7 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('should accept a object (2)', function(st) {
+  t.test('should accept a object (2)', function (st) {
     var file = vfile({basename: 'example.md'})
 
     st.deepEqual(file.history, ['example.md'])
@@ -103,7 +104,7 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('should accept a object (2)', function(st) {
+  t.test('should accept a object (2)', function (st) {
     var file = vfile({stem: 'example', extname: '.md', dirname: '~'})
 
     st.deepEqual(file.history, [
@@ -121,7 +122,7 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('should set custom props', function(st) {
+  t.test('should set custom props', function (st) {
     var testing = [1, 2, 3]
     var file = vfile({custom: true, testing: testing})
 
@@ -131,7 +132,7 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('#toString()', function(st) {
+  t.test('#toString()', function (st) {
     st.equal(vfile().toString(), '', 'should return `""` without content')
 
     st.equal(
@@ -155,7 +156,7 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('.cwd', function(st) {
+  t.test('.cwd', function (st) {
     st.equal(vfile().cwd, process.cwd(), 'should start at `process.cwd()`')
 
     st.equal(vfile({cwd: '/'}).cwd, '/', 'should be settable')
@@ -163,7 +164,7 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('.path', function(st) {
+  t.test('.path', function (st) {
     var fp = join('~', 'example.md')
     var ofp = join('~', 'example', 'example.txt')
     var file = vfile()
@@ -189,7 +190,7 @@ test('vfile([options])', function(t) {
     )
 
     st.throws(
-      function() {
+      function () {
         file.path = null
       },
       /Error: `path` cannot be empty/,
@@ -199,7 +200,7 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('.basename', function(st) {
+  t.test('.basename', function (st) {
     var file = vfile()
 
     st.equal(file.basename, undefined, 'should start `undefined`')
@@ -221,7 +222,7 @@ test('vfile([options])', function(t) {
     file = vfile({path: join('~', 'alpha', 'bravo.md')})
 
     st.throws(
-      function() {
+      function () {
         file.basename = null
       },
       /Error: `basename` cannot be empty/,
@@ -229,7 +230,7 @@ test('vfile([options])', function(t) {
     )
 
     st.throws(
-      function() {
+      function () {
         file.basename = join('charlie', 'delta.js')
       },
       new RegExp(
@@ -241,14 +242,14 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('.dirname', function(st) {
+  t.test('.dirname', function (st) {
     var fp = join('~', 'alpha', 'bravo')
     var file = vfile()
 
     st.equal(file.dirname, undefined, 'should start undefined')
 
     st.throws(
-      function() {
+      function () {
         file.dirname = fp
       },
       /Error: Setting `dirname` requires `path` to be set too/,
@@ -273,14 +274,14 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('.extname', function(st) {
+  t.test('.extname', function (st) {
     var fp = join('~', 'alpha', 'bravo')
     var file = vfile()
 
     st.equal(file.extname, undefined, 'should start `undefined`')
 
     st.throws(
-      function() {
+      function () {
         file.extname = '.git'
       },
       /Error: Setting `extname` requires `path` to be set too/,
@@ -296,7 +297,7 @@ test('vfile([options])', function(t) {
     st.deepEqual(file.history, [fp, fp + '.md'], 'should record changes')
 
     st.throws(
-      function() {
+      function () {
         file.extname = 'txt'
       },
       /Error: `extname` must start with `.`/,
@@ -304,7 +305,7 @@ test('vfile([options])', function(t) {
     )
 
     st.throws(
-      function() {
+      function () {
         file.extname = '..md'
       },
       /Error: `extname` cannot contain multiple dots/,
@@ -318,7 +319,7 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('.stem', function(st) {
+  t.test('.stem', function (st) {
     var file = vfile()
 
     st.equal(file.stem, undefined, 'should start `undefined`')
@@ -332,7 +333,7 @@ test('vfile([options])', function(t) {
     st.equal(file.stem, 'charlie', 'should change')
 
     st.throws(
-      function() {
+      function () {
         file.stem = null
       },
       /Error: `stem` cannot be empty/,
@@ -340,7 +341,7 @@ test('vfile([options])', function(t) {
     )
 
     st.throws(
-      function() {
+      function () {
         file.stem = join('charlie', 'delta.js')
       },
       new RegExp(
@@ -352,7 +353,7 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('#message(reason[, position][, origin])', function(st) {
+  t.test('#message(reason[, position][, origin])', function (st) {
     var fp = join('~', 'example.md')
     var file
     var message
@@ -395,10 +396,7 @@ test('vfile([options])', function(t) {
     )
 
     st.equal(
-      message.stack
-        .split('\n')
-        .slice(0, 2)
-        .join('\n'),
+      message.stack.split('\n').slice(0, 2).join('\n'),
       [
         'ReferenceError: variable is not defined',
         '    at Object.<anonymous> (test.js:1:1)'
@@ -411,10 +409,7 @@ test('vfile([options])', function(t) {
     st.equal(message.message, 'foo', 'should accept a changed error (1)')
 
     st.equal(
-      message.stack
-        .split('\n')
-        .slice(0, 2)
-        .join('\n'),
+      message.stack.split('\n').slice(0, 2).join('\n'),
       ['ReferenceError: foo', '    at Object.<anonymous> (test.js:1:1)'].join(
         '\n'
       ),
@@ -430,10 +425,7 @@ test('vfile([options])', function(t) {
     )
 
     st.equal(
-      message.stack
-        .split('\n')
-        .slice(0, 4)
-        .join('\n'),
+      message.stack.split('\n').slice(0, 4).join('\n'),
       [
         'ReferenceError: foo',
         'bar',
@@ -492,13 +484,13 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('#fail(reason[, position][, origin])', function(st) {
+  t.test('#fail(reason[, position][, origin])', function (st) {
     var fp = join('~', 'example.md')
     var file = vfile({path: fp})
     var message
 
     st.throws(
-      function() {
+      function () {
         file.fail('Foo', {line: 1, column: 3}, 'baz:qux')
       },
       /1:3: Foo/,
@@ -526,7 +518,7 @@ test('vfile([options])', function(t) {
     st.end()
   })
 
-  t.test('#info(reason[, position][, origin])', function(st) {
+  t.test('#info(reason[, position][, origin])', function (st) {
     var fp = join('~', 'example.md')
     var file = vfile({path: fp})
     var message
@@ -551,6 +543,248 @@ test('vfile([options])', function(t) {
     })
 
     st.end()
+  })
+
+  t.end()
+})
+
+// Mostly from `path-browserify` with some extra tests to reach coverage, and
+// some cleaning.
+// <https://github.com/browserify/path-browserify/tree/master/test>
+test('p (POSIX path for browsers)', function (t) {
+  var typeErrorTests = [true, false, 7, null, {}, undefined, [], NaN]
+
+  t.test('basename', function (t) {
+    typeErrorTests.forEach(function (test) {
+      t.throws(
+        function () {
+          p.basename(test)
+        },
+        TypeError,
+        'should fail on `' + test + '`'
+      )
+
+      // `undefined` is a valid value as the second argument to basename.
+      if (test !== undefined) {
+        t.throws(
+          function () {
+            p.basename('x', test)
+          },
+          TypeError,
+          'should fail on `' + test + '` as `ext`'
+        )
+      }
+    })
+
+    t.strictEqual(p.basename('.js', '.js'), '')
+    t.strictEqual(p.basename(''), '')
+    t.strictEqual(p.basename('/dir/basename.ext'), 'basename.ext')
+    t.strictEqual(p.basename('/basename.ext'), 'basename.ext')
+    t.strictEqual(p.basename('basename.ext'), 'basename.ext')
+    t.strictEqual(p.basename('basename.ext/'), 'basename.ext')
+    t.strictEqual(p.basename('basename.ext//'), 'basename.ext')
+    t.strictEqual(p.basename('aaa/bbb', '/bbb'), 'bbb')
+    t.strictEqual(p.basename('aaa/bbb', 'a/bbb'), 'bbb')
+    t.strictEqual(p.basename('aaa/bbb', 'bbb'), 'bbb')
+    t.strictEqual(p.basename('aaa/bbb//', 'bbb'), 'bbb')
+    t.strictEqual(p.basename('aaa/bbb', 'bb'), 'b')
+    t.strictEqual(p.basename('aaa/bbb', 'b'), 'bb')
+    t.strictEqual(p.basename('/aaa/bbb', '/bbb'), 'bbb')
+    t.strictEqual(p.basename('/aaa/bbb', 'a/bbb'), 'bbb')
+    t.strictEqual(p.basename('/aaa/bbb', 'bbb'), 'bbb')
+    t.strictEqual(p.basename('/aaa/bbb//', 'bbb'), 'bbb')
+    t.strictEqual(p.basename('/aaa/bbb', 'bb'), 'b')
+    t.strictEqual(p.basename('/aaa/bbb', 'b'), 'bb')
+    t.strictEqual(p.basename('/aaa/bbb'), 'bbb')
+    t.strictEqual(p.basename('/aaa/'), 'aaa')
+    t.strictEqual(p.basename('/aaa/b'), 'b')
+    t.strictEqual(p.basename('/a/b'), 'b')
+    t.strictEqual(p.basename('//a'), 'a')
+
+    // Backslashes are normal characters.
+    t.strictEqual(p.basename('\\dir\\basename.ext'), '\\dir\\basename.ext')
+    t.strictEqual(p.basename('\\basename.ext'), '\\basename.ext')
+    t.strictEqual(p.basename('basename.ext'), 'basename.ext')
+    t.strictEqual(p.basename('basename.ext\\'), 'basename.ext\\')
+    t.strictEqual(p.basename('basename.ext\\\\'), 'basename.ext\\\\')
+    t.strictEqual(p.basename('foo'), 'foo')
+
+    t.strictEqual(
+      p.basename('/a/b/Icon\r'),
+      'Icon\r',
+      'should support control characters in filenames'
+    )
+
+    // Extra tests for `vfile` to reach coverage.
+    t.strictEqual(p.basename('a.b', 'a'), 'a.b')
+
+    t.end()
+  })
+
+  t.test('dirname', function (t) {
+    typeErrorTests.forEach(function (test) {
+      t.throws(
+        function () {
+          p.dirname(test)
+        },
+        TypeError,
+        'should fail on `' + test + '`'
+      )
+    })
+
+    t.strictEqual(p.dirname('/a/b/'), '/a')
+    t.strictEqual(p.dirname('/a/b'), '/a')
+    t.strictEqual(p.dirname('/a'), '/')
+    t.strictEqual(p.dirname(''), '.')
+    t.strictEqual(p.dirname('/'), '/')
+    t.strictEqual(p.dirname('////'), '/')
+    t.strictEqual(p.dirname('//a'), '//')
+    t.strictEqual(p.dirname('foo'), '.')
+    t.end()
+  })
+
+  t.test('extname', function (t) {
+    typeErrorTests.forEach(function (test) {
+      t.throws(
+        function () {
+          p.extname(test)
+        },
+        TypeError,
+        'should fail on `' + test + '`'
+      )
+    })
+    ;[
+      [__filename, '.js'],
+      ['', ''],
+      ['/path/to/file', ''],
+      ['/path/to/file.ext', '.ext'],
+      ['/path.to/file.ext', '.ext'],
+      ['/path.to/file', ''],
+      ['/path.to/.file', ''],
+      ['/path.to/.file.ext', '.ext'],
+      ['/path/to/f.ext', '.ext'],
+      ['/path/to/..ext', '.ext'],
+      ['/path/to/..', ''],
+      ['file', ''],
+      ['file.ext', '.ext'],
+      ['.file', ''],
+      ['.file.ext', '.ext'],
+      ['/file', ''],
+      ['/file.ext', '.ext'],
+      ['/.file', ''],
+      ['/.file.ext', '.ext'],
+      ['.path/file.ext', '.ext'],
+      ['file.ext.ext', '.ext'],
+      ['file.', '.'],
+      ['.', ''],
+      ['./', ''],
+      ['.file.ext', '.ext'],
+      ['.file', ''],
+      ['.file.', '.'],
+      ['.file..', '.'],
+      ['..', ''],
+      ['../', ''],
+      ['..file.ext', '.ext'],
+      ['..file', '.file'],
+      ['..file.', '.'],
+      ['..file..', '.'],
+      ['...', '.'],
+      ['...ext', '.ext'],
+      ['....', '.'],
+      ['file.ext/', '.ext'],
+      ['file.ext//', '.ext'],
+      ['file/', ''],
+      ['file//', ''],
+      ['file./', '.'],
+      ['file.//', '.']
+    ].forEach(function (pair) {
+      t.strictEqual(pair[1], p.extname(pair[0]))
+    })
+
+    // On *nix, backslash is a valid name component like any other character.
+    t.strictEqual(p.extname('.\\'), '')
+    t.strictEqual(p.extname('..\\'), '.\\')
+    t.strictEqual(p.extname('file.ext\\'), '.ext\\')
+    t.strictEqual(p.extname('file.ext\\\\'), '.ext\\\\')
+    t.strictEqual(p.extname('file\\'), '')
+    t.strictEqual(p.extname('file\\\\'), '')
+    t.strictEqual(p.extname('file.\\'), '.\\')
+    t.strictEqual(p.extname('file.\\\\'), '.\\\\')
+
+    t.end()
+  })
+
+  t.test('join', function (t) {
+    typeErrorTests.forEach(function (test) {
+      t.throws(
+        function () {
+          p.join(test)
+        },
+        TypeError,
+        'should fail on `' + test + '`'
+      )
+    })
+    ;[
+      [['.', 'x/b', '..', '/b/c.js'], 'x/b/c.js'],
+      [[], '.'],
+      [['/.', 'x/b', '..', '/b/c.js'], '/x/b/c.js'],
+      [['/foo', '../../../bar'], '/bar'],
+      [['foo', '../../../bar'], '../../bar'],
+      [['foo/', '../../../bar'], '../../bar'],
+      [['foo/x', '../../../bar'], '../bar'],
+      [['foo/x', './bar'], 'foo/x/bar'],
+      [['foo/x/', './bar'], 'foo/x/bar'],
+      [['foo/x/', '.', 'bar'], 'foo/x/bar'],
+      [['./'], './'],
+      [['.', './'], './'],
+      [['.', '.', '.'], '.'],
+      [['.', './', '.'], '.'],
+      [['.', '/./', '.'], '.'],
+      [['.', '/////./', '.'], '.'],
+      [['.'], '.'],
+      [['', '.'], '.'],
+      [['', 'foo'], 'foo'],
+      [['foo', '/bar'], 'foo/bar'],
+      [['', '/foo'], '/foo'],
+      [['', '', '/foo'], '/foo'],
+      [['', '', 'foo'], 'foo'],
+      [['foo', ''], 'foo'],
+      [['foo/', ''], 'foo/'],
+      [['foo', '', '/bar'], 'foo/bar'],
+      [['./', '..', '/foo'], '../foo'],
+      [['./', '..', '..', '/foo'], '../../foo'],
+      [['.', '..', '..', '/foo'], '../../foo'],
+      [['', '..', '..', '/foo'], '../../foo'],
+      [['/'], '/'],
+      [['/', '.'], '/'],
+      [['/', '..'], '/'],
+      [['/', '..', '..'], '/'],
+      [[''], '.'],
+      [['', ''], '.'],
+      [[' /foo'], ' /foo'],
+      [[' ', 'foo'], ' /foo'],
+      [[' ', '.'], ' '],
+      [[' ', '/'], ' /'],
+      [[' ', ''], ' '],
+      [['/', 'foo'], '/foo'],
+      [['/', '/foo'], '/foo'],
+      [['/', '//foo'], '/foo'],
+      [['/', '', '/foo'], '/foo'],
+      [['', '/', 'foo'], '/foo'],
+      [['', '/', '/foo'], '/foo']
+    ].forEach(function (pair) {
+      t.strictEqual(p.join.apply(null, pair[0]), pair[1])
+    })
+
+    // Join will internally ignore all the zero-length strings and it will return
+    // '.' if the joined string is a zero-length string.
+    t.strictEqual(p.join(''), '.')
+    t.strictEqual(p.join('', ''), '.')
+
+    // Extra tests for `vfile` to reach coverage.
+    t.strictEqual(p.join('a', '..'), '.')
+
+    t.end()
   })
 
   t.end()

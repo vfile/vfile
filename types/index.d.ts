@@ -4,8 +4,37 @@ import * as Unist from 'unist'
 import * as vfileMessage from 'vfile-message'
 
 declare namespace vfile {
-  type VFileValue = string | Buffer
+  /**
+   * Encodings supported by the buffer class
+   *
+   * @remarks
+   * This is a copy of the typing from Node, copied to prevent Node globals from being needed.
+   * Copied from https://github.com/DefinitelyTyped/DefinitelyTyped/blob/a2bc1d868d81733a8969236655fa600bd3651a7b/types/node/globals.d.ts#L174
+   */
+  type BufferEncoding =
+    | 'ascii'
+    | 'utf8'
+    | 'utf-8'
+    | 'utf16le'
+    | 'ucs2'
+    | 'ucs-2'
+    | 'base64'
+    | 'latin1'
+    | 'binary'
+    | 'hex'
+
+  /**
+   * VFileValue can either be text, or a Buffer like structure
+   * @remarks
+   * This does not directly use type `Buffer, because it can also be used in a browser context.
+   * Instead this leverages `Uint8Array` which is the base type for `Buffer`, and a native JavaScript construct.
+   */
+  type VFileValue = string | Uint8Array
   type VFileCompatible = VFile | VFileOptions | VFileValue
+  interface Settings {
+    [key: string]: unknown
+  }
+  type VFileReporter<T = Settings> = (files: VFile[], options: T) => string
 
   interface VFileOptions {
     value?: VFileValue
@@ -122,6 +151,8 @@ declare namespace vfile {
       position?: Unist.Point | Unist.Position | Unist.Node,
       ruleId?: string
     ) => vfileMessage.VFileMessage
+
+    [key: string]: unknown
   }
 }
 
