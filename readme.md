@@ -57,6 +57,9 @@ generators, or other build tools.
 
 ## Install
 
+This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c):
+Node 12+ is needed to use it and it must be `import`ed instead of `require`d.
+
 [npm][]:
 
 ```sh
@@ -66,7 +69,7 @@ npm install vfile
 ## Use
 
 ```js
-var vfile = require('vfile')
+import {vfile} from 'vfile'
 
 var file = vfile({path: '~/example.txt', value: 'Alpha *braavo* charlie.'})
 
@@ -81,10 +84,7 @@ file.basename = 'index.text'
 
 file.history // => ['~/example.txt', '~/example.md', '~/index.text']
 
-file.message('`braavo` is misspelt; did you mean `bravo`?', {
-  line: 1,
-  column: 8
-})
+file.message('`braavo` is misspelt; did you mean `bravo`?', {line: 1, column: 8})
 
 console.log(file.messages)
 ```
@@ -92,20 +92,24 @@ console.log(file.messages)
 Yields:
 
 ```js
-[ { [~/index.text:1:8: `braavo` is misspelt; did you mean `bravo`?]
-    message: '`braavo` is misspelt; did you mean `bravo`?',
-    name: '~/index.text:1:8',
-    file: '~/index.text',
+[
+  [~/index.text:1:8: `braavo` is misspelt; did you mean `bravo`?] {
     reason: '`braavo` is misspelt; did you mean `bravo`?',
     line: 1,
     column: 8,
-    location: { start: [Object], end: [Object] },
-    ruleId: null,
     source: null,
-    fatal: false } ]
+    ruleId: null,
+    position: {start: [Object], end: [Object]},
+    file: '~/index.text',
+    fatal: false
+  }
+]
 ```
 
 ## API
+
+This package exports the following identifiers: `VFile`.
+There is no default export.
 
 ### `VFile(options?)`
 

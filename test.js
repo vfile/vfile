@@ -1,12 +1,7 @@
-'use strict'
-
-var path = require('path')
-var test = require('tape')
-var p = require('./lib/minpath.browser')
-var vfile = require('.')
-
-var sep = path.sep
-var join = path.join
+import path from 'path'
+import test from 'tape'
+import {path as p} from './lib/minpath.browser.js'
+import {vfile} from './index.js'
 
 /* eslint-disable no-undef */
 var exception
@@ -76,7 +71,7 @@ test('vfile([options])', function (t) {
   })
 
   t.test('should accept an object (1)', function (st) {
-    var fp = join('~', 'example.md')
+    var fp = path.join('~', 'example.md')
     var file = vfile({path: fp})
 
     st.deepEqual(file.history, [fp])
@@ -110,10 +105,10 @@ test('vfile([options])', function (t) {
     st.deepEqual(file.history, [
       'example',
       'example.md',
-      join('~', 'example.md')
+      path.join('~', 'example.md')
     ])
     st.equal(file.value, undefined)
-    st.equal(file.path, join('~', 'example.md'))
+    st.equal(file.path, path.join('~', 'example.md'))
     st.equal(file.dirname, '~')
     st.equal(file.basename, 'example.md')
     st.equal(file.stem, 'example')
@@ -124,7 +119,7 @@ test('vfile([options])', function (t) {
 
   t.test('should set custom props', function (st) {
     var testing = [1, 2, 3]
-    var file = vfile({custom: true, testing: testing})
+    var file = vfile({custom: true, testing})
 
     st.equal(file.custom, true)
     st.equal(file.testing, testing)
@@ -165,8 +160,8 @@ test('vfile([options])', function (t) {
   })
 
   t.test('.path', function (st) {
-    var fp = join('~', 'example.md')
-    var ofp = join('~', 'example', 'example.txt')
+    var fp = path.join('~', 'example.md')
+    var ofp = path.join('~', 'example', 'example.txt')
     var file = vfile()
 
     st.equal(file.path, undefined, 'should start `undefined`')
@@ -219,7 +214,7 @@ test('vfile([options])', function (t) {
       'should record changes'
     )
 
-    file = vfile({path: join('~', 'alpha', 'bravo.md')})
+    file = vfile({path: path.join('~', 'alpha', 'bravo.md')})
 
     st.throws(
       function () {
@@ -231,10 +226,12 @@ test('vfile([options])', function (t) {
 
     st.throws(
       function () {
-        file.basename = join('charlie', 'delta.js')
+        file.basename = path.join('charlie', 'delta.js')
       },
       new RegExp(
-        'Error: `basename` cannot be a path: did not expect `\\' + sep + '`'
+        'Error: `basename` cannot be a path: did not expect `\\' +
+          path.sep +
+          '`'
       ),
       'should throw when setting a path'
     )
@@ -243,7 +240,7 @@ test('vfile([options])', function (t) {
   })
 
   t.test('.dirname', function (st) {
-    var fp = join('~', 'alpha', 'bravo')
+    var fp = path.join('~', 'alpha', 'bravo')
     var file = vfile()
 
     st.equal(file.dirname, undefined, 'should start undefined')
@@ -257,13 +254,13 @@ test('vfile([options])', function (t) {
     )
 
     file.path = fp
-    file.dirname = join('~', 'charlie')
+    file.dirname = path.join('~', 'charlie')
 
-    st.equal(file.dirname, join('~', 'charlie'), 'should change paths')
+    st.equal(file.dirname, path.join('~', 'charlie'), 'should change paths')
 
     st.deepEqual(
       file.history,
-      [fp, join('~', 'charlie', 'bravo')],
+      [fp, path.join('~', 'charlie', 'bravo')],
       'should record changes'
     )
 
@@ -275,7 +272,7 @@ test('vfile([options])', function (t) {
   })
 
   t.test('.extname', function (st) {
-    var fp = join('~', 'alpha', 'bravo')
+    var fp = path.join('~', 'alpha', 'bravo')
     var file = vfile()
 
     st.equal(file.extname, undefined, 'should start `undefined`')
@@ -342,10 +339,10 @@ test('vfile([options])', function (t) {
 
     st.throws(
       function () {
-        file.stem = join('charlie', 'delta.js')
+        file.stem = path.join('charlie', 'delta.js')
       },
       new RegExp(
-        'Error: `stem` cannot be a path: did not expect `\\' + sep + '`'
+        'Error: `stem` cannot be a path: did not expect `\\' + path.sep + '`'
       ),
       'should throw when setting a path'
     )
@@ -354,7 +351,7 @@ test('vfile([options])', function (t) {
   })
 
   t.test('#message(reason[, position][, origin])', function (st) {
-    var fp = join('~', 'example.md')
+    var fp = path.join('~', 'example.md')
     var file
     var message
     var pos
@@ -376,7 +373,7 @@ test('vfile([options])', function (t) {
     st.equal(message.fatal, false)
     st.equal(message.line, null)
     st.equal(message.column, null)
-    st.deepEqual(message.location, {
+    st.deepEqual(message.position, {
       start: {line: null, column: null},
       end: {line: null, column: null}
     })
@@ -396,11 +393,8 @@ test('vfile([options])', function (t) {
     )
 
     st.equal(
-      message.stack.split('\n').slice(0, 2).join('\n'),
-      [
-        'ReferenceError: variable is not defined',
-        '    at Object.<anonymous> (test.js:1:1)'
-      ].join('\n'),
+      message.stack.split('\n')[0],
+      'ReferenceError: variable is not defined',
       'should accept an error (2)'
     )
 
@@ -409,10 +403,8 @@ test('vfile([options])', function (t) {
     st.equal(message.message, 'foo', 'should accept a changed error (1)')
 
     st.equal(
-      message.stack.split('\n').slice(0, 2).join('\n'),
-      ['ReferenceError: foo', '    at Object.<anonymous> (test.js:1:1)'].join(
-        '\n'
-      ),
+      message.stack.split('\n')[0],
+      'ReferenceError: foo',
       'should accept a changed error (2)'
     )
 
@@ -425,13 +417,8 @@ test('vfile([options])', function (t) {
     )
 
     st.equal(
-      message.stack.split('\n').slice(0, 4).join('\n'),
-      [
-        'ReferenceError: foo',
-        'bar',
-        'baz',
-        '    at Object.<anonymous> (test.js:1:1)'
-      ].join('\n'),
+      message.stack.split('\n').slice(0, 3).join('\n'),
+      'ReferenceError: foo\nbar\nbaz',
       'should accept a multiline error (2)'
     )
 
@@ -444,20 +431,20 @@ test('vfile([options])', function (t) {
 
     message = vfile().message('test', pos)
 
-    st.deepEqual(message.location, pos.position, 'should accept a node (1)')
+    st.deepEqual(message.position, pos.position, 'should accept a node (1)')
     st.equal(String(message), '2:3-2:5: test', 'should accept a node (2)')
 
     pos = pos.position
     message = vfile().message('test', pos)
 
-    st.deepEqual(message.location, pos, 'should accept a location (1)')
-    st.equal(String(message), '2:3-2:5: test', 'should accept a location (2)')
+    st.deepEqual(message.position, pos, 'should accept a position (1)')
+    st.equal(String(message), '2:3-2:5: test', 'should accept a position (2)')
 
     pos = pos.start
     message = vfile().message('test', pos)
 
     st.deepEqual(
-      message.location,
+      message.position,
       {
         start: pos,
         end: {line: null, column: null}
@@ -485,7 +472,7 @@ test('vfile([options])', function (t) {
   })
 
   t.test('#fail(reason[, position][, origin])', function (st) {
-    var fp = join('~', 'example.md')
+    var fp = path.join('~', 'example.md')
     var file = vfile({path: fp})
     var message
 
@@ -510,7 +497,7 @@ test('vfile([options])', function (t) {
     st.equal(message.fatal, true)
     st.equal(message.line, 1)
     st.equal(message.column, 3)
-    st.deepEqual(message.location, {
+    st.deepEqual(message.position, {
       start: {line: 1, column: 3},
       end: {line: null, column: null}
     })
@@ -519,7 +506,7 @@ test('vfile([options])', function (t) {
   })
 
   t.test('#info(reason[, position][, origin])', function (st) {
-    var fp = join('~', 'example.md')
+    var fp = path.join('~', 'example.md')
     var file = vfile({path: fp})
     var message
 
@@ -537,7 +524,7 @@ test('vfile([options])', function (t) {
     st.equal(message.fatal, null)
     st.equal(message.line, 1)
     st.equal(message.column, 3)
-    st.deepEqual(message.location, {
+    st.deepEqual(message.position, {
       start: {line: 1, column: 3},
       end: {line: null, column: null}
     })
@@ -552,7 +539,7 @@ test('vfile([options])', function (t) {
 // some cleaning.
 // <https://github.com/browserify/path-browserify/tree/master/test>
 test('p (POSIX path for browsers)', function (t) {
-  var typeErrorTests = [true, false, 7, null, {}, undefined, [], NaN]
+  var typeErrorTests = [true, false, 7, null, {}, undefined, [], Number.NaN]
 
   t.test('basename', function (t) {
     typeErrorTests.forEach(function (test) {
@@ -654,7 +641,7 @@ test('p (POSIX path for browsers)', function (t) {
       )
     })
     ;[
-      [__filename, '.js'],
+      [path.basename(import.meta.url), '.js'],
       ['', ''],
       ['/path/to/file', ''],
       ['/path/to/file.ext', '.ext'],
@@ -792,7 +779,7 @@ test('p (POSIX path for browsers)', function (t) {
 
 function cleanStack(stack, max) {
   return stack
-    .replace(new RegExp('\\(.+\\' + sep, 'g'), '(')
+    .replace(new RegExp('\\(.+\\' + path.sep, 'g'), '(')
     .replace(/\d+:\d+/g, '1:1')
     .split('\n')
     .slice(0, max)

@@ -1,3 +1,1 @@
-'use strict'
-
-module.exports = require('./lib/core')
+export {vfile} from './lib/core.js'
