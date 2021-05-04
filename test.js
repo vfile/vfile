@@ -1,7 +1,7 @@
 import path from 'path'
 import test from 'tape'
 import {path as p} from './lib/minpath.browser.js'
-import {vfile} from './index.js'
+import {VFile} from './index.js'
 
 /* eslint-disable no-undef */
 var exception
@@ -32,13 +32,11 @@ try {
 }
 /* eslint-enable no-undef */
 
-test('vfile([options])', function (t) {
-  t.ok(vfile() instanceof vfile, 'should work with new')
-
-  t.ok(vfile() instanceof vfile, 'should work without `new`')
+test('new VFile(options?)', function (t) {
+  t.ok(new VFile() instanceof VFile, 'should work with new')
 
   t.test('should accept missing options', function (st) {
-    var file = vfile()
+    var file = new VFile()
 
     st.deepEqual(file.history, [])
     st.deepEqual(file.data, {})
@@ -54,7 +52,7 @@ test('vfile([options])', function (t) {
   })
 
   t.test('should accept a string', function (st) {
-    var file = vfile('alpha')
+    var file = new VFile('alpha')
 
     st.equal(file.value, 'alpha')
 
@@ -62,17 +60,28 @@ test('vfile([options])', function (t) {
   })
 
   t.test('should accept a vfile', function (st) {
-    var left = vfile()
-    var right = vfile(left)
+    var left = new VFile()
+    var right = new VFile(left)
 
-    st.equal(left, right)
+    st.deepEqual(left, right)
+    st.equal(left.path, right.path)
+
+    st.end()
+  })
+
+  t.test('should accept a vfile w/ path', function (st) {
+    var left = new VFile({path: path.join('path', 'to', 'file.js')})
+    var right = new VFile(left)
+
+    st.deepEqual(left, right)
+    st.equal(left.path, right.path)
 
     st.end()
   })
 
   t.test('should accept an object (1)', function (st) {
     var fp = path.join('~', 'example.md')
-    var file = vfile({path: fp})
+    var file = new VFile({path: fp})
 
     st.deepEqual(file.history, [fp])
     st.equal(file.value, undefined)
@@ -86,7 +95,7 @@ test('vfile([options])', function (t) {
   })
 
   t.test('should accept a object (2)', function (st) {
-    var file = vfile({basename: 'example.md'})
+    var file = new VFile({basename: 'example.md'})
 
     st.deepEqual(file.history, ['example.md'])
     st.equal(file.value, undefined)
@@ -100,7 +109,7 @@ test('vfile([options])', function (t) {
   })
 
   t.test('should accept a object (2)', function (st) {
-    var file = vfile({stem: 'example', extname: '.md', dirname: '~'})
+    var file = new VFile({stem: 'example', extname: '.md', dirname: '~'})
 
     st.deepEqual(file.history, [
       'example',
@@ -119,7 +128,7 @@ test('vfile([options])', function (t) {
 
   t.test('should set custom props', function (st) {
     var testing = [1, 2, 3]
-    var file = vfile({custom: true, testing})
+    var file = new VFile({custom: true, testing})
 
     st.equal(file.custom, true)
     st.equal(file.testing, testing)
@@ -128,22 +137,22 @@ test('vfile([options])', function (t) {
   })
 
   t.test('#toString()', function (st) {
-    st.equal(vfile().toString(), '', 'should return `""` without content')
+    st.equal(new VFile().toString(), '', 'should return `""` without content')
 
     st.equal(
-      vfile('foo').toString(),
+      new VFile('foo').toString(),
       'foo',
       'string: should return the internal value'
     )
 
     st.equal(
-      vfile(Buffer.from('bar')).toString(),
+      new VFile(Buffer.from('bar')).toString(),
       'bar',
       'buffer: should return the internal value'
     )
 
     st.equal(
-      vfile(Buffer.from('bar')).toString('hex'),
+      new VFile(Buffer.from('bar')).toString('hex'),
       '626172',
       'buffer encoding: should return the internal value'
     )
@@ -152,9 +161,9 @@ test('vfile([options])', function (t) {
   })
 
   t.test('.cwd', function (st) {
-    st.equal(vfile().cwd, process.cwd(), 'should start at `process.cwd()`')
+    st.equal(new VFile().cwd, process.cwd(), 'should start at `process.cwd()`')
 
-    st.equal(vfile({cwd: '/'}).cwd, '/', 'should be settable')
+    st.equal(new VFile({cwd: '/'}).cwd, '/', 'should be settable')
 
     st.end()
   })
@@ -162,7 +171,7 @@ test('vfile([options])', function (t) {
   t.test('.path', function (st) {
     var fp = path.join('~', 'example.md')
     var ofp = path.join('~', 'example', 'example.txt')
-    var file = vfile()
+    var file = new VFile()
 
     st.equal(file.path, undefined, 'should start `undefined`')
 
@@ -196,7 +205,7 @@ test('vfile([options])', function (t) {
   })
 
   t.test('.basename', function (st) {
-    var file = vfile()
+    var file = new VFile()
 
     st.equal(file.basename, undefined, 'should start `undefined`')
 
@@ -214,7 +223,7 @@ test('vfile([options])', function (t) {
       'should record changes'
     )
 
-    file = vfile({path: path.join('~', 'alpha', 'bravo.md')})
+    file = new VFile({path: path.join('~', 'alpha', 'bravo.md')})
 
     st.throws(
       function () {
@@ -241,7 +250,7 @@ test('vfile([options])', function (t) {
 
   t.test('.dirname', function (st) {
     var fp = path.join('~', 'alpha', 'bravo')
-    var file = vfile()
+    var file = new VFile()
 
     st.equal(file.dirname, undefined, 'should start undefined')
 
@@ -273,7 +282,7 @@ test('vfile([options])', function (t) {
 
   t.test('.extname', function (st) {
     var fp = path.join('~', 'alpha', 'bravo')
-    var file = vfile()
+    var file = new VFile()
 
     st.equal(file.extname, undefined, 'should start `undefined`')
 
@@ -317,7 +326,7 @@ test('vfile([options])', function (t) {
   })
 
   t.test('.stem', function (st) {
-    var file = vfile()
+    var file = new VFile()
 
     st.equal(file.stem, undefined, 'should start `undefined`')
 
@@ -356,9 +365,9 @@ test('vfile([options])', function (t) {
     var message
     var pos
 
-    st.ok(vfile().message('') instanceof Error, 'should return an Error')
+    st.ok(new VFile().message('') instanceof Error, 'should return an Error')
 
-    file = vfile({path: fp})
+    file = new VFile({path: fp})
     message = file.message('Foo')
 
     st.equal(file.messages.length, 1)
@@ -384,7 +393,7 @@ test('vfile([options])', function (t) {
       'should have a pretty `toString()` message'
     )
 
-    message = vfile().message(exception)
+    message = new VFile().message(exception)
 
     st.equal(
       message.message,
@@ -398,7 +407,7 @@ test('vfile([options])', function (t) {
       'should accept an error (2)'
     )
 
-    message = vfile().message(changedMessage)
+    message = new VFile().message(changedMessage)
 
     st.equal(message.message, 'foo', 'should accept a changed error (1)')
 
@@ -408,7 +417,7 @@ test('vfile([options])', function (t) {
       'should accept a changed error (2)'
     )
 
-    message = vfile().message(multilineException)
+    message = new VFile().message(multilineException)
 
     st.equal(
       message.message,
@@ -429,19 +438,19 @@ test('vfile([options])', function (t) {
       }
     }
 
-    message = vfile().message('test', pos)
+    message = new VFile().message('test', pos)
 
     st.deepEqual(message.position, pos.position, 'should accept a node (1)')
     st.equal(String(message), '2:3-2:5: test', 'should accept a node (2)')
 
     pos = pos.position
-    message = vfile().message('test', pos)
+    message = new VFile().message('test', pos)
 
     st.deepEqual(message.position, pos, 'should accept a position (1)')
     st.equal(String(message), '2:3-2:5: test', 'should accept a position (2)')
 
     pos = pos.start
-    message = vfile().message('test', pos)
+    message = new VFile().message('test', pos)
 
     st.deepEqual(
       message.position,
@@ -455,12 +464,12 @@ test('vfile([options])', function (t) {
     st.equal(String(message), '2:3: test', 'should accept a position')
 
     st.equal(
-      vfile().message('test', 'charlie').ruleId,
+      new VFile().message('test', 'charlie').ruleId,
       'charlie',
       'should accept a `ruleId` as `origin`'
     )
 
-    message = vfile().message('test', 'delta:echo')
+    message = new VFile().message('test', 'delta:echo')
 
     st.deepEqual(
       [message.source, message.ruleId],
@@ -473,7 +482,7 @@ test('vfile([options])', function (t) {
 
   t.test('#fail(reason[, position][, origin])', function (st) {
     var fp = path.join('~', 'example.md')
-    var file = vfile({path: fp})
+    var file = new VFile({path: fp})
     var message
 
     st.throws(
@@ -507,7 +516,7 @@ test('vfile([options])', function (t) {
 
   t.test('#info(reason[, position][, origin])', function (st) {
     var fp = path.join('~', 'example.md')
-    var file = vfile({path: fp})
+    var file = new VFile({path: fp})
     var message
 
     file.info('Bar', {line: 1, column: 3}, 'baz:qux')

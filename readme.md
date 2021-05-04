@@ -69,9 +69,9 @@ npm install vfile
 ## Use
 
 ```js
-import {vfile} from 'vfile'
+import {VFile} from 'vfile'
 
-var file = vfile({path: '~/example.txt', value: 'Alpha *braavo* charlie.'})
+var file = new VFile({path: '~/example.txt', value: 'Alpha *braavo* charlie.'})
 
 file.path // => '~/example.txt'
 file.dirname // => '~'
@@ -91,7 +91,7 @@ console.log(file.messages)
 
 Yields:
 
-```js
+```txt
 [
   [~/index.text:1:8: `braavo` is misspelt; did you mean `bravo`?] {
     reason: '`braavo` is misspelt; did you mean `bravo`?',
@@ -115,8 +115,8 @@ There is no default export.
 
 Create a new virtual file.
 If `options` is `string` or `Buffer`, treats it as `{value: options}`.
-If `options` is a `VFile`, returns it.
-All other options are set on the newly created `vfile`.
+If `options` is a `VFile`, shallow copies it’s data over to the new file.
+All other options are set on the newly created `VFile`.
 
 Path related properties are set in the following order (least specific to most
 specific): `history`, `path`, `basename`, `stem`, `extname`, `dirname`.
@@ -127,12 +127,12 @@ It’s not possible to set either `dirname` or `extname` without setting either
 ###### Example
 
 ```js
-vfile()
-vfile('console.log("alpha");')
-vfile(Buffer.from('exit 1'))
-vfile({path: path.join(__dirname, 'readme.md')})
-vfile({stem: 'readme', extname: '.md', dirname: __dirname})
-vfile({other: 'properties', are: 'copied', ov: {e: 'r'}})
+new VFile()
+new VFile('console.log("alpha");')
+new VFile(Buffer.from('exit 1'))
+new VFile({path: path.join('path', 'to', 'readme.md')})
+new VFile({stem: 'readme', extname: '.md', dirname: path.join('path', 'to')})
+new VFile({other: 'properties', are: 'copied', ov: {e: 'r'}})
 ```
 
 ### `vfile.value`

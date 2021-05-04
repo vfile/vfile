@@ -1,1 +1,1 @@
-export {vfile} from './lib/index.js'
+export {VFile} from './lib/index.js'
