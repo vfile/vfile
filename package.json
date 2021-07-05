@@ -49,7 +49,7 @@
     "index.js"
   ],
   "dependencies": {
-    "@types/unist": "^2.0.0",
+    "@types/unist": "^2.0.5",
     "is-buffer": "^2.0.0",
     "unist-util-stringify-position": "^3.0.0",
     "vfile-message": "^3.0.0"
