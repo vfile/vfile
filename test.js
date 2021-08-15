@@ -255,7 +255,9 @@ test('new VFile(options?)', (t) => {
       () => {
         const u = new URL('file:')
         u.hostname = 'a.com'
+        console.log('u:', [u])
         file = new VFile(u)
+        console.log('f:', [file.path])
       },
       /File URL host must be/,
       'should not allow setting `file:` urls w/ a host'
