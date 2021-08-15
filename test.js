@@ -251,17 +251,19 @@ test('new VFile(options?)', (t) => {
       'should not allow setting non-`file:` urls'
     )
 
-    t.throws(
-      () => {
-        const u = new URL('file:')
-        u.hostname = 'a.com'
-        console.log('u:', [u])
-        file = new VFile(u)
-        console.log('f:', [file.path])
-      },
-      /File URL host must be/,
-      'should not allow setting `file:` urls w/ a host'
-    )
+    if (process.platform !== 'win32') {
+      // Windows allows this just fine:
+      // <https://github.com/nodejs/node/blob/fcf8ba4/lib/internal/url.js#L1369>
+      t.throws(
+        () => {
+          const u = new URL('file:')
+          u.hostname = 'a.com'
+          file = new VFile(u)
+        },
+        /File URL host must be/,
+        'should not allow setting `file:` urls w/ a host'
+      )
+    }
 
     t.throws(
       () => {
