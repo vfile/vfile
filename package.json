@@ -37,11 +37,13 @@
   "types": "index.d.ts",
   "browser": {
     "./lib/minpath.js": "./lib/minpath.browser.js",
-    "./lib/minproc.js": "./lib/minproc.browser.js"
+    "./lib/minproc.js": "./lib/minproc.browser.js",
+    "./lib/minurl.js": "./lib/minurl.browser.js"
   },
   "react-native": {
     "./lib/minpath.js": "./lib/minpath.browser.js",
-    "./lib/minproc.js": "./lib/minproc.browser.js"
+    "./lib/minproc.js": "./lib/minproc.browser.js",
+    "./lib/minurl.js": "./lib/minurl.browser.js"
   },
   "files": [
     "lib/",
