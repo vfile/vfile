@@ -21,7 +21,7 @@ let changedMessage
 let multilineException
 
 try {
-  // @ts-ignore
+  // @ts-expect-error
   variable = 1
 } catch (error) {
   error.stack = cleanStack(error.stack, 3)
@@ -29,7 +29,7 @@ try {
 }
 
 try {
-  // @ts-ignore
+  // @ts-expect-error
   variable = 1
 } catch (error) {
   error.message = 'foo'
@@ -38,7 +38,7 @@ try {
 }
 
 try {
-  // @ts-ignore
+  // @ts-expect-error
   variable = 1
 } catch (error) {
   error.message = 'foo\nbar\nbaz'
@@ -145,9 +145,9 @@ test('new VFile(options?)', (t) => {
     const testing = [1, 2, 3]
     const file = new VFile({custom: true, testing})
 
-    // @ts-ignore It’s recommended to use `data` for custom fields, but it works in the runtime.
+    // @ts-expect-error It’s recommended to use `data` for custom fields, but it works in the runtime.
     t.equal(file.custom, true)
-    // @ts-ignore It’s recommended to use `data` for custom fields, but it works in the runtime.
+    // @ts-expect-error It’s recommended to use `data` for custom fields, but it works in the runtime.
     t.equal(file.testing, testing)
 
     t.end()
@@ -212,7 +212,8 @@ test('new VFile(options?)', (t) => {
 
     t.throws(
       () => {
-        file.path = null
+        // @ts-expect-error: runtime.
+        file.path = undefined
       },
       /Error: `path` cannot be empty/,
       'should not remove `path`'
@@ -244,7 +245,7 @@ test('new VFile(options?)', (t) => {
 
     t.throws(
       () => {
-        file.basename = null
+        file.basename = undefined
       },
       /Error: `basename` cannot be empty/,
       'should throw when removing `basename`'
@@ -290,7 +291,7 @@ test('new VFile(options?)', (t) => {
       'should record changes'
     )
 
-    file.dirname = null
+    file.dirname = undefined
     t.equal(file.dirname, '.', 'should support removing `dirname` (1)')
     t.equal(file.path, 'bravo', 'should support removing `dirname` (2)')
 
@@ -335,7 +336,7 @@ test('new VFile(options?)', (t) => {
       'should throw with mutiple `.`s'
     )
 
-    file.extname = null
+    file.extname = undefined
     t.equal(file.extname, '', 'should support removing `extname` (1)')
     t.equal(file.path, fp, 'should support removing `extname` (2)')
 
@@ -357,7 +358,7 @@ test('new VFile(options?)', (t) => {
 
     t.throws(
       () => {
-        file.stem = null
+        file.stem = undefined
       },
       /Error: `stem` cannot be empty/,
       'should throw when removing `stem`'
@@ -378,7 +379,7 @@ test('new VFile(options?)', (t) => {
 
   t.test('#message(reason[, position][, origin])', (t) => {
     const fp = path.join('~', 'example.md')
-    /** @type {Node|Position|Point} */
+    /** @type {Node|Position|Point|undefined} */
     let place
 
     t.ok(new VFile().message('') instanceof Error, 'should return an Error')
@@ -418,7 +419,7 @@ test('new VFile(options?)', (t) => {
     )
 
     t.equal(
-      message.stack.split('\n')[0],
+      String(message.stack || '').split('\n')[0],
       'ReferenceError: variable is not defined',
       'should accept an error (2)'
     )
@@ -428,7 +429,7 @@ test('new VFile(options?)', (t) => {
     t.equal(message.message, 'foo', 'should accept a changed error (1)')
 
     t.equal(
-      message.stack.split('\n')[0],
+      String(message.stack || '').split('\n')[0],
       'ReferenceError: foo',
       'should accept a changed error (2)'
     )
@@ -442,7 +443,10 @@ test('new VFile(options?)', (t) => {
     )
 
     t.equal(
-      message.stack.split('\n').slice(0, 3).join('\n'),
+      String(message.stack || '')
+        .split('\n')
+        .slice(0, 3)
+        .join('\n'),
       'ReferenceError: foo\nbar\nbaz',
       'should accept a multiline error (2)'
     )
@@ -466,7 +470,7 @@ test('new VFile(options?)', (t) => {
     t.deepEqual(message.position, place, 'should accept a position (1)')
     t.equal(String(message), '2:3-2:5: test', 'should accept a position (2)')
 
-    place = place.start
+    place = place && place.start
     message = new VFile().message('test', place)
 
     t.deepEqual(
@@ -481,13 +485,13 @@ test('new VFile(options?)', (t) => {
     t.equal(String(message), '2:3: test', 'should accept a position')
 
     t.equal(
-      // @ts-ignore runtime allow omitting `place`.
+      // @ts-expect-error runtime allow omitting `place`.
       new VFile().message('test', 'charlie').ruleId,
       'charlie',
       'should accept a `ruleId` as `origin`'
     )
 
-    // @ts-ignore runtime allow omitting `place`.
+    // @ts-expect-error runtime allow omitting `place`.
     message = new VFile().message('test', 'delta:echo')
 
     t.deepEqual(
@@ -572,7 +576,7 @@ test('p (POSIX path for browsers)', (t) => {
 
       t.throws(
         () => {
-          // @ts-ignore runtime.
+          // @ts-expect-error runtime.
           p.basename(test)
         },
         TypeError,
@@ -583,7 +587,7 @@ test('p (POSIX path for browsers)', (t) => {
       if (test !== undefined) {
         t.throws(
           () => {
-            // @ts-ignore runtime.
+            // @ts-expect-error runtime.
             p.basename('x', test)
           },
           TypeError,
@@ -644,7 +648,7 @@ test('p (POSIX path for browsers)', (t) => {
       const test = typeErrorTests[index]
       t.throws(
         () => {
-          // @ts-ignore runtime.
+          // @ts-expect-error runtime.
           p.dirname(test)
         },
         TypeError,
@@ -670,7 +674,7 @@ test('p (POSIX path for browsers)', (t) => {
       const test = typeErrorTests[index]
       t.throws(
         () => {
-          // @ts-ignore runtime.
+          // @ts-expect-error runtime.
           p.extname(test)
         },
         TypeError,
@@ -751,7 +755,7 @@ test('p (POSIX path for browsers)', (t) => {
       const test = typeErrorTests[index]
       t.throws(
         () => {
-          // @ts-ignore runtime.
+          // @ts-expect-error runtime.
           p.join(test)
         },
         TypeError,
@@ -759,6 +763,7 @@ test('p (POSIX path for browsers)', (t) => {
       )
     }
 
+    /** @type {Array.<[string[], string]>} */
     const pairs = [
       [['.', 'x/b', '..', '/b/c.js'], 'x/b/c.js'],
       [[], '.'],
