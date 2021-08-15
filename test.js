@@ -6,17 +6,19 @@
  */
 
 import path from 'path'
+import process from 'process'
+import {Buffer} from 'buffer'
 import test from 'tape'
 import {path as p} from './lib/minpath.browser.js'
 import {VFile} from './index.js'
 
 /* eslint-disable no-undef */
 /** @type {Error} */
-var exception
+let exception
 /** @type {Error} */
-var changedMessage
+let changedMessage
 /** @type {Error} */
-var multilineException
+let multilineException
 
 try {
   // @ts-ignore
@@ -45,194 +47,194 @@ try {
 }
 /* eslint-enable no-undef */
 
-test('new VFile(options?)', function (t) {
+test('new VFile(options?)', (t) => {
   t.ok(new VFile() instanceof VFile, 'should work with new')
 
-  t.test('should accept missing options', function (st) {
-    var file = new VFile()
+  t.test('should accept missing options', (t) => {
+    const file = new VFile()
 
-    st.deepEqual(file.history, [])
-    st.deepEqual(file.data, {})
-    st.deepEqual(file.messages, [])
-    st.equal(file.value, undefined)
-    st.equal(file.path, undefined)
-    st.equal(file.dirname, undefined)
-    st.equal(file.basename, undefined)
-    st.equal(file.stem, undefined)
-    st.equal(file.extname, undefined)
+    t.deepEqual(file.history, [])
+    t.deepEqual(file.data, {})
+    t.deepEqual(file.messages, [])
+    t.equal(file.value, undefined)
+    t.equal(file.path, undefined)
+    t.equal(file.dirname, undefined)
+    t.equal(file.basename, undefined)
+    t.equal(file.stem, undefined)
+    t.equal(file.extname, undefined)
 
-    st.end()
+    t.end()
   })
 
-  t.test('should accept a string', function (st) {
-    var file = new VFile('alpha')
+  t.test('should accept a string', (t) => {
+    const file = new VFile('alpha')
 
-    st.equal(file.value, 'alpha')
+    t.equal(file.value, 'alpha')
 
-    st.end()
+    t.end()
   })
 
-  t.test('should accept a vfile', function (st) {
-    var left = new VFile()
-    var right = new VFile(left)
+  t.test('should accept a vfile', (t) => {
+    const left = new VFile()
+    const right = new VFile(left)
 
-    st.deepEqual(left, right)
-    st.equal(left.path, right.path)
+    t.deepEqual(left, right)
+    t.equal(left.path, right.path)
 
-    st.end()
+    t.end()
   })
 
-  t.test('should accept a vfile w/ path', function (st) {
-    var left = new VFile({path: path.join('path', 'to', 'file.js')})
-    var right = new VFile(left)
+  t.test('should accept a vfile w/ path', (t) => {
+    const left = new VFile({path: path.join('path', 'to', 'file.js')})
+    const right = new VFile(left)
 
-    st.deepEqual(left, right)
-    st.equal(left.path, right.path)
+    t.deepEqual(left, right)
+    t.equal(left.path, right.path)
 
-    st.end()
+    t.end()
   })
 
-  t.test('should accept an object (1)', function (st) {
-    var fp = path.join('~', 'example.md')
-    var file = new VFile({path: fp})
+  t.test('should accept an object (1)', (t) => {
+    const fp = path.join('~', 'example.md')
+    const file = new VFile({path: fp})
 
-    st.deepEqual(file.history, [fp])
-    st.equal(file.value, undefined)
-    st.equal(file.path, fp)
-    st.equal(file.dirname, '~')
-    st.equal(file.basename, 'example.md')
-    st.equal(file.stem, 'example')
-    st.equal(file.extname, '.md')
+    t.deepEqual(file.history, [fp])
+    t.equal(file.value, undefined)
+    t.equal(file.path, fp)
+    t.equal(file.dirname, '~')
+    t.equal(file.basename, 'example.md')
+    t.equal(file.stem, 'example')
+    t.equal(file.extname, '.md')
 
-    st.end()
+    t.end()
   })
 
-  t.test('should accept a object (2)', function (st) {
-    var file = new VFile({basename: 'example.md'})
+  t.test('should accept a object (2)', (t) => {
+    const file = new VFile({basename: 'example.md'})
 
-    st.deepEqual(file.history, ['example.md'])
-    st.equal(file.value, undefined)
-    st.equal(file.path, 'example.md')
-    st.equal(file.dirname, '.')
-    st.equal(file.basename, 'example.md')
-    st.equal(file.stem, 'example')
-    st.equal(file.extname, '.md')
+    t.deepEqual(file.history, ['example.md'])
+    t.equal(file.value, undefined)
+    t.equal(file.path, 'example.md')
+    t.equal(file.dirname, '.')
+    t.equal(file.basename, 'example.md')
+    t.equal(file.stem, 'example')
+    t.equal(file.extname, '.md')
 
-    st.end()
+    t.end()
   })
 
-  t.test('should accept a object (2)', function (st) {
-    var file = new VFile({stem: 'example', extname: '.md', dirname: '~'})
+  t.test('should accept a object (2)', (t) => {
+    const file = new VFile({stem: 'example', extname: '.md', dirname: '~'})
 
-    st.deepEqual(file.history, [
+    t.deepEqual(file.history, [
       'example',
       'example.md',
       path.join('~', 'example.md')
     ])
-    st.equal(file.value, undefined)
-    st.equal(file.path, path.join('~', 'example.md'))
-    st.equal(file.dirname, '~')
-    st.equal(file.basename, 'example.md')
-    st.equal(file.stem, 'example')
-    st.equal(file.extname, '.md')
+    t.equal(file.value, undefined)
+    t.equal(file.path, path.join('~', 'example.md'))
+    t.equal(file.dirname, '~')
+    t.equal(file.basename, 'example.md')
+    t.equal(file.stem, 'example')
+    t.equal(file.extname, '.md')
 
-    st.end()
+    t.end()
   })
 
-  t.test('should set custom props', function (st) {
-    var testing = [1, 2, 3]
-    var file = new VFile({custom: true, testing})
+  t.test('should set custom props', (t) => {
+    const testing = [1, 2, 3]
+    const file = new VFile({custom: true, testing})
 
     // @ts-ignore It’s recommended to use `data` for custom fields, but it works in the runtime.
-    st.equal(file.custom, true)
+    t.equal(file.custom, true)
     // @ts-ignore It’s recommended to use `data` for custom fields, but it works in the runtime.
-    st.equal(file.testing, testing)
+    t.equal(file.testing, testing)
 
-    st.end()
+    t.end()
   })
 
-  t.test('#toString()', function (st) {
-    st.equal(new VFile().toString(), '', 'should return `""` without content')
+  t.test('#toString()', (t) => {
+    t.equal(new VFile().toString(), '', 'should return `""` without content')
 
-    st.equal(
+    t.equal(
       new VFile('foo').toString(),
       'foo',
       'string: should return the internal value'
     )
 
-    st.equal(
+    t.equal(
       new VFile(Buffer.from('bar')).toString(),
       'bar',
       'buffer: should return the internal value'
     )
 
-    st.equal(
+    t.equal(
       new VFile(Buffer.from('bar')).toString('hex'),
       '626172',
       'buffer encoding: should return the internal value'
     )
 
-    st.end()
+    t.end()
   })
 
-  t.test('.cwd', function (st) {
-    st.equal(new VFile().cwd, process.cwd(), 'should start at `process.cwd()`')
+  t.test('.cwd', (t) => {
+    t.equal(new VFile().cwd, process.cwd(), 'should start at `process.cwd()`')
 
-    st.equal(new VFile({cwd: '/'}).cwd, '/', 'should be settable')
+    t.equal(new VFile({cwd: '/'}).cwd, '/', 'should be settable')
 
-    st.end()
+    t.end()
   })
 
-  t.test('.path', function (st) {
-    var fp = path.join('~', 'example.md')
-    var ofp = path.join('~', 'example', 'example.txt')
-    var file = new VFile()
+  t.test('.path', (t) => {
+    const fp = path.join('~', 'example.md')
+    const ofp = path.join('~', 'example', 'example.txt')
+    const file = new VFile()
 
-    st.equal(file.path, undefined, 'should start `undefined`')
+    t.equal(file.path, undefined, 'should start `undefined`')
 
     file.path = fp
 
-    st.equal(file.path, fp, 'should set `path`s')
+    t.equal(file.path, fp, 'should set `path`s')
 
     file.path = ofp
 
-    st.equal(file.path, ofp, 'should change `path`s')
+    t.equal(file.path, ofp, 'should change `path`s')
 
-    st.deepEqual(file.history, [fp, ofp], 'should record changes')
+    t.deepEqual(file.history, [fp, ofp], 'should record changes')
 
     file.path = ofp
 
-    st.deepEqual(
+    t.deepEqual(
       file.history,
       [fp, ofp],
       'should not record setting the same path'
     )
 
-    st.throws(
-      function () {
+    t.throws(
+      () => {
         file.path = null
       },
       /Error: `path` cannot be empty/,
       'should not remove `path`'
     )
 
-    st.end()
+    t.end()
   })
 
-  t.test('.basename', function (st) {
-    var file = new VFile()
+  t.test('.basename', (t) => {
+    let file = new VFile()
 
-    st.equal(file.basename, undefined, 'should start `undefined`')
+    t.equal(file.basename, undefined, 'should start `undefined`')
 
     file.basename = 'example.md'
 
-    st.equal(file.basename, 'example.md', 'should set `basename`')
+    t.equal(file.basename, 'example.md', 'should set `basename`')
 
     file.basename = 'readme.txt'
 
-    st.equal(file.basename, 'readme.txt', 'should change `basename`')
+    t.equal(file.basename, 'readme.txt', 'should change `basename`')
 
-    st.deepEqual(
+    t.deepEqual(
       file.history,
       ['example.md', 'readme.txt'],
       'should record changes'
@@ -240,16 +242,16 @@ test('new VFile(options?)', function (t) {
 
     file = new VFile({path: path.join('~', 'alpha', 'bravo.md')})
 
-    st.throws(
-      function () {
+    t.throws(
+      () => {
         file.basename = null
       },
       /Error: `basename` cannot be empty/,
       'should throw when removing `basename`'
     )
 
-    st.throws(
-      function () {
+    t.throws(
+      () => {
         file.basename = path.join('charlie', 'delta.js')
       },
       new RegExp(
@@ -260,17 +262,17 @@ test('new VFile(options?)', function (t) {
       'should throw when setting a path'
     )
 
-    st.end()
+    t.end()
   })
 
-  t.test('.dirname', function (st) {
-    var fp = path.join('~', 'alpha', 'bravo')
-    var file = new VFile()
+  t.test('.dirname', (t) => {
+    const fp = path.join('~', 'alpha', 'bravo')
+    const file = new VFile()
 
-    st.equal(file.dirname, undefined, 'should start undefined')
+    t.equal(file.dirname, undefined, 'should start undefined')
 
-    st.throws(
-      function () {
+    t.throws(
+      () => {
         file.dirname = fp
       },
       /Error: Setting `dirname` requires `path` to be set too/,
@@ -280,29 +282,29 @@ test('new VFile(options?)', function (t) {
     file.path = fp
     file.dirname = path.join('~', 'charlie')
 
-    st.equal(file.dirname, path.join('~', 'charlie'), 'should change paths')
+    t.equal(file.dirname, path.join('~', 'charlie'), 'should change paths')
 
-    st.deepEqual(
+    t.deepEqual(
       file.history,
       [fp, path.join('~', 'charlie', 'bravo')],
       'should record changes'
     )
 
     file.dirname = null
-    st.equal(file.dirname, '.', 'should support removing `dirname` (1)')
-    st.equal(file.path, 'bravo', 'should support removing `dirname` (2)')
+    t.equal(file.dirname, '.', 'should support removing `dirname` (1)')
+    t.equal(file.path, 'bravo', 'should support removing `dirname` (2)')
 
-    st.end()
+    t.end()
   })
 
-  t.test('.extname', function (st) {
-    var fp = path.join('~', 'alpha', 'bravo')
-    var file = new VFile()
+  t.test('.extname', (t) => {
+    const fp = path.join('~', 'alpha', 'bravo')
+    const file = new VFile()
 
-    st.equal(file.extname, undefined, 'should start `undefined`')
+    t.equal(file.extname, undefined, 'should start `undefined`')
 
-    st.throws(
-      function () {
+    t.throws(
+      () => {
         file.extname = '.git'
       },
       /Error: Setting `extname` requires `path` to be set too/,
@@ -310,23 +312,23 @@ test('new VFile(options?)', function (t) {
     )
 
     file.path = fp
-    st.equal(file.extname, '', 'should return empty without extension')
+    t.equal(file.extname, '', 'should return empty without extension')
 
     file.extname = '.md'
-    st.equal(file.extname, '.md', 'should set extensions')
+    t.equal(file.extname, '.md', 'should set extensions')
 
-    st.deepEqual(file.history, [fp, fp + '.md'], 'should record changes')
+    t.deepEqual(file.history, [fp, fp + '.md'], 'should record changes')
 
-    st.throws(
-      function () {
+    t.throws(
+      () => {
         file.extname = 'txt'
       },
       /Error: `extname` must start with `.`/,
       'should throw without initial `.`'
     )
 
-    st.throws(
-      function () {
+    t.throws(
+      () => {
         file.extname = '..md'
       },
       /Error: `extname` cannot contain multiple dots/,
@@ -334,35 +336,35 @@ test('new VFile(options?)', function (t) {
     )
 
     file.extname = null
-    st.equal(file.extname, '', 'should support removing `extname` (1)')
-    st.equal(file.path, fp, 'should support removing `extname` (2)')
+    t.equal(file.extname, '', 'should support removing `extname` (1)')
+    t.equal(file.path, fp, 'should support removing `extname` (2)')
 
-    st.end()
+    t.end()
   })
 
-  t.test('.stem', function (st) {
-    var file = new VFile()
+  t.test('.stem', (t) => {
+    const file = new VFile()
 
-    st.equal(file.stem, undefined, 'should start `undefined`')
+    t.equal(file.stem, undefined, 'should start `undefined`')
 
     file.stem = 'bravo'
 
-    st.equal(file.stem, 'bravo', 'should set')
+    t.equal(file.stem, 'bravo', 'should set')
 
     file.stem = 'charlie'
 
-    st.equal(file.stem, 'charlie', 'should change')
+    t.equal(file.stem, 'charlie', 'should change')
 
-    st.throws(
-      function () {
+    t.throws(
+      () => {
         file.stem = null
       },
       /Error: `stem` cannot be empty/,
       'should throw when removing `stem`'
     )
 
-    st.throws(
-      function () {
+    t.throws(
+      () => {
         file.stem = path.join('charlie', 'delta.js')
       },
       new RegExp(
@@ -371,41 +373,37 @@ test('new VFile(options?)', function (t) {
       'should throw when setting a path'
     )
 
-    st.end()
+    t.end()
   })
 
-  t.test('#message(reason[, position][, origin])', function (st) {
-    var fp = path.join('~', 'example.md')
-    /** @type {VFile} */
-    var file
-    /** @type {VFileMessage} */
-    var message
+  t.test('#message(reason[, position][, origin])', (t) => {
+    const fp = path.join('~', 'example.md')
     /** @type {Node|Position|Point} */
-    var place
+    let place
 
-    st.ok(new VFile().message('') instanceof Error, 'should return an Error')
+    t.ok(new VFile().message('') instanceof Error, 'should return an Error')
 
-    file = new VFile({path: fp})
-    message = file.message('Foo')
+    const file = new VFile({path: fp})
+    let message = file.message('Foo')
 
-    st.equal(file.messages.length, 1)
-    st.equal(file.messages[0], message)
+    t.equal(file.messages.length, 1)
+    t.equal(file.messages[0], message)
 
-    st.equal(message.name, fp + ':1:1')
-    st.equal(message.file, fp)
-    st.equal(message.reason, 'Foo')
-    st.equal(message.ruleId, null)
-    st.equal(message.source, null)
-    st.equal(message.stack, '')
-    st.equal(message.fatal, false)
-    st.equal(message.line, null)
-    st.equal(message.column, null)
-    st.deepEqual(message.position, {
+    t.equal(message.name, fp + ':1:1')
+    t.equal(message.file, fp)
+    t.equal(message.reason, 'Foo')
+    t.equal(message.ruleId, null)
+    t.equal(message.source, null)
+    t.equal(message.stack, '')
+    t.equal(message.fatal, false)
+    t.equal(message.line, null)
+    t.equal(message.column, null)
+    t.deepEqual(message.position, {
       start: {line: null, column: null},
       end: {line: null, column: null}
     })
 
-    st.equal(
+    t.equal(
       String(message),
       fp + ':1:1: Foo',
       'should have a pretty `toString()` message'
@@ -413,13 +411,13 @@ test('new VFile(options?)', function (t) {
 
     message = new VFile().message(exception)
 
-    st.equal(
+    t.equal(
       message.message,
       'variable is not defined',
       'should accept an error (1)'
     )
 
-    st.equal(
+    t.equal(
       message.stack.split('\n')[0],
       'ReferenceError: variable is not defined',
       'should accept an error (2)'
@@ -427,9 +425,9 @@ test('new VFile(options?)', function (t) {
 
     message = new VFile().message(changedMessage)
 
-    st.equal(message.message, 'foo', 'should accept a changed error (1)')
+    t.equal(message.message, 'foo', 'should accept a changed error (1)')
 
-    st.equal(
+    t.equal(
       message.stack.split('\n')[0],
       'ReferenceError: foo',
       'should accept a changed error (2)'
@@ -437,13 +435,13 @@ test('new VFile(options?)', function (t) {
 
     message = new VFile().message(multilineException)
 
-    st.equal(
+    t.equal(
       message.message,
       'foo\nbar\nbaz',
       'should accept a multiline error (1)'
     )
 
-    st.equal(
+    t.equal(
       message.stack.split('\n').slice(0, 3).join('\n'),
       'ReferenceError: foo\nbar\nbaz',
       'should accept a multiline error (2)'
@@ -459,19 +457,19 @@ test('new VFile(options?)', function (t) {
 
     message = new VFile().message('test', place)
 
-    st.deepEqual(message.position, place.position, 'should accept a node (1)')
-    st.equal(String(message), '2:3-2:5: test', 'should accept a node (2)')
+    t.deepEqual(message.position, place.position, 'should accept a node (1)')
+    t.equal(String(message), '2:3-2:5: test', 'should accept a node (2)')
 
     place = place.position
     message = new VFile().message('test', place)
 
-    st.deepEqual(message.position, place, 'should accept a position (1)')
-    st.equal(String(message), '2:3-2:5: test', 'should accept a position (2)')
+    t.deepEqual(message.position, place, 'should accept a position (1)')
+    t.equal(String(message), '2:3-2:5: test', 'should accept a position (2)')
 
     place = place.start
     message = new VFile().message('test', place)
 
-    st.deepEqual(
+    t.deepEqual(
       message.position,
       {
         start: place,
@@ -480,9 +478,9 @@ test('new VFile(options?)', function (t) {
       'should accept a position (1)'
     )
 
-    st.equal(String(message), '2:3: test', 'should accept a position')
+    t.equal(String(message), '2:3: test', 'should accept a position')
 
-    st.equal(
+    t.equal(
       // @ts-ignore runtime allow omitting `place`.
       new VFile().message('test', 'charlie').ruleId,
       'charlie',
@@ -492,76 +490,70 @@ test('new VFile(options?)', function (t) {
     // @ts-ignore runtime allow omitting `place`.
     message = new VFile().message('test', 'delta:echo')
 
-    st.deepEqual(
+    t.deepEqual(
       [message.source, message.ruleId],
       ['delta', 'echo'],
       'should accept a `source` and `ruleId` in `origin`'
     )
 
-    st.end()
+    t.end()
   })
 
-  t.test('#fail(reason[, position][, origin])', function (st) {
-    var fp = path.join('~', 'example.md')
-    var file = new VFile({path: fp})
-    /** @type {VFileMessage} */
-    var message
+  t.test('#fail(reason[, position][, origin])', (t) => {
+    const fp = path.join('~', 'example.md')
+    const file = new VFile({path: fp})
 
-    st.throws(
-      function () {
+    t.throws(
+      () => {
         file.fail('Foo', {line: 1, column: 3}, 'baz:qux')
       },
       /1:3: Foo/,
       'should throw the message'
     )
 
-    st.equal(file.messages.length, 1)
+    t.equal(file.messages.length, 1)
 
-    message = file.messages[0]
+    const message = file.messages[0]
 
-    st.equal(message.name, fp + ':1:3')
-    st.equal(message.file, fp)
-    st.equal(message.reason, 'Foo')
-    st.equal(message.source, 'baz')
-    st.equal(message.ruleId, 'qux')
-    st.equal(message.stack, '')
-    st.equal(message.fatal, true)
-    st.equal(message.line, 1)
-    st.equal(message.column, 3)
-    st.deepEqual(message.position, {
+    t.equal(message.name, fp + ':1:3')
+    t.equal(message.file, fp)
+    t.equal(message.reason, 'Foo')
+    t.equal(message.source, 'baz')
+    t.equal(message.ruleId, 'qux')
+    t.equal(message.stack, '')
+    t.equal(message.fatal, true)
+    t.equal(message.line, 1)
+    t.equal(message.column, 3)
+    t.deepEqual(message.position, {
       start: {line: 1, column: 3},
       end: {line: null, column: null}
     })
 
-    st.end()
+    t.end()
   })
 
-  t.test('#info(reason[, position][, origin])', function (st) {
-    var fp = path.join('~', 'example.md')
-    var file = new VFile({path: fp})
-    /** @type {VFileMessage} */
-    var message
+  t.test('#info(reason[, position][, origin])', (t) => {
+    const fp = path.join('~', 'example.md')
+    const file = new VFile({path: fp})
 
-    file.info('Bar', {line: 1, column: 3}, 'baz:qux')
+    const message = file.info('Bar', {line: 1, column: 3}, 'baz:qux')
 
-    st.equal(file.messages.length, 1)
+    t.equal(file.messages.length, 1)
 
-    message = file.messages[0]
-
-    st.equal(message.name, fp + ':1:3')
-    st.equal(message.file, fp)
-    st.equal(message.reason, 'Bar')
-    st.equal(message.source, 'baz')
-    st.equal(message.ruleId, 'qux')
-    st.equal(message.fatal, null)
-    st.equal(message.line, 1)
-    st.equal(message.column, 3)
-    st.deepEqual(message.position, {
+    t.equal(message.name, fp + ':1:3')
+    t.equal(message.file, fp)
+    t.equal(message.reason, 'Bar')
+    t.equal(message.source, 'baz')
+    t.equal(message.ruleId, 'qux')
+    t.equal(message.fatal, null)
+    t.equal(message.line, 1)
+    t.equal(message.column, 3)
+    t.deepEqual(message.position, {
       start: {line: 1, column: 3},
       end: {line: null, column: null}
     })
 
-    st.end()
+    t.end()
   })
 
   t.end()
@@ -570,13 +562,16 @@ test('new VFile(options?)', function (t) {
 // Mostly from `path-browserify` with some extra tests to reach coverage, and
 // some cleaning.
 // <https://github.com/browserify/path-browserify/tree/master/test>
-test('p (POSIX path for browsers)', function (t) {
-  var typeErrorTests = [true, false, 7, null, {}, undefined, [], Number.NaN]
+test('p (POSIX path for browsers)', (t) => {
+  const typeErrorTests = [true, false, 7, null, {}, undefined, [], Number.NaN]
 
-  t.test('basename', function (t) {
-    typeErrorTests.forEach(function (test) {
+  t.test('basename', (t) => {
+    let index = -1
+    while (++index < typeErrorTests.length) {
+      const test = typeErrorTests[index]
+
       t.throws(
-        function () {
+        () => {
           // @ts-ignore runtime.
           p.basename(test)
         },
@@ -587,7 +582,7 @@ test('p (POSIX path for browsers)', function (t) {
       // `undefined` is a valid value as the second argument to basename.
       if (test !== undefined) {
         t.throws(
-          function () {
+          () => {
             // @ts-ignore runtime.
             p.basename('x', test)
           },
@@ -595,7 +590,7 @@ test('p (POSIX path for browsers)', function (t) {
           'should fail on `' + test + '` as `ext`'
         )
       }
-    })
+    }
 
     t.strictEqual(p.basename('.js', '.js'), '')
     t.strictEqual(p.basename(''), '')
@@ -642,17 +637,20 @@ test('p (POSIX path for browsers)', function (t) {
     t.end()
   })
 
-  t.test('dirname', function (t) {
-    typeErrorTests.forEach(function (test) {
+  t.test('dirname', (t) => {
+    let index = -1
+
+    while (++index < typeErrorTests.length) {
+      const test = typeErrorTests[index]
       t.throws(
-        function () {
+        () => {
           // @ts-ignore runtime.
           p.dirname(test)
         },
         TypeError,
         'should fail on `' + test + '`'
       )
-    })
+    }
 
     t.strictEqual(p.dirname('/a/b/'), '/a')
     t.strictEqual(p.dirname('/a/b'), '/a')
@@ -665,18 +663,22 @@ test('p (POSIX path for browsers)', function (t) {
     t.end()
   })
 
-  t.test('extname', function (t) {
-    typeErrorTests.forEach(function (test) {
+  t.test('extname', (t) => {
+    let index = -1
+
+    while (++index < typeErrorTests.length) {
+      const test = typeErrorTests[index]
       t.throws(
-        function () {
+        () => {
           // @ts-ignore runtime.
           p.extname(test)
         },
         TypeError,
         'should fail on `' + test + '`'
       )
-    })
-    ;[
+    }
+
+    const pairs = [
       [path.basename(import.meta.url), '.js'],
       ['', ''],
       ['/path/to/file', ''],
@@ -720,9 +722,14 @@ test('p (POSIX path for browsers)', function (t) {
       ['file//', ''],
       ['file./', '.'],
       ['file.//', '.']
-    ].forEach(function (pair) {
+    ]
+
+    index = -1
+
+    while (++index < pairs.length) {
+      const pair = pairs[index]
       t.strictEqual(pair[1], p.extname(pair[0]))
-    })
+    }
 
     // On *nix, backslash is a valid name component like any other character.
     t.strictEqual(p.extname('.\\'), '')
@@ -737,18 +744,22 @@ test('p (POSIX path for browsers)', function (t) {
     t.end()
   })
 
-  t.test('join', function (t) {
-    typeErrorTests.forEach(function (test) {
+  t.test('join', (t) => {
+    let index = -1
+
+    while (++index < typeErrorTests.length) {
+      const test = typeErrorTests[index]
       t.throws(
-        function () {
+        () => {
           // @ts-ignore runtime.
           p.join(test)
         },
         TypeError,
         'should fail on `' + test + '`'
       )
-    })
-    ;[
+    }
+
+    const pairs = [
       [['.', 'x/b', '..', '/b/c.js'], 'x/b/c.js'],
       [[], '.'],
       [['/.', 'x/b', '..', '/b/c.js'], '/x/b/c.js'],
@@ -796,9 +807,14 @@ test('p (POSIX path for browsers)', function (t) {
       [['/', '', '/foo'], '/foo'],
       [['', '/', 'foo'], '/foo'],
       [['', '/', '/foo'], '/foo']
-    ].forEach(function (pair) {
+    ]
+
+    index = -1
+
+    while (++index < pairs.length) {
+      const pair = pairs[index]
       t.strictEqual(p.join.apply(null, pair[0]), pair[1])
-    })
+    }
 
     // Join will internally ignore all the zero-length strings and it will return
     // '.' if the joined string is a zero-length string.
