@@ -5,6 +5,7 @@
  * @typedef {import('vfile-message').VFileMessage} VFileMessage
  */
 
+import {URL, fileURLToPath} from 'url'
 import path from 'path'
 import process from 'process'
 import {Buffer} from 'buffer'
@@ -90,6 +91,14 @@ test('new VFile(options?)', (t) => {
 
     t.deepEqual(left, right)
     t.equal(left.path, right.path)
+
+    t.end()
+  })
+
+  t.test('should accept an file URL', (t) => {
+    const url = new URL(import.meta.url)
+    const file = new VFile(url)
+    t.deepEqual(file.path, fileURLToPath(url))
 
     t.end()
   })
@@ -188,7 +197,7 @@ test('new VFile(options?)', (t) => {
   t.test('.path', (t) => {
     const fp = path.join('~', 'example.md')
     const ofp = path.join('~', 'example', 'example.txt')
-    const file = new VFile()
+    let file = new VFile()
 
     t.equal(file.path, undefined, 'should start `undefined`')
 
@@ -217,6 +226,53 @@ test('new VFile(options?)', (t) => {
       },
       /Error: `path` cannot be empty/,
       'should not remove `path`'
+    )
+
+    file = new VFile()
+    // @ts-ignore: TS doesn’t understand seem to understand setters with a
+    // different argument than the return type of the getter.
+    // So my editor shows a warning.
+    // However: actually building the project *does* not.
+    // Hence this is an ignore instead of an expect error.
+    file.path = new URL(import.meta.url)
+
+    t.deepEqual(
+      file.path,
+      fileURLToPath(import.meta.url),
+      'should support setting a URL'
+    )
+
+    t.throws(
+      () => {
+        const u = new URL('https://example.com')
+        file = new VFile(u)
+      },
+      /The URL must be of scheme file/,
+      'should not allow setting non-`file:` urls'
+    )
+
+    if (process.platform !== 'win32') {
+      // Windows allows this just fine:
+      // <https://github.com/nodejs/node/blob/fcf8ba4/lib/internal/url.js#L1369>
+      t.throws(
+        () => {
+          const u = new URL('file:')
+          u.hostname = 'a.com'
+          file = new VFile(u)
+        },
+        /File URL host must be/,
+        'should not allow setting `file:` urls w/ a host'
+      )
+    }
+
+    t.throws(
+      () => {
+        const u = new URL('file:')
+        u.pathname = 'a/b%2fc'
+        file = new VFile(u)
+      },
+      /File URL path must not include encoded/,
+      'should not allow setting `file:` urls w/ a slash in pathname'
     )
 
     t.end()

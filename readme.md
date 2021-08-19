@@ -148,6 +148,8 @@ Defaults to `process.cwd()`.
 
 `string?` — Path of `vfile`.
 Cannot be nullified.
+You can set a file URL (a `URL` object with a `file:` protocol)
+which will be turned into a path with [`url.fileURLToPath`][file-url-to-path].
 
 ### `vfile.basename`
 
@@ -426,3 +428,5 @@ for contributing commits since!
 [encoding]: https://nodejs.org/api/buffer.html#buffer_buffers_and_character_encodings
 
 [buffer]: https://nodejs.org/api/buffer.html
+
+[file-url-to-path]: https://nodejs.org/api/url.html#url_url_fileurltopath_url
