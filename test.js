@@ -24,7 +24,8 @@ let multilineException
 try {
   // @ts-expect-error
   variable = 1
-} catch (error) {
+} catch (error_) {
+  const error = /** @type {Error} */ (error_)
   error.stack = cleanStack(error.stack, 3)
   exception = error
 }
@@ -32,7 +33,8 @@ try {
 try {
   // @ts-expect-error
   variable = 1
-} catch (error) {
+} catch (error_) {
+  const error = /** @type {Error} */ (error_)
   error.message = 'foo'
   error.stack = cleanStack(error.stack, 3)
   changedMessage = error
@@ -41,7 +43,8 @@ try {
 try {
   // @ts-expect-error
   variable = 1
-} catch (error) {
+} catch (error_) {
+  const error = /** @type {Error} */ (error_)
   error.message = 'foo\nbar\nbaz'
   error.stack = cleanStack(error.stack, 5)
   multilineException = error
@@ -892,12 +895,12 @@ test('p (POSIX path for browsers)', (t) => {
 })
 
 /**
- * @param {string} stack
+ * @param {string|undefined} stack
  * @param {number} max
  * @returns {string}
  */
 function cleanStack(stack, max) {
-  return stack
+  return String(stack || '')
     .replace(new RegExp('\\(.+\\' + path.sep, 'g'), '(')
     .replace(/\d+:\d+/g, '1:1')
     .split('\n')
