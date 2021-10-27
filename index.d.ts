@@ -14,6 +14,11 @@
 // eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/no-empty-interface
 export interface VFileDataRegistry {}
 
+/**
+ * Place to store custom information.
+ *
+ * Known attributes can be added to @see {@link VFileDataRegistry}
+ */
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export type VFileData = Record<string, unknown> & Partial<VFileDataRegistry>
 
