@@ -11,9 +11,11 @@
  *   }
  * }
  */
+// eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/no-empty-interface
 export interface VFileDataRegistry {}
 
-export type VFileData = {[key: string]: unknown} & Partial<VFileDataRegistry>
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export type VFileData = Record<string, unknown> & Partial<VFileDataRegistry>
 
 export type {
   BufferEncoding,
