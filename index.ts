@@ -12,15 +12,15 @@
  * }
  */
 // eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/no-empty-interface
-export interface VFileDataRegistry {}
+export interface VFileDataMap {}
 
 /**
  * Place to store custom information.
  *
- * Known attributes can be added to @see {@link VFileDataRegistry}
+ * Known attributes can be added to @see {@link VFileDataMap}
  */
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export type VFileData = Record<string, unknown> & Partial<VFileDataRegistry>
+export type VFileData = Record<string, unknown> & Partial<VFileDataMap>
 
 export type {
   BufferEncoding,
