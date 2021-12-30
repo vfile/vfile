@@ -47,7 +47,6 @@
   },
   "files": [
     "lib/",
-    "types/",
     "index.d.ts",
     "index.js"
   ],
