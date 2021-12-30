@@ -66,7 +66,7 @@
     "tape": "^5.0.0",
     "type-coverage": "^2.0.0",
     "typescript": "^4.0.0",
-    "xo": "^0.46.0"
+    "xo": "^0.47.0"
   },
   "scripts": {
     "prepack": "npm run build && npm run format",
@@ -87,6 +87,7 @@
   "xo": {
     "prettier": true,
     "rules": {
+      "unicorn/prefer-code-point": "off",
       "unicorn/prefer-node-protocol": "off"
     }
   },
