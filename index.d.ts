@@ -16,6 +16,7 @@ type MaybeBuffer = any extends Buffer ? never : Buffer
  * Instead this leverages `Uint8Array` which is the base type for `Buffer`,
  * and a native JavaScript construct.
  */
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export type VFileValue = string | MaybeBuffer
 
 /**
@@ -31,7 +32,7 @@ export type VFileValue = string | MaybeBuffer
  *   }
  * }
  */
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
+// eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/no-empty-interface
 export interface VFileDataMap {}
 
 /**
@@ -39,6 +40,7 @@ export interface VFileDataMap {}
  *
  * Known attributes can be added to @see {@link VFileDataMap}
  */
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export type VFileData = Record<string, unknown> & Partial<VFileDataMap>
 
 export type {
