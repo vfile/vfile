@@ -1,6 +1,6 @@
 {
   "name": "vfile",
-  "version": "5.0.2",
+  "version": "5.2.0",
   "description": "Virtual file format for text processing",
   "license": "MIT",
   "keywords": [
@@ -37,11 +37,13 @@
   "types": "index.d.ts",
   "browser": {
     "./lib/minpath.js": "./lib/minpath.browser.js",
-    "./lib/minproc.js": "./lib/minproc.browser.js"
+    "./lib/minproc.js": "./lib/minproc.browser.js",
+    "./lib/minurl.js": "./lib/minurl.browser.js"
   },
   "react-native": {
     "./lib/minpath.js": "./lib/minpath.browser.js",
-    "./lib/minproc.js": "./lib/minproc.browser.js"
+    "./lib/minproc.js": "./lib/minproc.browser.js",
+    "./lib/minurl.js": "./lib/minurl.browser.js"
   },
   "files": [
     "lib/",
@@ -65,11 +67,11 @@
     "tape": "^5.0.0",
     "type-coverage": "^2.0.0",
     "typescript": "^4.0.0",
-    "xo": "^0.44.0"
+    "xo": "^0.46.0"
   },
   "scripts": {
     "prepack": "npm run build && npm run format",
-    "build": "rimraf \"{lib/**,}*.d.ts\" && tsc && type-coverage",
+    "build": "rimraf \"lib/**/*.d.ts\" \"test.d.ts\" && tsc && tsc --noEmit index.d.ts && type-coverage",
     "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
     "test-api": "node test.js",
     "test-coverage": "c8 --check-coverage --branches 100 --functions 100 --lines 100 --statements 100 --reporter lcov node test.js",
@@ -86,8 +88,7 @@
   "xo": {
     "prettier": true,
     "rules": {
-      "unicorn/prefer-node-protocol": "off",
-      "#unicorn/no-array-for-each": "off"
+      "unicorn/prefer-node-protocol": "off"
     }
   },
   "remarkConfig": {
@@ -103,6 +104,10 @@
     "atLeast": 100,
     "detail": true,
     "strict": true,
-    "ignoreCatch": true
+    "ignoreCatch": true,
+    "#": "needed `any`s",
+    "ignoreFiles": [
+      "lib/minurl.shared.d.ts"
+    ]
   }
 }
