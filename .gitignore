@@ -1,5 +1,6 @@
 .DS_Store
 *.d.ts
+!types/*.d.ts
 *.log
 node_modules/
 coverage/
