@@ -57,6 +57,7 @@
     "vfile-message": "^3.0.0"
   },
   "devDependencies": {
+    "@stryker-mutator/core": "^5.0.0",
     "@types/tape": "^4.0.0",
     "c8": "^7.0.0",
     "prettier": "^2.0.0",
@@ -74,6 +75,7 @@
     "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
     "test-api": "node test.js",
     "test-coverage": "c8 --check-coverage --branches 100 --functions 100 --lines 100 --statements 100 --reporter lcov node test.js",
+    "test-mutation": "npx stryker run",
     "test": "npm run build && npm run format && npm run test-coverage"
   },
   "prettier": {

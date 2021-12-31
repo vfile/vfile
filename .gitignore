@@ -1,6 +1,8 @@
 .DS_Store
 lib/**/*.d.ts
 test.d.ts
+.stryker-tmp/
+reports/
 *.log
 node_modules/
 coverage/
