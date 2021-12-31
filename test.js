@@ -153,6 +153,47 @@ test('new VFile(options?)', (t) => {
     t.end()
   })
 
+  t.test('should handle ordering of path', (t) => {
+    const file = new VFile({stem: 'a', path: '~/b.js'})
+
+    t.deepEqual(file.history, [path.join('~', 'b.js'), path.join('~', 'a.js')])
+    t.equal(file.value, undefined)
+    t.equal(file.path, path.join('~', 'a.js'))
+    t.equal(file.dirname, '~')
+    t.equal(file.basename, 'a.js')
+    t.equal(file.stem, 'a')
+    t.equal(file.extname, '.js')
+
+    t.end()
+  })
+
+  t.test('should handle ordering of basename', (t) => {
+    const file = new VFile({dirname: '~', basename: 'a.js'})
+
+    t.deepEqual(file.history, ['a.js', path.join('~', 'a.js')])
+    t.equal(file.value, undefined)
+    t.equal(file.path, path.join('~', 'a.js'))
+    t.equal(file.dirname, '~')
+    t.equal(file.basename, 'a.js')
+    t.equal(file.stem, 'a')
+    t.equal(file.extname, '.js')
+
+    t.end()
+  })
+
+  t.test('should handle shallow external history changes', (t) => {
+    let externalHistory = [path.join('a.js'), path.join('~', 'a.js')]
+    const file = new VFile({
+      history: externalHistory
+    })
+
+    t.deepEqual(file.history, ['a.js', path.join('~', 'a.js')])
+    externalHistory[0] = ''
+    t.deepEqual(file.history, ['a.js', path.join('~', 'a.js')])
+
+    t.end()
+  })
+
   t.test('should set custom props', (t) => {
     const testing = [1, 2, 3]
     const file = new VFile({custom: true, testing})
@@ -393,6 +434,14 @@ test('new VFile(options?)', (t) => {
       },
       /Error: `extname` cannot contain multiple dots/,
       'should throw with mutiple `.`s'
+    )
+
+    t.throws(
+      () => {
+        file.extname = path.sep + ".md"
+      },
+      /Error: `extname` cannot be a path: did not expect `.`/,
+      'should throw with path separator included'
     )
 
     file.extname = undefined
