@@ -6,5 +6,6 @@
   "testRunner": "command",
   "coverageAnalysis": "off",
   "commandRunner": {"command": "npm run test-api"},
-  "timeoutFactor": 3
+  "timeoutFactor": 3,
+  "thresholds": {"break": 100}
 }

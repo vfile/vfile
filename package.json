@@ -76,7 +76,7 @@
     "test-api": "node test.js",
     "test-coverage": "c8 --check-coverage --branches 100 --functions 100 --lines 100 --statements 100 --reporter lcov node test.js",
     "test-mutation": "npx stryker run",
-    "test": "npm run build && npm run format && npm run test-coverage"
+    "test": "npm run build && npm run format && npm run test-coverage && npm run test-mutation"
   },
   "prettier": {
     "tabWidth": 2,
