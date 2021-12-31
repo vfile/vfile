@@ -433,7 +433,7 @@ test('new VFile(options?)', (t) => {
         file.extname = '..md'
       },
       /Error: `extname` cannot contain multiple dots/,
-      'should throw with mutiple `.`s'
+      'should throw with multiple `.`s'
     )
 
     t.throws(
