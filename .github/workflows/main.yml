@@ -59,10 +59,7 @@ jobs:
         package:
           - vfile/to-vfile
           - vfile/vfile-location
-          - vfile/vfile-reporter-json
+          - vfile/vfile-reporter
+          - vfile/vfile-find-up
+          - vfile/vfile-find-down
           - unifiedjs/unified
-          - remarkjs/remark
-          - rehypejs/rehype
-          - retextjs/retext
-          - remarkjs/react-markdown
-          - mdx-js/mdx
