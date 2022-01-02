@@ -3,8 +3,8 @@ on:
   - pull_request
   - push
 jobs:
-  main:
-    name: '${{matrix.node}} on ${{matrix.os}}'
+  test:
+    name: test / vfile / ${{matrix.node}} on ${{matrix.os}}
     runs-on: ${{matrix.os}}
     steps:
       - uses: actions/checkout@v2
@@ -22,3 +22,44 @@ jobs:
         node:
           - lts/erbium
           - node
+  canary:
+    name: canary / ${{matrix.package}} / ${{matrix.node}} on ${{matrix.os}}
+    runs-on: ${{matrix.os}}
+    steps:
+      - name: checkout vfile
+        uses: actions/checkout@v2
+      - name: setup node
+        uses: dcodeIO/setup-node-nvm@master
+        with:
+          node-version: ${{matrix.node}}
+      - name: setup vfile
+        run: |
+          npm install -g npm
+          npm install
+          npm run build
+      - name: checkout ${{matrix.package}}
+        uses: actions/checkout@v2
+        with:
+          repository: ${{matrix.package}}
+          path: canary/${{matrix.package}}
+      - name: test ${{matrix.package}}
+        run: |
+          npm install
+          npx rimraf "node_modules/**/vfile"
+          npm test
+        working-directory: canary/${{matrix.package}}
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        os:
+          - ubuntu-latest
+        node:
+          - node
+        package:
+          - vfile/to-vfile
+          - vfile/vfile-location
+          - vfile/vfile-reporter
+          - vfile/vfile-find-up
+          - vfile/vfile-find-down
+          - unifiedjs/unified
