@@ -154,7 +154,7 @@ test('new VFile(options?)', (t) => {
   })
 
   t.test('should handle ordering of path', (t) => {
-    const file = new VFile({stem: 'a', path: '~/b.js'})
+    const file = new VFile({stem: 'a', path: path.join('~', 'b.js')})
 
     t.deepEqual(file.history, [path.join('~', 'b.js'), path.join('~', 'a.js')])
     t.equal(file.value, undefined)
