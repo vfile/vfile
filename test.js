@@ -181,6 +181,20 @@ test('new VFile(options?)', (t) => {
     t.end()
   })
 
+  t.test('should handle ordering of stem', (t) => {
+    const file = new VFile({extname: '.md', basename: 'a.js', stem: 'b', path: 'c.js'})
+
+    t.deepEqual(file.history, ['c.js', 'a.js', 'b.js', 'b.md'])
+    t.equal(file.value, undefined)
+    t.equal(file.path, 'b.md')
+    t.equal(file.dirname, '.')
+    t.equal(file.basename, 'b.md')
+    t.equal(file.stem, 'b')
+    t.equal(file.extname, '.md')
+
+    t.end()
+  })
+
   t.test('should handle shallow external history changes', (t) => {
     let externalHistory = [path.join('a.js'), path.join('~', 'a.js')]
     const file = new VFile({
