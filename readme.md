@@ -174,11 +174,11 @@ Cannot be set if there’s no `path` yet.
 
 ### `vfile.history`
 
-`Array.<string>` — List of file-paths the file moved between.
+`Array<string>` — List of file-paths the file moved between.
 
 ### `vfile.messages`
 
-[`Array.<VMessage>`][message] — List of messages associated with the file.
+[`Array<VMessage>`][message] — List of messages associated with the file.
 
 ### `vfile.data`
 
@@ -264,7 +264,7 @@ See **[unist][]** for projects that work with nodes.
 ## Reporters
 
 The following list of projects show linting results for given virtual files.
-Reporters *must* accept `Array.<VFile>` as their first argument, and return
+Reporters *must* accept `Array<VFile>` as their first argument, and return
 `string`.
 Reporters *may* accept other values too, in which case it’s suggested to stick
 to `vfile-reporter`s interface.

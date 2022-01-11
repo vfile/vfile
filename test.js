@@ -822,7 +822,7 @@ test('p (POSIX path for browsers)', (t) => {
       )
     }
 
-    /** @type {Array.<[string[], string]>} */
+    /** @type {Array<[Array<string>, string]>} */
     const pairs = [
       [['.', 'x/b', '..', '/b/c.js'], 'x/b/c.js'],
       [[], '.'],
