@@ -48,7 +48,8 @@ export type {
   VFileOptions,
   VFileCompatible,
   VFileReporterSettings,
-  VFileReporter
+  VFileReporter,
+  Map
 } from './lib/index.js'
 
 export {VFile} from './lib/index.js'
