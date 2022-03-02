@@ -1,5 +1,5 @@
 /**
- * @typedef {import('unist').Node} Node
+ * @typedef {Record<string, unknown> & {type: string, position?: Position|undefined}} NodeLike
  * @typedef {import('unist').Position} Position
  * @typedef {import('unist').Point} Point
  * @typedef {import('vfile-message').VFileMessage} VFileMessage
@@ -438,7 +438,7 @@ test('new VFile(options?)', (t) => {
 
   t.test('#message(reason[, position][, origin])', (t) => {
     const fp = path.join('~', 'example.md')
-    /** @type {Node|Position|Point|undefined} */
+    /** @type {NodeLike|Position|Point|undefined} */
     let place
 
     t.ok(new VFile().message('') instanceof Error, 'should return an Error')
@@ -512,6 +512,7 @@ test('new VFile(options?)', (t) => {
 
     place = {
       type: 'x',
+      value: 'x',
       position: {
         start: {line: 2, column: 3},
         end: {line: 2, column: 5}
