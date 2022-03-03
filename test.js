@@ -1,5 +1,4 @@
 /**
- * @typedef {Record<string, unknown> & {type: string, position?: Position|undefined}} NodeLike
  * @typedef {import('unist').Position} Position
  * @typedef {import('unist').Point} Point
  * @typedef {import('vfile-message').VFileMessage} VFileMessage
@@ -438,8 +437,6 @@ test('new VFile(options?)', (t) => {
 
   t.test('#message(reason[, position][, origin])', (t) => {
     const fp = path.join('~', 'example.md')
-    /** @type {NodeLike|Position|Point|undefined} */
-    let place
 
     t.ok(new VFile().message('') instanceof Error, 'should return an Error')
 
@@ -510,7 +507,7 @@ test('new VFile(options?)', (t) => {
       'should accept a multiline error (2)'
     )
 
-    place = {
+    const literalNode = {
       type: 'x',
       value: 'x',
       position: {
@@ -519,26 +516,45 @@ test('new VFile(options?)', (t) => {
       }
     }
 
-    message = new VFile().message('test', place)
-
-    t.deepEqual(message.position, place.position, 'should accept a node (1)')
-    t.equal(String(message), '2:3-2:5: test', 'should accept a node (2)')
-
-    place = place.position
-    message = new VFile().message('test', place)
-
-    t.deepEqual(message.position, place, 'should accept a position (1)')
-    t.equal(String(message), '2:3-2:5: test', 'should accept a position (2)')
-
-    place = place && place.start
-    message = new VFile().message('test', place)
+    message = new VFile().message('test', literalNode)
 
     t.deepEqual(
       message.position,
-      {
-        start: place,
-        end: {line: null, column: null}
-      },
+      literalNode.position,
+      'should accept a node (1)'
+    )
+    t.equal(String(message), '2:3-2:5: test', 'should accept a node (2)')
+
+    t.equal(
+      String(
+        new VFile().message(
+          'test',
+          /** @type {import('mdast').Root} */ ({
+            type: 'root',
+            children: [],
+            position: {
+              start: {line: 1, column: 1},
+              end: {line: 2, column: 1}
+            }
+          })
+        )
+      ),
+      '1:1-2:1: test',
+      'should accept a node (3)'
+    )
+
+    const position = literalNode.position
+    message = new VFile().message('test', position)
+
+    t.deepEqual(message.position, position, 'should accept a position (1)')
+    t.equal(String(message), '2:3-2:5: test', 'should accept a position (2)')
+
+    const point = position.start
+    message = new VFile().message('test', point)
+
+    t.deepEqual(
+      message.position,
+      {start: point, end: {line: null, column: null}},
       'should accept a position (1)'
     )
 
