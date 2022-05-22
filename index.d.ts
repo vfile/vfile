@@ -26,7 +26,7 @@ export type VFileValue = string | MaybeBuffer
  *
  * @example
  * declare module 'vfile' {
- *   interface VFileDataRegistry {
+ *   interface VFileDataMap {
  *     // `file.data.name` is typed as `string`
  *     name: string
  *   }
