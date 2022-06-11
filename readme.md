@@ -11,59 +11,91 @@
 [![Chat][chat-badge]][chat]
 
 **vfile** is a small and browser friendly virtual file format that tracks
-metadata (such as a file’s `path` and `value`) and [messages][].
-
-It was made specifically for **[unified][]** and generally for the common task
-of parsing, transforming, and serializing data, where `vfile` handles everything
-about the document being compiled.
-This is useful for example when building linters, compilers, static site
-generators, or other build tools.
-**vfile** is part of the [unified collective][site].
-
-*   for updates, see [Twitter][]
-*   for more about us, see [`unifiedjs.com`][site]
-*   for questions, see [Discussions][chat]
-*   to help, see [contribute][] or [sponsor][] below
-
-> **vfile** is different from the excellent [`vinyl`][vinyl] in that it has
-> a smaller API, a smaller size, and focuses on [messages][].
+metadata about files (such as its `path` and `value`) and lint [messages][].
 
 ## Contents
 
+*   [unified](#unified)
+*   [What is this?](#what-is-this)
+*   [When should I use this?](#when-should-i-use-this)
 *   [Install](#install)
 *   [Use](#use)
 *   [API](#api)
     *   [`VFile(options?)`](#vfileoptions)
-    *   [`vfile.value`](#vfilevalue)
-    *   [`vfile.cwd`](#vfilecwd)
-    *   [`vfile.path`](#vfilepath)
-    *   [`vfile.basename`](#vfilebasename)
-    *   [`vfile.stem`](#vfilestem)
-    *   [`vfile.extname`](#vfileextname)
-    *   [`vfile.dirname`](#vfiledirname)
-    *   [`vfile.history`](#vfilehistory)
-    *   [`vfile.messages`](#vfilemessages)
-    *   [`vfile.data`](#vfiledata)
+    *   [`file.value`](#filevalue)
+    *   [`file.cwd`](#filecwd)
+    *   [`file.path`](#filepath)
+    *   [`file.dirname`](#filedirname)
+    *   [`file.basename`](#filebasename)
+    *   [`file.extname`](#fileextname)
+    *   [`file.stem`](#filestem)
+    *   [`file.history`](#filehistory)
+    *   [`file.messages`](#filemessages)
+    *   [`file.data`](#filedata)
     *   [`VFile#toString(encoding?)`](#vfiletostringencoding)
     *   [`VFile#message(reason[, position][, origin])`](#vfilemessagereason-position-origin)
     *   [`VFile#info(reason[, position][, origin])`](#vfileinforeason-position-origin)
     *   [`VFile#fail(reason[, position][, origin])`](#vfilefailreason-position-origin)
 *   [List of utilities](#list-of-utilities)
 *   [Reporters](#reporters)
+*   [Types](#types)
+*   [Compatibility](#compatibility)
 *   [Contribute](#contribute)
 *   [Sponsor](#sponsor)
 *   [Acknowledgments](#acknowledgments)
 *   [License](#license)
 
+## unified
+
+**vfile** is part of the unified collective.
+
+*   for more about us, see [`unifiedjs.com`][site]
+*   for how the collective is governed, see [`unifiedjs/collective`][governance]
+*   for updates, see [@unifiedjs][twitter] on Twitter
+
+## What is this?
+
+This package provides a virtual file format.
+It exposes an API to access the file value, path, metadata about the file, and
+specifically supports attaching lint messages and errors to certain places in
+these files.
+
+## When should I use this?
+
+The virtual file format is useful when dealing with the concept of files in
+places where you might not be able to access the file system.
+The message API is particularly useful when making things that check files (as
+in, linting).
+
+vfile is made for [unified][], which amongst other things checks files.
+However, vfile can be used in other projects that deal with parsing,
+transforming, and serializing data, to build linters, compilers, static site
+generators, and other build tools.
+
+This is different from the excellent [`vinyl`][vinyl] in that vfile has a
+smaller API, a smaller size, and focuses on messages.
+
 ## Install
 
-This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c):
-Node 12+ is needed to use it and it must be `import`ed instead of `require`d.
-
-[npm][]:
+This package is [ESM only][esm].
+In Node.js (version 12.20+, 14.14+, 16.0+, 18.0+), install with [npm][]:
 
 ```sh
 npm install vfile
+```
+
+In Deno with [`esm.sh`][esmsh]:
+
+```js
+import {VFile} from 'https://esm.sh/vfile@5'
+```
+
+In browsers with [`esm.sh`][esmsh]:
+
+```html
+<script type="module">
+  import {VFile} from 'https://esm.sh/vfile@5?bundle'
+</script>
 ```
 
 ## Use
@@ -71,20 +103,26 @@ npm install vfile
 ```js
 import {VFile} from 'vfile'
 
-var file = new VFile({path: '~/example.txt', value: 'Alpha *braavo* charlie.'})
+const file = new VFile({
+  path: '~/example.txt',
+  value: 'Alpha *braavo* charlie.'
+})
 
-file.path // => '~/example.txt'
-file.dirname // => '~'
+console.log(file.path) // => '~/example.txt'
+console.log(file.dirname) // => '~'
 
 file.extname = '.md'
 
-file.basename // => 'example.md'
+console.log(file.basename) // => 'example.md'
 
 file.basename = 'index.text'
 
-file.history // => ['~/example.txt', '~/example.md', '~/index.text']
+console.log(file.history) // => ['~/example.txt', '~/example.md', '~/index.text']
 
-file.message('`braavo` is misspelt; did you mean `bravo`?', {line: 1, column: 8})
+file.message('Unexpected unknown word `braavo`, did you mean `bravo`?', {
+  line: 1,
+  column: 8
+})
 
 console.log(file.messages)
 ```
@@ -93,8 +131,8 @@ Yields:
 
 ```txt
 [
-  [~/index.text:1:8: `braavo` is misspelt; did you mean `bravo`?] {
-    reason: '`braavo` is misspelt; did you mean `bravo`?',
+  [~/index.text:1:8: Unexpected unknown word `braavo`, did you mean `bravo`?] {
+    reason: 'Unexpected unknown word `braavo`, did you mean `bravo`?',
     line: 1,
     column: 8,
     source: null,
@@ -108,17 +146,20 @@ Yields:
 
 ## API
 
-This package exports the following identifiers: `VFile`.
+This package exports the identifier `VFile`.
 There is no default export.
 
 ### `VFile(options?)`
 
 Create a new virtual file.
-If `options` is `string` or `Buffer`, treats it as `{value: options}`.
-If `options` is a `VFile`, shallow copies its data over to the new file.
-All other given fields are set on the newly created `VFile`.
 
-Path related properties are set in the following order (least specific to most
+*   if `options` is `string` or `Buffer`, it’s treated as `{value: options}`
+*   if `options` is a `URL`, it’s treated as `{path: options}`
+*   if `options` is a `VFile`, shallow copies its data over to the new file
+
+All fields in `options` are set on the newly created `VFile`.
+
+Path related fields are set in the following order (least specific to most
 specific): `history`, `path`, `basename`, `stem`, `extname`, `dirname`.
 
 It’s not possible to set either `dirname` or `extname` without setting either
@@ -135,105 +176,121 @@ new VFile({stem: 'readme', extname: '.md', dirname: path.join('path', 'to')})
 new VFile({other: 'properties', are: 'copied', ov: {e: 'r'}})
 ```
 
-### `vfile.value`
+### `file.value`
 
-`Buffer`, `string`, `null` — Raw value.
+Raw value (`Buffer`, `string`, `null`).
 
-### `vfile.cwd`
+### `file.cwd`
 
-`string` — Base of `path`.
-Defaults to `process.cwd()`.
+Base of `path` (`string`, default: `process.cwd()` or `'/'` in browsers).
 
-### `vfile.path`
+### `file.path`
 
-`string?` — Path of `vfile`.
+Get or set the full path (`string?`, example: `'~/index.min.js'`).
 Cannot be nullified.
-You can set a file URL (a `URL` object with a `file:` protocol)
-which will be turned into a path with [`url.fileURLToPath`][file-url-to-path].
+You can set a file URL (a `URL` object with a `file:` protocol) which will be
+turned into a path with [`url.fileURLToPath`][file-url-to-path].
 
-### `vfile.basename`
+### `file.dirname`
 
-`string?` — Current name (including extension) of `vfile`.
-Cannot contain path separators.
-Cannot be nullified either (use `file.path = file.dirname` instead).
-
-### `vfile.stem`
-
-`string?` — Name (without extension) of `vfile`.
-Cannot be nullified, and cannot contain path separators.
-
-### `vfile.extname`
-
-`string?` — Extension (with dot) of `vfile`.
-Cannot be set if there’s no `path` yet and cannot contain path separators.
-
-### `vfile.dirname`
-
-`string?` — Path to parent directory of `vfile`.
+Get or set the parent path (`string?`, example: `'~'`).
 Cannot be set if there’s no `path` yet.
 
-### `vfile.history`
+### `file.basename`
 
-`Array<string>` — List of file-paths the file moved between.
+Get or set the basename (including extname) (`string?`, example: `'index.min.js'`).
+Cannot contain path separators (`'/'` on unix, macOS, and browsers, `'\'` on
+windows).
+Cannot be nullified (use `file.path = file.dirname` instead).
 
-### `vfile.messages`
+### `file.extname`
 
-[`Array<VMessage>`][message] — List of messages associated with the file.
+Get or set the extname (including dot) (`string?`, example: `'.js'`).
+Cannot contain path separators (`'/'` on unix, macOS, and browsers, `'\'` on
+windows).
+Cannot be set if there’s no `path` yet.
 
-### `vfile.data`
+### `file.stem`
 
-`Object` — Place to store custom information.
-It’s OK to store custom data directly on the `vfile`, moving it to `data` gives
-a *little* more privacy.
+Get or set the stem (basename w/o extname) (`string?`, example: `'index.min'`).
+Cannot contain path separators (`'/'` on unix, macOS, and browsers, `'\'` on
+windows).
+Cannot be nullified.
+
+### `file.history`
+
+List of filepaths the file moved between (`Array<string>`).
+The first is the original path and the last is the current path.
+
+### `file.messages`
+
+List of messages associated with the file ([`Array<VFileMessage>`][message]).
+
+### `file.data`
+
+Place to store custom information (`Record<string, unknown>`, default: `{}`).
+It’s OK to store custom data directly on the file but moving it to `data` is
+recommended.
 
 ### `VFile#toString(encoding?)`
 
-Convert value of `vfile` to string.
+Serialize the file.
 When `value` is a [`Buffer`][buffer], `encoding` is a
 [character encoding][encoding] to understand it as (`string`, default:
 `'utf8'`).
 
+###### Returns
+
+Serialized file (`string`).
+
 ### `VFile#message(reason[, position][, origin])`
 
-Associates a message with the file, where `fatal` is set to `false`.
-Constructs a new [`VMessage`][vmessage] and adds it to
-[`vfile.messages`][messages].
+Constructs a new [`VFileMessage`][vmessage], where `fatal` is set to `false`,
+and associates it with the file by adding it to [`file.messages`][messages]
+and setting `message.file` to the current filepath.
 
-##### Returns
+###### Parameters
 
-[`VMessage`][vmessage].
+*   `reason` (`string` or `Error`)
+    — human readable reason for the message, uses the stack and message of the
+    error if given
+*   `place` (`Node`, `Position`, or `Point`, optional)
+    — place where the message occurred in the file
+*   `origin` (`string?`, optional, example: `'my-npm-package:my-rule-name'`)
+    — computer readable reason for the message
+
+###### Returns
+
+Message ([`VFileMessage`][vmessage]).
 
 ### `VFile#info(reason[, position][, origin])`
 
-Associates an informational message with the file, where `fatal` is set to
-`null`.
-Calls [`#message()`][message] internally.
+Like [`VFile#message()`][message], but associates an informational message
+where `fatal` is set to `null`.
 
-##### Returns
+###### Returns
 
-[`VMessage`][vmessage].
+Message ([`VFileMessage`][vmessage]).
 
 ### `VFile#fail(reason[, position][, origin])`
 
-Associates a fatal message with the file, then immediately throws it.
-Note: fatal errors mean a file is no longer processable.
-Calls [`#message()`][message] internally.
+Like [`VFile#message()`][message], but associates a fatal message where `fatal`
+is set to `true`, and then immediately throws it.
 
-##### Throws
+> 👉 **Note**: a fatal error means that a file is no longer processable.
 
-[`VMessage`][vmessage].
+###### Throws
+
+Message ([`VFileMessage`][vmessage]).
 
 <a name="utilities"></a>
 
 ## List of utilities
 
-The following list of projects includes tools for working with virtual files.
-See **[unist][]** for projects that work with nodes.
-
 *   [`convert-vinyl-to-vfile`](https://github.com/dustinspecker/convert-vinyl-to-vfile)
-    — transform from [Vinyl][] to vfile
+    — transform from [Vinyl][]
 *   [`to-vfile`](https://github.com/vfile/to-vfile)
-    — create a vfile from a filepath
+    — create a file from a filepath and read and write to the file system
 *   [`vfile-find-down`](https://github.com/vfile/vfile-find-down)
     — find files by searching the file system downwards
 *   [`vfile-find-up`](https://github.com/vfile/vfile-find-up)
@@ -241,19 +298,19 @@ See **[unist][]** for projects that work with nodes.
 *   [`vfile-glob`](https://github.com/shinnn/vfile-glob)
     — find files by glob patterns
 *   [`vfile-is`](https://github.com/vfile/vfile-is)
-    — check if a vfile passes a test
+    — check if a file passes a test
 *   [`vfile-location`](https://github.com/vfile/vfile-location)
     — convert between positional and offset locations
 *   [`vfile-matter`](https://github.com/vfile/vfile-matter)
     — parse the YAML front matter
 *   [`vfile-message`](https://github.com/vfile/vfile-message)
-    — create a vfile message
+    — create a file message
 *   [`vfile-messages-to-vscode-diagnostics`](https://github.com/shinnn/vfile-messages-to-vscode-diagnostics)
-    — transform vfile messages to VS Code diagnostics
+    — transform file messages to VS Code diagnostics
 *   [`vfile-mkdirp`](https://github.com/vfile/vfile-mkdirp)
-    — make sure the directory of a vfile exists on the file system
+    — make sure the directory of a file exists on the file system
 *   [`vfile-rename`](https://github.com/vfile/vfile-rename)
-    — rename the path parts of a vfile
+    — rename the path parts of a file
 *   [`vfile-sort`](https://github.com/vfile/vfile-sort)
     — sort messages by line/column
 *   [`vfile-statistics`](https://github.com/vfile/vfile-statistics)
@@ -261,13 +318,9 @@ See **[unist][]** for projects that work with nodes.
 *   [`vfile-to-eslint`](https://github.com/vfile/vfile-to-eslint)
     — convert to ESLint formatter compatible output
 
-## Reporters
+> 👉 **Note**: see [unist][] for projects that work with nodes.
 
-The following list of projects show linting results for given virtual files.
-Reporters *must* accept `Array<VFile>` as their first argument, and return
-`string`.
-Reporters *may* accept other values too, in which case it’s suggested to stick
-to `vfile-reporter`s interface.
+## Reporters
 
 *   [`vfile-reporter`][reporter]
     — create a report
@@ -282,12 +335,61 @@ to `vfile-reporter`s interface.
 *   [`vfile-reporter-position`](https://github.com/Hocdoc/vfile-reporter-position)
     — create a report with content excerpts
 
+> 👉 **Note**: want to make your own reporter?
+> Reporters *must* accept `Array<VFile>` as their first argument, and return
+> `string`.
+> Reporters *may* accept other values too, in which case it’s suggested to stick
+> to `vfile-reporter`s interface.
+
+## Types
+
+This package is fully typed with [TypeScript][].
+It exports the following additional types:
+
+*   `BufferEncoding`
+    — thing that can be given as `x` in `file.toString(x)`
+*   `Compatible`
+    — everything that can be passed as `x` in `new VFile(x)`
+*   `Data`
+    — thing at `file.data`
+*   `DataMap`
+    — interface you can add things to, to type your extensions of `file.data`
+*   `Map`
+    — source map interface as supported at `file.map`
+*   `Options`
+    — the fields that can be passed as options to `new VFile(x)`
+*   `Reporter`
+    — a reporter
+*   `ReporterSettings`
+    — the fields that can be passed to a reporter
+*   `Value`
+    — valid value
+*   `VFile`
+    — class of `file` itself
+
+`DataMap` can be augmented to include your extensions to it:
+
+```ts
+declare module 'vfile' {
+  interface DataMap {
+    // `file.data.name` is typed as `string`.
+    name: string
+  }
+}
+```
+
+## Compatibility
+
+Projects maintained by the unified collective are compatible with all maintained
+versions of Node.js.
+As of now, that is Node.js 12.20+, 14.14+, 16.0+, and 18.0+.
+Our projects sometimes work with older versions, but this is not guaranteed.
+
 ## Contribute
 
 See [`contributing.md`][contributing] in [`vfile/.github`][health] for ways to
 get started.
 See [`support.md`][support] for ways to get help.
-Ideas for new utilities and tools can be posted in [`vfile/ideas`][ideas].
 
 This project has a [code of conduct][coc].
 By interacting with this repository, organization, or community you agree to
@@ -412,13 +514,19 @@ for contributing commits since!
 
 [npm]: https://docs.npmjs.com/cli/install
 
-[contributing]: https://github.com/vfile/.github/blob/HEAD/contributing.md
+[esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
 
-[support]: https://github.com/vfile/.github/blob/HEAD/support.md
+[esmsh]: https://esm.sh
+
+[typescript]: https://www.typescriptlang.org
 
 [health]: https://github.com/vfile/.github
 
-[coc]: https://github.com/vfile/.github/blob/HEAD/code-of-conduct.md
+[contributing]: https://github.com/vfile/.github/blob/main/contributing.md
+
+[support]: https://github.com/vfile/.github/blob/main/support.md
+
+[coc]: https://github.com/vfile/.github/blob/main/code-of-conduct.md
 
 [license]: license
 
@@ -432,24 +540,20 @@ for contributing commits since!
 
 [twitter]: https://twitter.com/unifiedjs
 
-[contribute]: #contribute
-
-[sponsor]: #sponsor
-
 [unist]: https://github.com/syntax-tree/unist#list-of-utilities
 
 [reporter]: https://github.com/vfile/vfile-reporter
 
 [vmessage]: https://github.com/vfile/vfile-message
 
-[messages]: #vfilemessages
+[messages]: #filemessages
 
 [message]: #vfilemessagereason-position-origin
-
-[ideas]: https://github.com/vfile/ideas
 
 [encoding]: https://nodejs.org/api/buffer.html#buffer_buffers_and_character_encodings
 
 [buffer]: https://nodejs.org/api/buffer.html
 
 [file-url-to-path]: https://nodejs.org/api/url.html#url_url_fileurltopath_url
+
+[governance]: https://github.com/unifiedjs/collective
