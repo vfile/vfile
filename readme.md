@@ -36,6 +36,7 @@ metadata about files (such as its `path` and `value`) and lint [messages][].
     *   [`VFile#message(reason[, position][, origin])`](#vfilemessagereason-position-origin)
     *   [`VFile#info(reason[, position][, origin])`](#vfileinforeason-position-origin)
     *   [`VFile#fail(reason[, position][, origin])`](#vfilefailreason-position-origin)
+    *   [Well-known fields](#well-known-fields)
 *   [List of utilities](#list-of-utilities)
 *   [Reporters](#reporters)
 *   [Types](#types)
@@ -282,6 +283,23 @@ is set to `true`, and then immediately throws it.
 ###### Throws
 
 Message ([`VFileMessage`][vmessage]).
+
+### Well-known fields
+
+The following fields are considered “non-standard”, but they are allowed, and
+some utilities use them:
+
+*   `stored` (`boolean`)
+    — whether a file was saved to disk, used by reporters
+*   `result` (`unknown`)
+    — sometimes files have a non-string, compiled, representation, which can be
+    stored in the `result` field.
+    One example is when turning markdown into React nodes.
+    unified uses this field to store non-string results
+*   `map` (`Map`)
+    — sometimes files have a source map associated with them, this should be a
+    `Map` type, which is equivalent to the `RawSourceMap` type from the
+    `source-map` module
 
 <a name="utilities"></a>
 
