@@ -46,17 +46,18 @@ export type Data = Record<string, unknown> & Partial<DataMap>
 // Deprecated names (w/ prefix):
 export type {Data as VFileData, DataMap as VFileDataMap, Value as VFileValue}
 
-export {
-  VFile,
-  type BufferEncoding,
-  type Map,
-  type Compatible,
-  type Options,
-  type Reporter,
-  type ReporterSettings,
+export {VFile} from './lib/index.js'
+
+export type {
+  BufferEncoding,
+  Map,
+  Compatible,
+  Options,
+  Reporter,
+  ReporterSettings,
   // Deprecated names (w/ prefix):
-  type Compatible as VFileCompatible,
-  type Options as VFileOptions,
-  type Reporter as VFileReporter,
-  type ReporterSettings as VFileReporterSettings
+  Compatible as VFileCompatible,
+  Options as VFileOptions,
+  Reporter as VFileReporter,
+  ReporterSettings as VFileReporterSettings
 } from './lib/index.js'
