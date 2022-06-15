@@ -1,5 +1,5 @@
 .DS_Store
-lib/**/*.d.ts
+# lib/**/*.d.ts
 test.d.ts
 *.log
 node_modules/
