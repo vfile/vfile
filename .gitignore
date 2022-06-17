@@ -1,8 +1,9 @@
 .DS_Store
-# lib/**/*.d.ts
+lib/**/*.d.ts
 lib/**/*.js
 test.d.ts
 *.log
 node_modules/
 coverage/
 yarn.lock
+test.js
