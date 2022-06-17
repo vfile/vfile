@@ -6,7 +6,6 @@ import test from 'tape'
 import {path as p} from './lib/minpath.browser'
 import {VFile} from '.'
 
-/* eslint-disable no-undef */
 let exception: Error
 let changedMessage: Error
 let multilineException: Error
@@ -15,7 +14,7 @@ try {
   // @ts-ignore
   variable = 1
 } catch (error_) {
-  const error = (error_) as Error
+  const error = error_ as Error
   error.stack = cleanStack(error.stack, 3)
   exception = error
 }
@@ -24,7 +23,7 @@ try {
   // @ts-ignore
   variable = 1
 } catch (error_) {
-  const error = (error_) as Error
+  const error = error_ as Error
   error.message = 'foo'
   error.stack = cleanStack(error.stack, 3)
   changedMessage = error
@@ -34,7 +33,7 @@ try {
   // @ts-ignore
   variable = 1
 } catch (error_) {
-  const error = (error_) as Error
+  const error = error_ as Error
   error.message = 'foo\nbar\nbaz'
   error.stack = cleanStack(error.stack, 5)
   multilineException = error
@@ -148,9 +147,9 @@ test('new VFile(options?)', (t) => {
     const testing = [1, 2, 3]
     const file = new VFile({custom: true, testing})
 
-    // @ts-ignore It’s recommended to use `data` for custom fields, but it works in the runtime.
+    // @ts-ignore
     t.equal(file.custom, true)
-    // @ts-ignore It’s recommended to use `data` for custom fields, but it works in the runtime.
+    // @ts-ignore
     t.equal(file.testing, testing)
 
     t.end()
@@ -215,7 +214,7 @@ test('new VFile(options?)', (t) => {
 
     t.throws(
       () => {
-        // @ts-ignore: runtime.
+        // @ts-ignore
         file.path = undefined
       },
       /Error: `path` cannot be empty/,
@@ -223,7 +222,7 @@ test('new VFile(options?)', (t) => {
     )
 
     file = new VFile()
-    // @ts-ignore: TS doesn’t understand seem to understand setters with a
+    // @ts-ignore
     // different argument than the return type of the getter.
     // So my editor shows a warning.
     // However: actually building the project *does* not.
@@ -523,14 +522,14 @@ test('new VFile(options?)', (t) => {
       String(
         new VFile().message(
           'test',
-          /** @type {import('mdast').Root} */ ({
+          /** @type {import('mdast').Root} */ {
             type: 'root',
             children: [],
             position: {
               start: {line: 1, column: 1},
               end: {line: 2, column: 1}
             }
-          })
+          }
         )
       ),
       '1:1-2:1: test',
@@ -555,13 +554,13 @@ test('new VFile(options?)', (t) => {
     t.equal(String(message), '2:3: test', 'should accept a position')
 
     t.equal(
-      // @ts-ignore runtime allow omitting `place`.
+      // @ts-ignore
       new VFile().message('test', 'charlie').ruleId,
       'charlie',
       'should accept a `ruleId` as `origin`'
     )
 
-    // @ts-ignore runtime allow omitting `place`.
+    // @ts-ignore
     message = new VFile().message('test', 'delta:echo')
 
     t.deepEqual(
@@ -646,7 +645,7 @@ test('p (POSIX path for browsers)', (t) => {
 
       t.throws(
         () => {
-          // @ts-ignore runtime.
+          // @ts-ignore
           p.basename(test)
         },
         TypeError,
@@ -657,7 +656,7 @@ test('p (POSIX path for browsers)', (t) => {
       if (test !== undefined) {
         t.throws(
           () => {
-            // @ts-ignore runtime.
+            // @ts-ignore
             p.basename('x', test)
           },
           TypeError,
@@ -718,7 +717,7 @@ test('p (POSIX path for browsers)', (t) => {
       const test = typeErrorTests[index]
       t.throws(
         () => {
-          // @ts-ignore runtime.
+          // @ts-ignore
           p.dirname(test)
         },
         TypeError,
@@ -744,7 +743,7 @@ test('p (POSIX path for browsers)', (t) => {
       const test = typeErrorTests[index]
       t.throws(
         () => {
-          // @ts-ignore runtime.
+          // @ts-ignore
           p.extname(test)
         },
         TypeError,
@@ -826,7 +825,7 @@ test('p (POSIX path for browsers)', (t) => {
       const test = typeErrorTests[index]
       t.throws(
         () => {
-          // @ts-ignore runtime.
+          // @ts-ignore
           p.join(test)
         },
         TypeError,
@@ -907,7 +906,7 @@ test('p (POSIX path for browsers)', (t) => {
   t.end()
 })
 
-function cleanStack(stack:string | undefined, max:number):string {
+function cleanStack(stack: string | undefined, max: number): string {
   return String(stack || '')
     .replace(new RegExp('\\(.+\\' + path.sep, 'g'), '(')
     .replace(/\d+:\d+/g, '1:1')

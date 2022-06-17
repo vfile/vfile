@@ -58,7 +58,7 @@ export const path = {basename, dirname, extname, join, sep: '/'}
  * @param {string} [ext]
  * @returns {string}
  */
-function basename(path:string, ext?:string):string {
+function basename(path: string, ext?: string): string {
   if (ext !== undefined && typeof ext !== 'string') {
     throw new TypeError('"ext" argument must be a string')
   }
@@ -68,7 +68,7 @@ function basename(path:string, ext?:string):string {
   let end = -1
   let index = path.length
   /** @type {boolean|undefined} */
-  let seenNonSlash:boolean | undefined
+  let seenNonSlash: boolean | undefined
 
   if (ext === undefined || ext.length === 0 || ext.length > path.length) {
     while (index--) {
@@ -144,7 +144,7 @@ function basename(path:string, ext?:string):string {
  * @param {string} path
  * @returns {string}
  */
-function dirname(path:string):string {
+function dirname(path: string): string {
   assertPath(path)
 
   if (path.length === 0) {
@@ -182,7 +182,7 @@ function dirname(path:string):string {
  * @param {string} path
  * @returns {string}
  */
-function extname(path:string):string {
+function extname(path: string): string {
   assertPath(path)
 
   let index = path.length
@@ -248,7 +248,7 @@ function extname(path:string):string {
  * @param {Array<string>} segments
  * @returns {string}
  */
-function join(...segments: string[] ):string {
+function join(...segments: string[]): string {
   let index = -1
   let joined: string | undefined
 
@@ -271,7 +271,7 @@ function join(...segments: string[] ):string {
  * @param {string} path
  * @returns {string}
  */
-function normalize(path:string):string {
+function normalize(path: string): string {
   assertPath(path)
 
   const absolute = path.charCodeAt(0) === 47 /* `/` */
@@ -297,7 +297,7 @@ function normalize(path:string):string {
  * @param {boolean} allowAboveRoot
  * @returns {string}
  */
-function normalizeString(path:string, allowAboveRoot:boolean):string {
+function normalizeString(path: string, allowAboveRoot: boolean): string {
   let result = ''
   let lastSegmentLength = 0
   let lastSlash = -1
@@ -379,7 +379,7 @@ function normalizeString(path:string, allowAboveRoot:boolean):string {
 /**
  * @param {string} path
  */
-function assertPath(path:string): void | TypeError {
+function assertPath(path: string): void | TypeError {
   if (typeof path !== 'string') {
     throw new TypeError(
       'Path must be a string. Received ' + JSON.stringify(path)

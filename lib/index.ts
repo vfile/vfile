@@ -1,11 +1,11 @@
 import {Buffer} from 'buffer'
-//@ts-ignore
+// @ts-ignore
 import buffer from 'is-buffer'
 import {VFileMessage} from 'vfile-message'
+import {Node, Position, Point} from 'unist'
 import {path} from './minpath.js'
 import {proc} from './minproc.js'
 import {urlToPath, isUrl} from './minurl.js'
-import {Node, Position, Point} from 'unist'
 
 export type NodeLike = Record<string, unknown> & {
   type: string
@@ -131,7 +131,7 @@ export class VFile {
       // Note: we specifically use `in` instead of `hasOwnProperty` to accept
       // `vfile`s too.
       if (prop in options && options[prop] !== undefined) {
-        // @ts-ignore: TS is confused by the different types for `history`.
+        // @ts-ignore
         this[prop] = prop === 'history' ? [...options[prop]] : options[prop]
       }
     }
@@ -141,7 +141,7 @@ export class VFile {
 
     // Set non-path related properties.
     for (prop in options) {
-      // @ts-ignore: fine to set other things.
+      // @ts-ignore
       if (!order.includes(prop)) this[prop] = options[prop]
     }
   }
@@ -189,7 +189,7 @@ export class VFile {
   set dirname(dirname: string | undefined) {
     assertPath(this.basename, 'dirname')
     // @ts-ignore
-    this.path = path.join(dirname || '', this.basename)
+    this.path = path.join(dirname ?? '', this.basename)
   }
 
   /**
@@ -211,7 +211,7 @@ export class VFile {
     assertNonEmpty(basename, 'basename')
     assertPart(basename, 'basename')
     // @ts-ignore
-    this.path = path.join(this.dirname || '', basename)
+    this.path = path.join(this.dirname ?? '', basename)
   }
 
   /**
@@ -244,7 +244,7 @@ export class VFile {
     }
 
     // @ts-ignore
-    this.path = path.join(this.dirname, this.stem + (extname || ''))
+    this.path = path.join(this.dirname, `${this.stem}${extname ?? ''}`)
   }
 
   /**
@@ -267,7 +267,7 @@ export class VFile {
   set stem(stem: string | undefined) {
     assertNonEmpty(stem, 'stem')
     assertPart(stem, 'stem')
-    this.path = path.join(this.dirname || '', stem + (this.extname || ''))
+    this.path = path.join(this.dirname ?? '', stem + (this.extname ?? ''))
   }
 
   /**
@@ -280,7 +280,7 @@ export class VFile {
    *   Serialized file.
    */
   toString(encoding?: BufferEncoding): string {
-    return (this.value || '').toString(encoding)
+    return (this.value ?? '').toString(encoding)
   }
 
   /**
@@ -305,7 +305,7 @@ export class VFile {
     const message = new VFileMessage(reason, place, origin)
 
     if (this.path) {
-      message.name = this.path + ':' + message.name
+      message.name = `${this.path}:${message.name}`
       message.file = this.path
     }
 
@@ -377,7 +377,7 @@ export class VFile {
  * @returns {void}
  */
 function assertPart(part: string | undefined, name: string): void {
-  if (part && part.includes(path.sep)) {
+  if (part?.includes?.(path.sep)) {
     throw new Error(
       '`' + name + '` cannot be a path: did not expect `' + path.sep + '`'
     )

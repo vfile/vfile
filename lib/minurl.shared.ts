@@ -18,12 +18,10 @@
 
 // From: <https://github.com/nodejs/node/blob/fcf8ba4/lib/internal/url.js#L1501>
 export function isUrl(fileURLOrPath: unknown): URL {
-  return (
-    fileURLOrPath !== null &&
+  return (fileURLOrPath !== null &&
     typeof fileURLOrPath === 'object' &&
-    // @ts-ignore: indexable.
+    // @ts-ignore
     fileURLOrPath.href &&
-    // @ts-ignore: indexable.
-    fileURLOrPath.origin
-  )
+    // @ts-ignore
+    fileURLOrPath.origin) as URL
 }

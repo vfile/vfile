@@ -1,24 +1,22 @@
-/// <reference lib="dom" />
-
 import {isUrl} from './minurl.shared.js'
 
 // See: <https://github.com/nodejs/node/blob/fcf8ba4/lib/internal/url.js>
 
-export function urlToPath(path: string|URL): string {
+export function urlToPath(path: string | URL): string {
   if (typeof path === 'string') {
     path = new URL(path)
   } else if (!isUrl(path)) {
-    const error:NodeJS.ErrnoException = new TypeError(
-      'The "path" argument must be of type string or an instance of URL. Received `' +
-        path +
-        '`'
+    const error: NodeJS.ErrnoException = new TypeError(
+      `The "path" argument must be of type string or an instance of URL. Received \`${path}\``
     )
     error.code = 'ERR_INVALID_ARG_TYPE'
     throw error
   }
 
   if (path.protocol !== 'file:') {
-    const error:NodeJS.ErrnoException = new TypeError('The URL must be of scheme file')
+    const error: NodeJS.ErrnoException = new TypeError(
+      'The URL must be of scheme file'
+    )
     error.code = 'ERR_INVALID_URL_SCHEME'
     throw error
   }
