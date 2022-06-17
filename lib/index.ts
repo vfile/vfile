@@ -1,20 +1,16 @@
-/**
- * @typedef {import('unist').Node} Node
- * @typedef {import('unist').Position} Position
- * @typedef {import('unist').Point} Point
- * @typedef {Record<string, unknown> & {type: string, position?: Position|undefined}} NodeLike
- * @typedef {import('./minurl.shared.js').URL} URL
- * @typedef {import('../index.js').Data} Data
- * @typedef {import('../index.js').Value} Value
- *
- */
-
 import {Buffer} from 'buffer'
+//@ts-ignore
 import buffer from 'is-buffer'
 import {VFileMessage} from 'vfile-message'
 import {path} from './minpath.js'
 import {proc} from './minproc.js'
 import {urlToPath, isUrl} from './minurl.js'
+import {Node, Position, Point} from 'unist'
+
+export type NodeLike = Record<string, unknown> & {
+  type: string
+  position?: Position | undefined
+}
 
 export type BufferEncoding =
   | 'ascii'
@@ -49,15 +45,15 @@ export type Reporter = <T = ReporterSettings>(
 export type Compatible = Value | Options | VFile | URL
 
 export interface VFileCoreOptions {
-  value?: Value[]
-  cwd?: string[]
-  history?: string[][]
-  path?: Array<string | URL>
-  basename?: string[]
-  stem?: string[]
-  extname?: string[]
-  dirname?: string[]
-  data?: Data[]
+  value?: Value
+  cwd?: string
+  history: string[]
+  path?: string | URL
+  basename?: string
+  stem?: string
+  extname?: string
+  dirname?: string
+  data?: Data
 }
 
 export interface Map {
@@ -76,6 +72,17 @@ export interface Map {
 const order = ['history', 'path', 'basename', 'stem', 'extname', 'dirname']
 
 export class VFile {
+  public data: Data
+  public messages: VFileMessage[]
+  public history: string[]
+  public cwd: string
+  // @ts-ignore
+  public value: Value
+  // @ts-ignore
+  public stored: boolean
+  public result: unknown
+  public map: Map | undefined
+
   /**
    * Create a new virtual file.
    *
@@ -91,61 +98,28 @@ export class VFile {
    * It’s not possible to set either `dirname` or `extname` without setting
    * either `history`, `path`, `basename`, or `stem` as well.
    *
-   * @param {Compatible} [value]
    */
-  public data: Data
-  public messages: VFileMessage[]
-  public history: string[] = []
-  public cwd: string
-  // @ts-expect-error
-  public value: Value
-  // @ts-expect-error
-  public stored: boolean
-  public result: unknown
-  public map: Map | undefined
-
-  constructor(value: Compatible) {
+  constructor(value?: Partial<Compatible>) {
     /** @type {Options} */
     let options: Options
 
     if (!value) {
+      // @ts-ignore
       options = {}
     } else if (typeof value === 'string' || buffer(value)) {
-      // @ts-expect-error
+      // @ts-ignore
       options = {value}
     } else if (isUrl(value)) {
-      // @ts-expect-error
+      // @ts-ignore
       options = {path: value}
     } else {
-      // @ts-expect-error
+      // @ts-ignore
       options = value
     }
 
-    /**
-     * Place to store custom information (default: `{}`).
-     * It’s OK to store custom data directly on the file but moving it to
-     * `data` is recommended.
-     * @type {Data}
-     */
     this.data = {}
-
-    /**
-     * List of messages associated with the file.
-     * @type {Array<VFileMessage>}
-     */
     this.messages = []
-
-    /**
-     * List of filepaths the file moved between.
-     * The first is the original path and the last is the current path.
-     * @type {Array<string>}
-     */
     this.history = []
-
-    /**
-     * Base of `path` (default: `process.cwd()` or `'/'` in browsers).
-     * @type {string}
-     */
     this.cwd = proc.cwd()
 
     // Set path related properties in the correct order.
@@ -157,26 +131,26 @@ export class VFile {
       // Note: we specifically use `in` instead of `hasOwnProperty` to accept
       // `vfile`s too.
       if (prop in options && options[prop] !== undefined) {
-        // @ts-expect-error: TS is confused by the different types for `history`.
+        // @ts-ignore: TS is confused by the different types for `history`.
         this[prop] = prop === 'history' ? [...options[prop]] : options[prop]
       }
     }
 
     /** @type {string} */
-    let prop
+    let prop: string
 
     // Set non-path related properties.
     for (prop in options) {
-      // @ts-expect-error: fine to set other things.
+      // @ts-ignore: fine to set other things.
       if (!order.includes(prop)) this[prop] = options[prop]
     }
   }
 
   /**
    * Get the full path (example: `'~/index.min.js'`).
-   * @returns {string}
    */
-  get path() {
+  // @ts-ignore
+  get path(): string {
     return this.history[this.history.length - 1]
   }
 
@@ -185,9 +159,9 @@ export class VFile {
    * Cannot be nullified.
    * You can set a file URL (a `URL` object with a `file:` protocol) which will
    * be turned into a path with `url.fileURLToPath`.
-   * @param {string|URL} path
    */
-  set path(path) {
+  // @ts-ignore
+  set path(path: string) {
     if (isUrl(path)) {
       path = urlToPath(path)
     }
@@ -202,7 +176,8 @@ export class VFile {
   /**
    * Get the parent path (example: `'~'`).
    */
-  get dirname() {
+  // @ts-ignore
+  get dirname(): string | undefined {
     return typeof this.path === 'string' ? path.dirname(this.path) : undefined
   }
 
@@ -210,16 +185,18 @@ export class VFile {
    * Set the parent path (example: `'~'`).
    * Cannot be set if there’s no `path` yet.
    */
-  set dirname(dirname) {
+  // @ts-ignore
+  set dirname(dirname: string | undefined) {
     assertPath(this.basename, 'dirname')
-    // @ts-expect-error
+    // @ts-ignore
     this.path = path.join(dirname || '', this.basename)
   }
 
   /**
    * Get the basename (including extname) (example: `'index.min.js'`).
    */
-  get basename() {
+  // @ts-ignore
+  get basename(): string | undefined {
     return typeof this.path === 'string' ? path.basename(this.path) : undefined
   }
 
@@ -229,17 +206,19 @@ export class VFile {
    * on windows).
    * Cannot be nullified (use `file.path = file.dirname` instead).
    */
-  set basename(basename) {
+  // @ts-ignore
+  set basename(basename: string | undefined) {
     assertNonEmpty(basename, 'basename')
     assertPart(basename, 'basename')
-    // @ts-expect-error
+    // @ts-ignore
     this.path = path.join(this.dirname || '', basename)
   }
 
   /**
    * Get the extname (including dot) (example: `'.js'`).
    */
-  get extname() {
+  // @ts-ignore
+  get extname(): string | undefined {
     return typeof this.path === 'string' ? path.extname(this.path) : undefined
   }
 
@@ -249,7 +228,8 @@ export class VFile {
    * on windows).
    * Cannot be set if there’s no `path` yet.
    */
-  set extname(extname) {
+  // @ts-ignore
+  set extname(extname: string | undefined) {
     assertPart(extname, 'extname')
     assertPath(this.dirname, 'extname')
 
@@ -263,14 +243,15 @@ export class VFile {
       }
     }
 
-    // @ts-expect-error
+    // @ts-ignore
     this.path = path.join(this.dirname, this.stem + (extname || ''))
   }
 
   /**
    * Get the stem (basename w/o extname) (example: `'index.min'`).
    */
-  get stem() {
+  // @ts-ignore
+  get stem(): string | undefined {
     return typeof this.path === 'string'
       ? path.basename(this.path, this.extname)
       : undefined
@@ -282,7 +263,8 @@ export class VFile {
    * on windows).
    * Cannot be nullified (use `file.path = file.dirname` instead).
    */
-  set stem(stem) {
+  // @ts-ignore
+  set stem(stem: string | undefined) {
     assertNonEmpty(stem, 'stem')
     assertPart(stem, 'stem')
     this.path = path.join(this.dirname || '', stem + (this.extname || ''))
@@ -297,8 +279,7 @@ export class VFile {
    * @returns {string}
    *   Serialized file.
    */
-  // @ts-expect-error
-  toString(encoding) {
+  toString(encoding?: BufferEncoding): string {
     return (this.value || '').toString(encoding)
   }
 
@@ -316,8 +297,11 @@ export class VFile {
    * @returns {VFileMessage}
    *   Message.
    */
-  // @ts-expect-error
-  message(reason, place, origin) {
+  message(
+    reason: string | Error,
+    place?: Node | NodeLike | Position | Point,
+    origin?: string
+  ): VFileMessage {
     const message = new VFileMessage(reason, place, origin)
 
     if (this.path) {
@@ -345,8 +329,11 @@ export class VFile {
    * @returns {VFileMessage}
    *   Message.
    */
-  // @ts-expect-error
-  info(reason, place, origin) {
+  info(
+    reason: string | Error,
+    place?: Node | NodeLike | Position | Point,
+    origin?: string
+  ): VFileMessage {
     const message = this.message(reason, place, origin)
 
     message.fatal = null
@@ -369,8 +356,11 @@ export class VFile {
    * @returns {never}
    *   Message.
    */
-  // @ts-expect-error
-  fail(reason, place, origin) {
+  fail(
+    reason: string | Error,
+    place?: Node | NodeLike | Position | Point,
+    origin?: string
+  ): never {
     const message = this.message(reason, place, origin)
 
     message.fatal = true
@@ -386,8 +376,7 @@ export class VFile {
  * @param {string} name
  * @returns {void}
  */
-// @ts-expect-error
-function assertPart(part, name) {
+function assertPart(part: string | undefined, name: string): void {
   if (part && part.includes(path.sep)) {
     throw new Error(
       '`' + name + '` cannot be a path: did not expect `' + path.sep + '`'
@@ -402,8 +391,7 @@ function assertPart(part, name) {
  * @param {string} name
  * @returns {asserts part is string}
  */
-// @ts-expect-error
-function assertNonEmpty(part, name) {
+function assertNonEmpty(part: string | undefined, name: string): void | Error {
   if (!part) {
     throw new Error('`' + name + '` cannot be empty')
   }
@@ -416,8 +404,7 @@ function assertNonEmpty(part, name) {
  * @param {string} name
  * @returns {asserts path is string}
  */
-// @ts-expect-error
-function assertPath(path, name) {
+function assertPath(part: string | undefined, name: string): void | Error {
   if (!path) {
     throw new Error('Setting `' + name + '` requires `path` to be set too')
   }
