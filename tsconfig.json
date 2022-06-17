@@ -1,14 +1,15 @@
 {
-  "include": ["lib/**/*.js", "test.js", "lib/index.ts"],
+  "include": ["test.ts", "lib/**/*.ts"],
   "compilerOptions": {
-    "target": "ES2020",
-    "lib": ["ES2020"],
-    "module": "ES2020",
+    "target": "es5",
+    "lib": ["es5"],
+    "module": "ES2015",
     "moduleResolution": "node",
     "allowJs": true,
     "checkJs": true,
     "declaration": true,
-    "emitDeclarationOnly": true,
+    "emitDeclarationOnly": false,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     "strict": true
