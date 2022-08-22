@@ -301,6 +301,10 @@ some utilities use them:
     `Map` type, which is equivalent to the `RawSourceMap` type from the
     `source-map` module
 
+There are also well-known fields on messages, see
+[them in a similar section of
+`vfile-message`](https://github.com/vfile/vfile-message#well-known-fields).
+
 <a name="utilities"></a>
 
 ## List of utilities
