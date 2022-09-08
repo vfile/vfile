@@ -6,7 +6,7 @@ import type {Reporter} from './lib/index.js'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment, @typescript-eslint/prefer-ts-expect-error
 // @ts-ignore It’s important to preserve this ignore statement. This makes sure
 // it works both with and without node types.
-// eslint-disable-next-line node/prefer-global/buffer
+// eslint-disable-next-line n/prefer-global/buffer
 type MaybeBuffer = any extends Buffer ? never : Buffer
 
 /**
@@ -32,7 +32,8 @@ export type Value = string | MaybeBuffer
  *   }
  * }
  */
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions, @typescript-eslint/no-empty-interface
 export interface DataMap {}
 
 /**
