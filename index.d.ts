@@ -1,13 +1,11 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment, @typescript-eslint/prefer-ts-expect-error
-// @ts-ignore It’s important to preserve this ignore statement. This makes sure
-// it works both with and without node types.
-import {Buffer} from 'buffer'
-
 import type {Reporter} from './lib/index.js'
 
 /**
  * This is the same as `Buffer` if node types are included, `never` otherwise.
  */
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment, @typescript-eslint/prefer-ts-expect-error
+// @ts-ignore It’s important to preserve this ignore statement. This makes sure
+// it works both with and without node types.
 type MaybeBuffer = any extends Buffer ? never : Buffer
 
 /**
