@@ -1,9 +1,3 @@
-/**
- * @typedef {import('unist').Position} Position
- * @typedef {import('unist').Point} Point
- * @typedef {import('vfile-message').VFileMessage} VFileMessage
- */
-
 import assert from 'node:assert/strict'
 import {URL, fileURLToPath} from 'node:url'
 import path from 'node:path'
@@ -12,6 +6,7 @@ import {Buffer} from 'node:buffer'
 import test from 'node:test'
 import {path as p} from './lib/minpath.browser.js'
 import {VFile} from './index.js'
+import * as mod from './index.js'
 
 /* eslint-disable no-undef */
 /** @type {Error} */
@@ -50,6 +45,14 @@ try {
   multilineException = error
 }
 /* eslint-enable no-undef */
+
+test('core', () => {
+  assert.deepEqual(
+    Object.keys(mod).sort(),
+    ['VFile'],
+    'should expose the public api'
+  )
+})
 
 test('new VFile(options?)', async (t) => {
   assert.ok(new VFile() instanceof VFile, 'should work with new')
