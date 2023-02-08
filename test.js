@@ -879,7 +879,7 @@ test('p (POSIX path for browsers)', async (t) => {
 })
 
 /**
- * @param {string|undefined} stack
+ * @param {string | undefined} stack
  * @param {number} max
  * @returns {string}
  */
