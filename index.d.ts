@@ -11,12 +11,13 @@ type MaybeBuffer = any extends Buffer ? never : Buffer
 
 /**
  * Contents of the file.
- * Can either be text, or a Buffer like structure.
- * This does not directly use type `Buffer`, because it can also be used in a
- * browser context.
- * Instead this leverages `Uint8Array` which is the base type for `Buffer`,
- * and a native JavaScript construct.
+ *
+ * Can either be text or a `Buffer` structure.
  */
+// Note: this does not directly use type `Buffer`, because it can also be used
+// in a browser context.
+// Instead this leverages `Uint8Array` which is the base type for `Buffer`,
+// and a native JavaScript construct.
 export type Value = string | MaybeBuffer
 
 /**
@@ -37,7 +38,7 @@ export type Value = string | MaybeBuffer
 export interface DataMap {}
 
 /**
- * Place to store custom information.
+ * Custom information.
  *
  * Known attributes can be added to @see {@link DataMap}
  */
