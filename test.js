@@ -16,32 +16,29 @@ let changedMessage
 let multilineException
 
 try {
-  // @ts-expect-error
+  // @ts-expect-error: we want to capture this error.
   variable = 1
 } catch (error_) {
-  const error = /** @type {Error} */ (error_)
-  error.stack = cleanStack(error.stack, 3)
-  exception = error
+  exception = /** @type {Error} */ (error_)
+  exception.stack = cleanStack(exception.stack, 3)
 }
 
 try {
-  // @ts-expect-error
+  // @ts-expect-error: we want to capture this error.
   variable = 1
 } catch (error_) {
-  const error = /** @type {Error} */ (error_)
-  error.message = 'foo'
-  error.stack = cleanStack(error.stack, 3)
-  changedMessage = error
+  changedMessage = /** @type {Error} */ (error_)
+  changedMessage.message = 'foo'
+  changedMessage.stack = cleanStack(changedMessage.stack, 3)
 }
 
 try {
-  // @ts-expect-error
+  // @ts-expect-error: we want to capture this error.
   variable = 1
 } catch (error_) {
-  const error = /** @type {Error} */ (error_)
-  error.message = 'foo\nbar\nbaz'
-  error.stack = cleanStack(error.stack, 5)
-  multilineException = error
+  multilineException = /** @type {Error} */ (error_)
+  multilineException.message = 'foo\nbar\nbaz'
+  multilineException.stack = cleanStack(multilineException.stack, 5)
 }
 /* eslint-enable no-undef */
 
@@ -212,7 +209,7 @@ test('new VFile(options?)', async function (t) {
 
     assert.throws(
       function () {
-        // @ts-expect-error: runtime.
+        // @ts-expect-error: check if this produces a runtime error.
         file.path = undefined
       },
       /Error: `path` cannot be empty/,
@@ -220,11 +217,6 @@ test('new VFile(options?)', async function (t) {
     )
 
     file = new VFile()
-    // @ts-ignore: TS doesn’t understand seem to understand setters with a
-    // different argument than the return type of the getter.
-    // So my editor shows a warning.
-    // However: actually building the project *does* not.
-    // Hence this is an ignore instead of an expect error.
     file.path = new URL(import.meta.url)
 
     assert.deepEqual(
@@ -549,13 +541,13 @@ test('new VFile(options?)', async function (t) {
     assert.equal(String(message), '2:3: test', 'should accept a position')
 
     assert.equal(
-      // @ts-expect-error runtime allow omitting `place`.
+      // @ts-expect-error to do: overloads.
       new VFile().message('test', 'charlie').ruleId,
       'charlie',
       'should accept a `ruleId` as `origin`'
     )
 
-    // @ts-expect-error runtime allow omitting `place`.
+    // @ts-expect-error to do: overloads.
     message = new VFile().message('test', 'delta:echo')
 
     assert.deepEqual(
@@ -623,6 +615,7 @@ test('new VFile(options?)', async function (t) {
 // some cleaning.
 // <https://github.com/browserify/path-browserify/tree/master/test>
 test('p (POSIX path for browsers)', async function (t) {
+  /** @type {Array<unknown>} */
   const typeErrorTests = [true, false, 7, null, {}, undefined, [], Number.NaN]
 
   await t.test('basename', function () {
@@ -632,7 +625,7 @@ test('p (POSIX path for browsers)', async function (t) {
 
       assert.throws(
         function () {
-          // @ts-expect-error runtime.
+          // @ts-expect-error: check if this produces a runtime error.
           p.basename(test)
         },
         TypeError,
@@ -643,7 +636,7 @@ test('p (POSIX path for browsers)', async function (t) {
       if (test !== undefined) {
         assert.throws(
           function () {
-            // @ts-expect-error runtime.
+            // @ts-expect-error: check if this produces a runtime error.
             p.basename('x', test)
           },
           TypeError,
@@ -702,7 +695,7 @@ test('p (POSIX path for browsers)', async function (t) {
       const test = typeErrorTests[index]
       assert.throws(
         function () {
-          // @ts-expect-error runtime.
+          // @ts-expect-error: check if this produces a runtime error.
           p.dirname(test)
         },
         TypeError,
@@ -727,7 +720,7 @@ test('p (POSIX path for browsers)', async function (t) {
       const test = typeErrorTests[index]
       assert.throws(
         function () {
-          // @ts-expect-error runtime.
+          // @ts-expect-error: check if this produces a runtime error.
           p.extname(test)
         },
         TypeError,
@@ -806,7 +799,7 @@ test('p (POSIX path for browsers)', async function (t) {
       const test = typeErrorTests[index]
       assert.throws(
         function () {
-          // @ts-expect-error runtime.
+          // @ts-expect-error: check if this produces a runtime error.
           p.join(test)
         },
         TypeError,
@@ -889,7 +882,7 @@ test('p (POSIX path for browsers)', async function (t) {
  */
 function cleanStack(stack, max) {
   return String(stack || '')
-    .replace(new RegExp('\\(.+\\' + path.sep, 'g'), '(')
+    .replace(/\(.+[/\\]/g, '(')
     .replace(/\d+:\d+/g, '1:1')
     .split('\n')
     .slice(0, max)

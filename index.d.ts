@@ -1,5 +1,3 @@
-import type {Reporter} from './lib/index.js'
-
 /**
  * This is the same as `Buffer` if node types are included, `never` otherwise.
  */
@@ -18,7 +16,7 @@ type MaybeBuffer = any extends Buffer ? never : Buffer
 // in a browser context.
 // Instead this leverages `Uint8Array` which is the base type for `Buffer`,
 // and a native JavaScript construct.
-export type Value = string | MaybeBuffer
+export type Value = MaybeBuffer | string
 
 /**
  * This map registers the type of the `data` key of a `VFile`.
