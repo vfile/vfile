@@ -95,11 +95,7 @@
     "atLeast": 100,
     "ignoreCatch": true,
     "detail": true,
-    "strict": true,
-    "#": "needed `any`s",
-    "ignoreFiles": [
-      "lib/minurl.shared.d.ts"
-    ]
+    "strict": true
   },
   "xo": {
     "prettier": true,
