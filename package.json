@@ -71,7 +71,7 @@
     "build": "tsc --build --clean && tsc --build && type-coverage",
     "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
     "test-api": "node --conditions development test.js",
-    "test-coverage": "c8 --check-coverage --100 --reporter lcov npm run test-api",
+    "test-coverage": "c8 --100 --reporter lcov npm run test-api",
     "test": "npm run build && npm run format && npm run test-coverage"
   },
   "prettier": {
@@ -82,30 +82,30 @@
     "semi": false,
     "trailingComma": "none"
   },
-  "xo": {
-    "prettier": true,
-    "rules": {
-      "unicorn/prefer-code-point": "off",
-      "unicorn/prefer-node-protocol": "off"
-    }
-  },
   "remarkConfig": {
     "plugins": [
-      "preset-wooorm",
+      "remark-preset-wooorm",
       [
-        "lint-no-html",
+        "remark-lint-no-html",
         false
       ]
     ]
   },
   "typeCoverage": {
     "atLeast": 100,
+    "ignoreCatch": true,
     "detail": true,
     "strict": true,
-    "ignoreCatch": true,
     "#": "needed `any`s",
     "ignoreFiles": [
       "lib/minurl.shared.d.ts"
     ]
+  },
+  "xo": {
+    "prettier": true,
+    "rules": {
+      "unicorn/prefer-code-point": "off",
+      "unicorn/prefer-node-protocol": "off"
+    }
   }
 }
