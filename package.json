@@ -104,7 +104,6 @@
   "xo": {
     "prettier": true,
     "rules": {
-      "unicorn/prefer-code-point": "off",
       "unicorn/prefer-node-protocol": "off"
     }
   }

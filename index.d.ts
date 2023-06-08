@@ -44,6 +44,7 @@ export interface DataMap {}
  */
 export type Data = Record<string, unknown> & Partial<DataMap>
 
+// To do: next major: remove.
 // Deprecated names (w/ prefix):
 export type {Data as VFileData, DataMap as VFileDataMap, Value as VFileValue}
 
@@ -56,6 +57,7 @@ export type {
   Options,
   Reporter,
   ReporterSettings,
+  // To do: next major: remove.
   // Deprecated names (w/ prefix):
   Compatible as VFileCompatible,
   Options as VFileOptions,

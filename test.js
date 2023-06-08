@@ -1,12 +1,11 @@
 import assert from 'node:assert/strict'
+import {Buffer} from 'node:buffer'
 import {URL, fileURLToPath} from 'node:url'
 import path from 'node:path'
 import process from 'node:process'
-import {Buffer} from 'node:buffer'
 import test from 'node:test'
 import {path as p} from './lib/minpath.browser.js'
 import {VFile} from './index.js'
-import * as mod from './index.js'
 
 /* eslint-disable no-undef */
 /** @type {Error} */
@@ -46,18 +45,18 @@ try {
 }
 /* eslint-enable no-undef */
 
-test('core', () => {
+test('core', async function () {
   assert.deepEqual(
-    Object.keys(mod).sort(),
+    Object.keys(await import('./index.js')).sort(),
     ['VFile'],
     'should expose the public api'
   )
 })
 
-test('new VFile(options?)', async (t) => {
+test('new VFile(options?)', async function (t) {
   assert.ok(new VFile() instanceof VFile, 'should work with new')
 
-  await t.test('should accept missing options', () => {
+  await t.test('should accept missing options', function () {
     const file = new VFile()
 
     assert.deepEqual(file.history, [])
@@ -71,13 +70,13 @@ test('new VFile(options?)', async (t) => {
     assert.equal(file.extname, undefined)
   })
 
-  await t.test('should accept a string', () => {
+  await t.test('should accept a string', function () {
     const file = new VFile('alpha')
 
     assert.equal(file.value, 'alpha')
   })
 
-  await t.test('should accept a vfile', () => {
+  await t.test('should accept a vfile', function () {
     const left = new VFile()
     const right = new VFile(left)
 
@@ -85,7 +84,7 @@ test('new VFile(options?)', async (t) => {
     assert.equal(left.path, right.path)
   })
 
-  await t.test('should accept a vfile w/ path', () => {
+  await t.test('should accept a vfile w/ path', function () {
     const left = new VFile({path: path.join('path', 'to', 'file.js')})
     const right = new VFile(left)
 
@@ -93,13 +92,13 @@ test('new VFile(options?)', async (t) => {
     assert.equal(left.path, right.path)
   })
 
-  await t.test('should accept an file URL', () => {
+  await t.test('should accept an file URL', function () {
     const url = new URL(import.meta.url)
     const file = new VFile(url)
     assert.deepEqual(file.path, fileURLToPath(url))
   })
 
-  await t.test('should accept an object (1)', () => {
+  await t.test('should accept an object (1)', function () {
     const fp = path.join('~', 'example.md')
     const file = new VFile({path: fp})
 
@@ -112,7 +111,7 @@ test('new VFile(options?)', async (t) => {
     assert.equal(file.extname, '.md')
   })
 
-  await t.test('should accept a object (2)', () => {
+  await t.test('should accept a object (2)', function () {
     const file = new VFile({basename: 'example.md'})
 
     assert.deepEqual(file.history, ['example.md'])
@@ -124,7 +123,7 @@ test('new VFile(options?)', async (t) => {
     assert.equal(file.extname, '.md')
   })
 
-  await t.test('should accept a object (2)', () => {
+  await t.test('should accept a object (2)', function () {
     const file = new VFile({stem: 'example', extname: '.md', dirname: '~'})
 
     assert.deepEqual(file.history, [
@@ -140,7 +139,7 @@ test('new VFile(options?)', async (t) => {
     assert.equal(file.extname, '.md')
   })
 
-  await t.test('should set custom props', () => {
+  await t.test('should set custom props', function () {
     const testing = [1, 2, 3]
     const file = new VFile({custom: true, testing})
 
@@ -150,7 +149,7 @@ test('new VFile(options?)', async (t) => {
     assert.equal(file.testing, testing)
   })
 
-  await t.test('#toString()', () => {
+  await t.test('#toString()', function () {
     assert.equal(
       new VFile().toString(),
       '',
@@ -176,7 +175,7 @@ test('new VFile(options?)', async (t) => {
     )
   })
 
-  await t.test('.cwd', () => {
+  await t.test('.cwd', function () {
     assert.equal(
       new VFile().cwd,
       process.cwd(),
@@ -186,7 +185,7 @@ test('new VFile(options?)', async (t) => {
     assert.equal(new VFile({cwd: '/'}).cwd, '/', 'should be settable')
   })
 
-  await t.test('.path', () => {
+  await t.test('.path', function () {
     const fp = path.join('~', 'example.md')
     const ofp = path.join('~', 'example', 'example.txt')
     let file = new VFile()
@@ -212,7 +211,7 @@ test('new VFile(options?)', async (t) => {
     )
 
     assert.throws(
-      () => {
+      function () {
         // @ts-expect-error: runtime.
         file.path = undefined
       },
@@ -235,7 +234,7 @@ test('new VFile(options?)', async (t) => {
     )
 
     assert.throws(
-      () => {
+      function () {
         const u = new URL('https://example.com')
         file = new VFile(u)
       },
@@ -247,7 +246,7 @@ test('new VFile(options?)', async (t) => {
       // Windows allows this just fine:
       // <https://github.com/nodejs/node/blob/fcf8ba4/lib/internal/url.js#L1369>
       assert.throws(
-        () => {
+        function () {
           const u = new URL('file:')
           u.hostname = 'a.com'
           file = new VFile(u)
@@ -258,7 +257,7 @@ test('new VFile(options?)', async (t) => {
     }
 
     assert.throws(
-      () => {
+      function () {
         const u = new URL('file:')
         u.pathname = 'a/b%2fc'
         file = new VFile(u)
@@ -268,7 +267,7 @@ test('new VFile(options?)', async (t) => {
     )
   })
 
-  await t.test('.basename', () => {
+  await t.test('.basename', function () {
     let file = new VFile()
 
     assert.equal(file.basename, undefined, 'should start `undefined`')
@@ -290,7 +289,8 @@ test('new VFile(options?)', async (t) => {
     file = new VFile({path: path.join('~', 'alpha', 'bravo.md')})
 
     assert.throws(
-      () => {
+      function () {
+        // @ts-expect-error: check if this produces a runtime error.
         file.basename = undefined
       },
       /Error: `basename` cannot be empty/,
@@ -298,7 +298,7 @@ test('new VFile(options?)', async (t) => {
     )
 
     assert.throws(
-      () => {
+      function () {
         file.basename = path.join('charlie', 'delta.js')
       },
       new RegExp(
@@ -310,14 +310,14 @@ test('new VFile(options?)', async (t) => {
     )
   })
 
-  await t.test('.dirname', () => {
+  await t.test('.dirname', function () {
     const fp = path.join('~', 'alpha', 'bravo')
     const file = new VFile()
 
     assert.equal(file.dirname, undefined, 'should start undefined')
 
     assert.throws(
-      () => {
+      function () {
         file.dirname = fp
       },
       /Error: Setting `dirname` requires `path` to be set too/,
@@ -340,14 +340,14 @@ test('new VFile(options?)', async (t) => {
     assert.equal(file.path, 'bravo', 'should support removing `dirname` (2)')
   })
 
-  await t.test('.extname', () => {
+  await t.test('.extname', function () {
     const fp = path.join('~', 'alpha', 'bravo')
     const file = new VFile()
 
     assert.equal(file.extname, undefined, 'should start `undefined`')
 
     assert.throws(
-      () => {
+      function () {
         file.extname = '.git'
       },
       /Error: Setting `extname` requires `path` to be set too/,
@@ -363,7 +363,7 @@ test('new VFile(options?)', async (t) => {
     assert.deepEqual(file.history, [fp, fp + '.md'], 'should record changes')
 
     assert.throws(
-      () => {
+      function () {
         file.extname = 'txt'
       },
       /Error: `extname` must start with `.`/,
@@ -371,7 +371,7 @@ test('new VFile(options?)', async (t) => {
     )
 
     assert.throws(
-      () => {
+      function () {
         file.extname = '..md'
       },
       /Error: `extname` cannot contain multiple dots/,
@@ -383,7 +383,7 @@ test('new VFile(options?)', async (t) => {
     assert.equal(file.path, fp, 'should support removing `extname` (2)')
   })
 
-  await t.test('.stem', () => {
+  await t.test('.stem', function () {
     const file = new VFile()
 
     assert.equal(file.stem, undefined, 'should start `undefined`')
@@ -397,7 +397,8 @@ test('new VFile(options?)', async (t) => {
     assert.equal(file.stem, 'charlie', 'should change')
 
     assert.throws(
-      () => {
+      function () {
+        // @ts-expect-error: check if this produces a runtime error.
         file.stem = undefined
       },
       /Error: `stem` cannot be empty/,
@@ -405,7 +406,7 @@ test('new VFile(options?)', async (t) => {
     )
 
     assert.throws(
-      () => {
+      function () {
         file.stem = path.join('charlie', 'delta.js')
       },
       new RegExp(
@@ -415,7 +416,7 @@ test('new VFile(options?)', async (t) => {
     )
   })
 
-  await t.test('#message(reason[, position][, origin])', () => {
+  await t.test('#message(reason[, position][, origin])', function () {
     const fp = path.join('~', 'example.md')
 
     assert.ok(
@@ -564,12 +565,12 @@ test('new VFile(options?)', async (t) => {
     )
   })
 
-  await t.test('#fail(reason[, position][, origin])', () => {
+  await t.test('#fail(reason[, position][, origin])', function () {
     const fp = path.join('~', 'example.md')
     const file = new VFile({path: fp})
 
     assert.throws(
-      () => {
+      function () {
         file.fail('Foo', {line: 1, column: 3}, 'baz:qux')
       },
       /1:3: Foo/,
@@ -595,7 +596,7 @@ test('new VFile(options?)', async (t) => {
     })
   })
 
-  await t.test('#info(reason[, position][, origin])', () => {
+  await t.test('#info(reason[, position][, origin])', function () {
     const fp = path.join('~', 'example.md')
     const file = new VFile({path: fp})
 
@@ -621,16 +622,16 @@ test('new VFile(options?)', async (t) => {
 // Mostly from `path-browserify` with some extra tests to reach coverage, and
 // some cleaning.
 // <https://github.com/browserify/path-browserify/tree/master/test>
-test('p (POSIX path for browsers)', async (t) => {
+test('p (POSIX path for browsers)', async function (t) {
   const typeErrorTests = [true, false, 7, null, {}, undefined, [], Number.NaN]
 
-  await t.test('basename', () => {
+  await t.test('basename', function () {
     let index = -1
     while (++index < typeErrorTests.length) {
       const test = typeErrorTests[index]
 
       assert.throws(
-        () => {
+        function () {
           // @ts-expect-error runtime.
           p.basename(test)
         },
@@ -641,7 +642,7 @@ test('p (POSIX path for browsers)', async (t) => {
       // `undefined` is a valid value as the second argument to basename.
       if (test !== undefined) {
         assert.throws(
-          () => {
+          function () {
             // @ts-expect-error runtime.
             p.basename('x', test)
           },
@@ -694,13 +695,13 @@ test('p (POSIX path for browsers)', async (t) => {
     assert.strictEqual(p.basename('a.b', 'a'), 'a.b')
   })
 
-  await t.test('dirname', () => {
+  await t.test('dirname', function () {
     let index = -1
 
     while (++index < typeErrorTests.length) {
       const test = typeErrorTests[index]
       assert.throws(
-        () => {
+        function () {
           // @ts-expect-error runtime.
           p.dirname(test)
         },
@@ -719,13 +720,13 @@ test('p (POSIX path for browsers)', async (t) => {
     assert.strictEqual(p.dirname('foo'), '.')
   })
 
-  await t.test('extname', () => {
+  await t.test('extname', function () {
     let index = -1
 
     while (++index < typeErrorTests.length) {
       const test = typeErrorTests[index]
       assert.throws(
-        () => {
+        function () {
           // @ts-expect-error runtime.
           p.extname(test)
         },
@@ -798,13 +799,13 @@ test('p (POSIX path for browsers)', async (t) => {
     assert.strictEqual(p.extname('file.\\\\'), '.\\\\')
   })
 
-  await t.test('join', () => {
+  await t.test('join', function () {
     let index = -1
 
     while (++index < typeErrorTests.length) {
       const test = typeErrorTests[index]
       assert.throws(
-        () => {
+        function () {
           // @ts-expect-error runtime.
           p.join(test)
         },
