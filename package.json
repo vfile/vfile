@@ -98,9 +98,6 @@
     "strict": true
   },
   "xo": {
-    "prettier": true,
-    "rules": {
-      "unicorn/prefer-node-protocol": "off"
-    }
+    "prettier": true
   }
 }
