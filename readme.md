@@ -33,7 +33,7 @@ metadata about files (such as its `path` and `value`) and lint
     *   [`file.extname`](#fileextname)
     *   [`file.path`](#filepath)
     *   [`file.stem`](#filestem)
-    *   [`VFile#fail(reason[, position][, origin])`](#vfilefailreason-position-origin)
+    *   [`VFile#fail(reason[, options])`](#vfilefailreason-options)
     *   [`VFile#info(reason[, options])`](#vfileinforeason-options)
     *   [`VFile#message(reason[, options])`](#vfilemessagereason-options)
     *   [`VFile#toString(encoding?)`](#vfiletostringencoding)
@@ -266,7 +266,7 @@ Cannot contain path separators (`'/'` on unix, macOS, and browsers, `'\'` on
 windows).
 Cannot be nullified.
 
-### `VFile#fail(reason[, position][, origin])`
+### `VFile#fail(reason[, options])`
 
 Create a fatal message for `reason` associated with the file.
 
