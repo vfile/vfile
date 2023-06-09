@@ -425,16 +425,13 @@ test('new VFile(options?)', async function (t) {
     assert.equal(message.name, fp + ':1:1')
     assert.equal(message.file, fp)
     assert.equal(message.reason, 'Foo')
-    assert.equal(message.ruleId, null)
-    assert.equal(message.source, null)
+    assert.equal(message.ruleId, undefined)
+    assert.equal(message.source, undefined)
     assert.equal(message.stack, '')
     assert.equal(message.fatal, false)
-    assert.equal(message.line, null)
-    assert.equal(message.column, null)
-    assert.deepEqual(message.position, {
-      start: {line: null, column: null},
-      end: {line: null, column: null}
-    })
+    assert.equal(message.line, undefined)
+    assert.equal(message.column, undefined)
+    assert.deepEqual(message.place, undefined)
 
     assert.equal(
       String(message),
@@ -495,7 +492,7 @@ test('new VFile(options?)', async function (t) {
     message = new VFile().message('test', literalNode)
 
     assert.deepEqual(
-      message.position,
+      message.place,
       literalNode.position,
       'should accept a node (1)'
     )
@@ -522,7 +519,7 @@ test('new VFile(options?)', async function (t) {
     const position = literalNode.position
     message = new VFile().message('test', position)
 
-    assert.deepEqual(message.position, position, 'should accept a position (1)')
+    assert.deepEqual(message.place, position, 'should accept a position (1)')
     assert.equal(
       String(message),
       '2:3-2:5: test',
@@ -532,22 +529,16 @@ test('new VFile(options?)', async function (t) {
     const point = position.start
     message = new VFile().message('test', point)
 
-    assert.deepEqual(
-      message.position,
-      {start: point, end: {line: null, column: null}},
-      'should accept a position (1)'
-    )
+    assert.deepEqual(message.place, point, 'should accept a position (1)')
 
     assert.equal(String(message), '2:3: test', 'should accept a position')
 
     assert.equal(
-      // @ts-expect-error to do: overloads.
       new VFile().message('test', 'charlie').ruleId,
       'charlie',
       'should accept a `ruleId` as `origin`'
     )
 
-    // @ts-expect-error to do: overloads.
     message = new VFile().message('test', 'delta:echo')
 
     assert.deepEqual(
@@ -582,10 +573,7 @@ test('new VFile(options?)', async function (t) {
     assert.equal(message.fatal, true)
     assert.equal(message.line, 1)
     assert.equal(message.column, 3)
-    assert.deepEqual(message.position, {
-      start: {line: 1, column: 3},
-      end: {line: null, column: null}
-    })
+    assert.deepEqual(message.place, {line: 1, column: 3})
   })
 
   await t.test('#info(reason[, position][, origin])', function () {
@@ -604,10 +592,7 @@ test('new VFile(options?)', async function (t) {
     assert.equal(message.fatal, null)
     assert.equal(message.line, 1)
     assert.equal(message.column, 3)
-    assert.deepEqual(message.position, {
-      start: {line: 1, column: 3},
-      end: {line: null, column: null}
-    })
+    assert.deepEqual(message.place, {line: 1, column: 3})
   })
 })
 
