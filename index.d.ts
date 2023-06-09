@@ -50,8 +50,9 @@ export {VFile} from './lib/index.js'
 
 export type {
   BufferEncoding,
-  Map,
   Compatible,
+  Map,
+  MessageOptions,
   Options,
   Reporter,
   ReporterSettings,

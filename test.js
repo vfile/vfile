@@ -589,7 +589,7 @@ test('new VFile(options?)', async function (t) {
     assert.equal(message.reason, 'Bar')
     assert.equal(message.source, 'baz')
     assert.equal(message.ruleId, 'qux')
-    assert.equal(message.fatal, null)
+    assert.equal(message.fatal, undefined)
     assert.equal(message.line, 1)
     assert.equal(message.column, 3)
     assert.deepEqual(message.place, {line: 1, column: 3})

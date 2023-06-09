@@ -11,7 +11,8 @@
 [![Chat][chat-badge]][chat]
 
 **vfile** is a small and browser friendly virtual file format that tracks
-metadata about files (such as its `path` and `value`) and lint [messages][].
+metadata about files (such as its `path` and `value`) and lint
+[messages][api-vfile-messages].
 
 ## Contents
 
@@ -22,25 +23,26 @@ metadata about files (such as its `path` and `value`) and lint [messages][].
 *   [Use](#use)
 *   [API](#api)
     *   [`VFile(options?)`](#vfileoptions)
-    *   [`file.value`](#filevalue)
     *   [`file.cwd`](#filecwd)
-    *   [`file.path`](#filepath)
-    *   [`file.dirname`](#filedirname)
-    *   [`file.basename`](#filebasename)
-    *   [`file.extname`](#fileextname)
-    *   [`file.stem`](#filestem)
+    *   [`file.data`](#filedata)
     *   [`file.history`](#filehistory)
     *   [`file.messages`](#filemessages)
-    *   [`file.data`](#filedata)
-    *   [`VFile#toString(encoding?)`](#vfiletostringencoding)
-    *   [`VFile#message(reason[, position][, origin])`](#vfilemessagereason-position-origin)
-    *   [`VFile#info(reason[, position][, origin])`](#vfileinforeason-position-origin)
+    *   [`file.value`](#filevalue)
+    *   [`file.basename`](#filebasename)
+    *   [`file.dirname`](#filedirname)
+    *   [`file.extname`](#fileextname)
+    *   [`file.path`](#filepath)
+    *   [`file.stem`](#filestem)
     *   [`VFile#fail(reason[, position][, origin])`](#vfilefailreason-position-origin)
+    *   [`VFile#info(reason[, options])`](#vfileinforeason-options)
+    *   [`VFile#message(reason[, options])`](#vfilemessagereason-options)
+    *   [`VFile#toString(encoding?)`](#vfiletostringencoding)
     *   [`BufferEncoding`](#bufferencoding)
     *   [`Compatible`](#compatible)
     *   [`Data`](#data)
     *   [`DataMap`](#datamap)
     *   [`Map`](#map)
+    *   [`MessageOptions`](#messageoptions)
     *   [`Options`](#options)
     *   [`Reporter`](#reporter)
     *   [`ReporterSettings`](#reportersettings)
@@ -88,7 +90,7 @@ smaller API, a smaller size, and focuses on messages.
 ## Install
 
 This package is [ESM only][esm].
-In Node.js (version 14.14 and 16.0+), install with [npm][]:
+In Node.js (version 16+), install with [npm][]:
 
 ```sh
 npm install vfile
@@ -130,8 +132,9 @@ file.basename = 'index.text'
 console.log(file.history) // => ['~/example.txt', '~/example.md', '~/index.text']
 
 file.message('Unexpected unknown word `braavo`, did you mean `bravo`?', {
-  line: 1,
-  column: 8
+  place: {line: 1, column: 8},
+  source: 'spell',
+  ruleId: 'typo'
 })
 
 console.log(file.messages)
@@ -142,14 +145,16 @@ Yields:
 ```txt
 [
   [~/index.text:1:8: Unexpected unknown word `braavo`, did you mean `bravo`?] {
-    reason: 'Unexpected unknown word `braavo`, did you mean `bravo`?',
-    line: 1,
+    ancestors: undefined,
+    cause: undefined,
     column: 8,
-    source: null,
-    ruleId: null,
-    position: {start: [Object], end: [Object]},
-    file: '~/index.text',
-    fatal: false
+    fatal: false,
+    line: 1,
+    place: { line: 1, column: 8 },
+    reason: 'Unexpected unknown word `braavo`, did you mean `bravo`?',
+    ruleId: 'typo',
+    source: 'spell',
+    file: '~/index.text'
   }
 ]
 ```
@@ -197,27 +202,31 @@ new VFile({stem: 'readme', extname: '.md', dirname: path.join('path', 'to')})
 new VFile({other: 'properties', are: 'copied', ov: {e: 'r'}})
 ```
 
-### `file.value`
-
-Raw value ([`Buffer`][buffer], `string`, `null`).
-
 ### `file.cwd`
 
 Base of `path` (`string`, default: `process.cwd()` or `'/'` in browsers).
 
-### `file.path`
+### `file.data`
 
-Get or set the full path (`string?`, example: `'~/index.min.js'`).
+Place to store custom info (`Record<string, unknown>`, default: `{}`).
 
-Cannot be nullified.
-You can set a file URL (a `URL` object with a `file:` protocol) which will be
-turned into a path with [`url.fileURLToPath`][file-url-to-path].
+It’s OK to store custom data directly on the file but moving it to `data` is
+recommended.
 
-### `file.dirname`
+### `file.history`
 
-Get or set the parent path (`string?`, example: `'~'`).
+List of file paths the file moved between (`Array<string>`).
 
-Cannot be set if there’s no `path` yet.
+The first is the original path and the last is the current path.
+
+### `file.messages`
+
+List of messages associated with the file
+([`Array<VFileMessage>`][api-vfile-message]).
+
+### `file.value`
+
+Raw value ([`Buffer`][buffer], `string`, `undefined`).
 
 ### `file.basename`
 
@@ -227,6 +236,12 @@ Cannot contain path separators (`'/'` on unix, macOS, and browsers, `'\'` on
 windows).
 Cannot be nullified (use `file.path = file.dirname` instead).
 
+### `file.dirname`
+
+Get or set the parent path (`string?`, example: `'~'`).
+
+Cannot be set if there’s no `path` yet.
+
 ### `file.extname`
 
 Get or set the extname (including dot) (`string?`, example: `'.js'`).
@@ -234,6 +249,14 @@ Get or set the extname (including dot) (`string?`, example: `'.js'`).
 Cannot contain path separators (`'/'` on unix, macOS, and browsers, `'\'` on
 windows).
 Cannot be set if there’s no `path` yet.
+
+### `file.path`
+
+Get or set the full path (`string?`, example: `'~/index.min.js'`).
+
+Cannot be nullified.
+You can set a file URL (a `URL` object with a `file:` protocol) which will be
+turned into a path with [`url.fileURLToPath`][file-url-to-path].
 
 ### `file.stem`
 
@@ -243,22 +266,72 @@ Cannot contain path separators (`'/'` on unix, macOS, and browsers, `'\'` on
 windows).
 Cannot be nullified.
 
-### `file.history`
+### `VFile#fail(reason[, position][, origin])`
 
-List of filepaths the file moved between (`Array<string>`).
+Create a fatal message for `reason` associated with the file.
 
-The first is the original path and the last is the current path.
+The `fatal` field of the message is set to `true` (error; file not usable) and
+the `file` field is set to the current file path.
+The message is added to the `messages` field on `file`.
 
-### `file.messages`
+> 🪦 **Note**: also has obsolete signatures.
 
-List of messages associated with the file ([`Array<VFileMessage>`][message]).
+###### Parameters
 
-### `file.data`
+*   `reason` (`string`)
+    — reason for message, should use markdown
+*   `options` ([`MessageOptions`][api-message-options], optional)
+    — configuration
 
-Place to store custom information (`Record<string, unknown>`, default: `{}`).
+###### Returns
 
-It’s OK to store custom data directly on the file but moving it to `data` is
-recommended.
+Nothing (`never`).
+
+###### Throws
+
+Message ([`VFileMessage`][vmessage]).
+
+### `VFile#info(reason[, options])`
+
+Create an info message for `reason` associated with the file.
+
+The `fatal` field of the message is set to `undefined` (info; change likely not
+needed) and the `file` field is set to the current file path.
+The message is added to the `messages` field on `file`.
+
+> 🪦 **Note**: also has obsolete signatures.
+
+###### Parameters
+
+*   `reason` (`string`)
+    — reason for message, should use markdown
+*   `options` ([`MessageOptions`][api-message-options], optional)
+    — configuration
+
+###### Returns
+
+Message ([`VFileMessage`][vmessage]).
+
+### `VFile#message(reason[, options])`
+
+Create a message for `reason` associated with the file.
+
+The `fatal` field of the message is set to `false` (warning; change may be
+needed) and the `file` field is set to the current file path.
+The message is added to the `messages` field on `file`.
+
+> 🪦 **Note**: also has obsolete signatures.
+
+###### Parameters
+
+*   `reason` (`string`)
+    — reason for message, should use markdown
+*   `options` ([`MessageOptions`][api-message-options], optional)
+    — configuration
+
+###### Returns
+
+Message ([`VFileMessage`][vmessage]).
 
 ### `VFile#toString(encoding?)`
 
@@ -274,72 +347,6 @@ Serialize the file.
 
 Serialized file (`string`).
 
-### `VFile#message(reason[, position][, origin])`
-
-Create a warning message associated with the file.
-
-Its `fatal` is set to `false` and `file` is set to the current file path.
-Its added to `file.messages`.
-
-###### Parameters
-
-*   `reason` (`string` or `Error`)
-    — reason for message, uses the stack and message of the error if given
-*   `place` (`Node`, `Position`, or `Point`, optional)
-    — place in file where the message occurred
-*   `origin` (`string?`, optional, example: `'my-package:my-rule'` or `'my-rule'`)
-    — place in code where the message originates
-
-###### Returns
-
-Message ([`VFileMessage`][vmessage]).
-
-### `VFile#info(reason[, position][, origin])`
-
-Create an info message associated with the file.
-
-Its `fatal` is set to `null` and `file` is set to the current file path.
-Its added to `file.messages`.
-
-###### Parameters
-
-*   `reason` (`string` or `Error`)
-    — reason for message, uses the stack and message of the error if given
-*   `place` (`Node`, `Position`, or `Point`, optional)
-    — place in file where the message occurred
-*   `origin` (`string?`, optional, example: `'my-package:my-rule'` or `'my-rule'`)
-    — place in code where the message originates
-
-###### Returns
-
-Message ([`VFileMessage`][vmessage]).
-
-### `VFile#fail(reason[, position][, origin])`
-
-Create a fatal error associated with the file.
-
-Its `fatal` is set to `true` and `file` is set to the current file path.
-Its added to `file.messages`.
-
-> 👉 **Note**: a fatal error means that a file is no longer processable.
-
-###### Parameters
-
-*   `reason` (`string` or `Error`)
-    — reason for message, uses the stack and message of the error if given
-*   `place` (`Node`, `Position`, or `Point`, optional)
-    — place in file where the message occurred
-*   `origin` (`string?`, optional, example: `'my-package:my-rule'` or `'my-rule'`)
-    — place in code where the message originates
-
-###### Returns
-
-Nothing (`never`).
-
-###### Throws
-
-Message ([`VFileMessage`][vmessage]).
-
 ### `BufferEncoding`
 
 [Encodings][encoding] supported by the [buffer][] class (TypeScript type).
@@ -351,16 +358,16 @@ This is a copy of the types from Node.
 ```ts
 type BufferEncoding =
   | 'ascii'
-  | 'utf8'
-  | 'utf-8'
-  | 'utf16le'
-  | 'ucs2'
-  | 'ucs-2'
   | 'base64'
   | 'base64url'
-  | 'latin1'
   | 'binary'
   | 'hex'
+  | 'latin1'
+  | 'ucs-2'
+  | 'ucs2'
+  | 'utf-8'
+  | 'utf16le'
+  | 'utf8'
 ```
 
 ### `Compatible`
@@ -370,12 +377,12 @@ Things that can be passed to the constructor (TypeScript type).
 ###### Type
 
 ```ts
-type Compatible = Options | URL | Value | VFile
+type Compatible = Options | URL | VFile | Value
 ```
 
 ### `Data`
 
-Custom information (TypeScript type).
+Custom info (TypeScript type).
 
 Known attributes can be added to [`DataMap`][api-data-map].
 
@@ -431,6 +438,12 @@ See [`source-map`][source-map].
 *   `file` (`string`)
     — the generated file this source map is associated with
 
+### `MessageOptions`
+
+Options to create messages (TypeScript type).
+
+See [`Options` in `vfile-message`][vfile-message-options].
+
 ### `Options`
 
 An object with arbitrary fields and the following known fields (TypeScript
@@ -438,24 +451,24 @@ type).
 
 ###### Fields
 
-*   `value` ([`Value`][api-value], optional)
-    — set `value`
-*   `cwd` (`string`, optional)
-    — set `cwd`
-*   `history` (`Array<string>`, optional)
-    — set `history`
-*   `path` (`URL | string`, optional)
-    — set `path`
 *   `basename` (`string`, optional)
-    — set `basename`
-*   `stem` (`string`, optional)
-    — set `stem`
-*   `extname` (`string`, optional)
-    — set `extname`
-*   `dirname` (`string`, optional)
-    — set `dirname`
+    — set `basename` (name)
+*   `cwd` (`string`, optional)
+    — set `cwd` (working directory)
 *   `data` ([`Data`][api-data], optional)
-    — set `data`
+    — set `data` (associated info)
+*   `dirname` (`string`, optional)
+    — set `dirname` (path w/o basename)
+*   `extname` (`string`, optional)
+    — set `extname` (extension with dot)
+*   `history` (`Array<string>`, optional)
+    — set `history` (paths the file moved between)
+*   `path` (`URL | string`, optional)
+    — set `path` (current path)
+*   `stem` (`string`, optional)
+    — set `stem` (name without extension)
+*   `value` ([`Value`][api-value], optional)
+    — set `value` (the contents of the file)
 
 ### `Reporter`
 
@@ -464,7 +477,7 @@ Type for a reporter (TypeScript type).
 ###### Type
 
 ```ts
-type Reporter<Settings extends ReporterSettings> = (
+type Reporter<Settings = ReporterSettings> = (
   files: Array<VFile>,
   options: Settings
 ) => string
@@ -489,7 +502,7 @@ Can either be text or a `Buffer` structure.
 ###### Type
 
 ```ts
-type Value = string | Buffer
+type Value = Buffer | string
 ```
 
 ### Well-known
@@ -497,15 +510,15 @@ type Value = string | Buffer
 The following fields are considered “non-standard”, but they are allowed, and
 some utilities use them:
 
-*   `stored` (`boolean`)
-    — whether a file was saved to disk; this is used by vfile reporters
+*   `map` ([`Map`][api-map])
+    — source map; this type is equivalent to the `RawSourceMap` type from the
+    `source-map` module
 *   `result` (`unknown`)
     — custom, non-string, compiled, representation; this is used by unified to
     store non-string results; one example is when turning markdown into React
     nodes
-*   `map` ([`Map`][api-map])
-    — source map; this type is equivalent to the `RawSourceMap` type from the
-    `source-map` module
+*   `stored` (`boolean`)
+    — whether a file was saved to disk; this is used by vfile reporters
 
 There are also well-known fields on messages, see
 [them in a similar section of
@@ -518,7 +531,7 @@ There are also well-known fields on messages, see
 *   [`convert-vinyl-to-vfile`](https://github.com/dustinspecker/convert-vinyl-to-vfile)
     — transform from [Vinyl][]
 *   [`to-vfile`](https://github.com/vfile/to-vfile)
-    — create a file from a filepath and read and write to the file system
+    — create a file from a file path and read and write to the file system
 *   [`vfile-find-down`](https://github.com/vfile/vfile-find-down)
     — find files by searching the file system downwards
 *   [`vfile-find-up`](https://github.com/vfile/vfile-find-up)
@@ -578,6 +591,7 @@ It exports the additional types
 [`Data`][api-data],
 [`DataMap`][api-data-map],
 [`Map`][api-map],
+[`MessageOptions`][api-message-options],
 [`Options`][api-options],
 [`Reporter`][api-reporter],
 [`ReporterSettings`][api-reporter-settings], and
@@ -585,10 +599,13 @@ It exports the additional types
 
 ## Compatibility
 
-Projects maintained by the unified collective are compatible with all maintained
+Projects maintained by the unified collective are compatible with maintained
 versions of Node.js.
-As of now, that is Node.js 14.14+ and 16.0+.
-Our projects sometimes work with older versions, but this is not guaranteed.
+
+When we cut a new major release, we drop support for unmaintained versions of
+Node.
+This means we try to keep the current release line, `vfile@^5`,
+compatible with Node.js 12.
 
 ## Contribute
 
@@ -706,9 +723,9 @@ for contributing commits since!
 
 [downloads]: https://www.npmjs.com/package/vfile
 
-[size-badge]: https://img.shields.io/bundlephobia/minzip/vfile.svg
+[size-badge]: https://img.shields.io/badge/dynamic/json?label=minzipped%20size&query=$.size.compressedSize&url=https://deno.bundlejs.com/?q=vfile
 
-[size]: https://bundlephobia.com/result?p=vfile
+[size]: https://bundlejs.com/?q=vfile
 
 [sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
 
@@ -754,9 +771,7 @@ for contributing commits since!
 
 [vmessage]: https://github.com/vfile/vfile-message
 
-[messages]: #filemessages
-
-[message]: #vfilemessagereason-position-origin
+[vfile-message-options]: https://github.com/vfile/vfile-message#options
 
 [encoding]: https://nodejs.org/api/buffer.html#buffer_buffers_and_character_encodings
 
@@ -767,6 +782,10 @@ for contributing commits since!
 [file-url-to-path]: https://nodejs.org/api/url.html#url_url_fileurltopath_url
 
 [governance]: https://github.com/unifiedjs/collective
+
+[api-vfile-messages]: #filemessages
+
+[api-vfile-message]: #vfilemessagereason-options
 
 [api-vfile]: #vfileoptions
 
@@ -779,6 +798,8 @@ for contributing commits since!
 [api-data-map]: #datamap
 
 [api-map]: #map
+
+[api-message-options]: #messageoptions
 
 [api-options]: #options
 
