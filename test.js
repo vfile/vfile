@@ -4,8 +4,8 @@ import {URL, fileURLToPath} from 'node:url'
 import path from 'node:path'
 import process from 'node:process'
 import test from 'node:test'
+import {VFile} from 'vfile'
 import {path as p} from './lib/minpath.browser.js'
-import {VFile} from './index.js'
 
 /* eslint-disable no-undef */
 /** @type {Error} */

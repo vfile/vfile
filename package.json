@@ -33,17 +33,20 @@
   ],
   "sideEffects": false,
   "type": "module",
-  "main": "index.js",
-  "types": "index.d.ts",
-  "browser": {
-    "./lib/minpath.js": "./lib/minpath.browser.js",
-    "./lib/minproc.js": "./lib/minproc.browser.js",
-    "./lib/minurl.js": "./lib/minurl.browser.js"
-  },
-  "react-native": {
-    "./lib/minpath.js": "./lib/minpath.browser.js",
-    "./lib/minproc.js": "./lib/minproc.browser.js",
-    "./lib/minurl.js": "./lib/minurl.browser.js"
+  "exports": {
+    ".": "./index.js",
+    "./do-not-use-conditional-minpath": {
+      "node": "./lib/minpath.js",
+      "default": "./lib/minpath.browser.js"
+    },
+    "./do-not-use-conditional-minproc": {
+      "node": "./lib/minproc.js",
+      "default": "./lib/minproc.browser.js"
+    },
+    "./do-not-use-conditional-minurl": {
+      "node": "./lib/minurl.js",
+      "default": "./lib/minurl.browser.js"
+    }
   },
   "files": [
     "lib/",
