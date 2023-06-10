@@ -160,15 +160,25 @@ test('new VFile(options?)', async function (t) {
     )
 
     assert.equal(
-      new VFile(Buffer.from('bar')).toString(),
-      'bar',
-      'buffer: should return the internal value'
+      new VFile(Buffer.from([0xef, 0xbb, 0xbf, 0x61, 0x62, 0x63])).toString(),
+      'abc',
+      'should return the internal value (`Buffer`, default: utf8)'
     )
 
     assert.equal(
-      new VFile(Buffer.from('bar')).toString('hex'),
-      '626172',
-      'buffer encoding: should return the internal value'
+      new VFile(
+        new Uint8Array([0xfe, 0xff, 0x00, 0x61, 0x00, 0x62, 0x00, 0x63])
+      ).toString('utf-16be'),
+      'abc',
+      'should return the internal value (`Uint8Array`, explicit utf-16be)'
+    )
+
+    assert.equal(
+      new VFile(
+        new Uint8Array([0xff, 0xfe, 0x61, 0x00, 0x62, 0x00, 0x63, 0x00])
+      ).toString('utf-16le'),
+      'abc',
+      'should return the internal value (`Uint8Array`, explicit utf-16le)'
     )
   })
 

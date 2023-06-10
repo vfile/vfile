@@ -37,7 +37,6 @@ metadata about files (such as its `path` and `value`) and lint
     *   [`VFile#info(reason[, options])`](#vfileinforeason-options)
     *   [`VFile#message(reason[, options])`](#vfilemessagereason-options)
     *   [`VFile#toString(encoding?)`](#vfiletostringencoding)
-    *   [`BufferEncoding`](#bufferencoding)
     *   [`Compatible`](#compatible)
     *   [`Data`](#data)
     *   [`DataMap`](#datamap)
@@ -170,7 +169,7 @@ Create a new virtual file.
 
 `options` is treated as:
 
-*   `string` or [`Buffer`][buffer] — `{value: options}`
+*   `string` or [`Uint8Array`][mdn-uint8-array] — `{value: options}`
 *   `URL` — `{path: options}`
 *   `VFile` — shallow copies its data over to the new file
 *   `object` — all fields are shallow copied over to the new file
@@ -196,7 +195,7 @@ New instance (`VFile`).
 ```js
 new VFile()
 new VFile('console.log("alpha");')
-new VFile(Buffer.from('exit 1'))
+new VFile(new Uint8Array([0x65, 0x78, 0x69, 0x74, 0x20, 0x31]))
 new VFile({path: path.join('path', 'to', 'readme.md')})
 new VFile({stem: 'readme', extname: '.md', dirname: path.join('path', 'to')})
 new VFile({other: 'properties', are: 'copied', ov: {e: 'r'}})
@@ -226,7 +225,7 @@ List of messages associated with the file
 
 ### `file.value`
 
-Raw value ([`Buffer`][buffer], `string`, `undefined`).
+Raw value ([`Uint8Array`][mdn-uint8-array], `string`, `undefined`).
 
 ### `file.basename`
 
@@ -337,38 +336,19 @@ Message ([`VFileMessage`][vmessage]).
 
 Serialize the file.
 
+> **Note**: which encodings are supported depends on the engine.
+> For info on Node.js, see:
+> <https://nodejs.org/api/util.html#whatwg-supported-encodings>.
+
 ###### Parameters
 
-*   `encoding` ([`BufferEncoding`][api-buffer-encoding], default: `'utf8'`)
+*   `encoding` (`string`, default: `'utf8'`)
     — character encoding to understand `value` as when it’s a
-    [`Buffer`][buffer]
+    [`Uint8Array`][mdn-uint8-array]
 
 ###### Returns
 
 Serialized file (`string`).
-
-### `BufferEncoding`
-
-[Encodings][encoding] supported by the [buffer][] class (TypeScript type).
-
-This is a copy of the types from Node.
-
-###### Type
-
-```ts
-type BufferEncoding =
-  | 'ascii'
-  | 'base64'
-  | 'base64url'
-  | 'binary'
-  | 'hex'
-  | 'latin1'
-  | 'ucs-2'
-  | 'ucs2'
-  | 'utf-8'
-  | 'utf16le'
-  | 'utf8'
-```
 
 ### `Compatible`
 
@@ -497,12 +477,12 @@ type ReporterSettings = Record<string, unknown>
 
 Contents of the file (TypeScript type).
 
-Can either be text or a `Buffer` structure.
+Can either be text or a [`Uint8Array`][mdn-uint8-array] structure.
 
 ###### Type
 
 ```ts
-type Value = Buffer | string
+type Value = Uint8Array | string
 ```
 
 ### Well-known
@@ -586,7 +566,6 @@ There are also well-known fields on messages, see
 
 This package is fully typed with [TypeScript][].
 It exports the additional types
-[`BufferEncoding`][api-buffer-encoding],
 [`Compatible`][api-compatible],
 [`Data`][api-data],
 [`DataMap`][api-data-map],
@@ -773,9 +752,7 @@ for contributing commits since!
 
 [vfile-message-options]: https://github.com/vfile/vfile-message#options
 
-[encoding]: https://nodejs.org/api/buffer.html#buffer_buffers_and_character_encodings
-
-[buffer]: https://nodejs.org/api/buffer.html
+[mdn-uint8-array]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array
 
 [source-map]: https://github.com/mozilla/source-map/blob/58819f0/source-map.d.ts#L15-L23
 
@@ -788,8 +765,6 @@ for contributing commits since!
 [api-vfile-message]: #vfilemessagereason-options
 
 [api-vfile]: #vfileoptions
-
-[api-buffer-encoding]: #bufferencoding
 
 [api-compatible]: #compatible
 
