@@ -1,15 +1,15 @@
 {
-  "include": ["**/*.js", "index.d.ts"],
-  "exclude": ["coverage/", "node_modules/"],
   "compilerOptions": {
     "checkJs": true,
     "customConditions": ["development"],
     "declaration": true,
     "emitDeclarationOnly": true,
     "exactOptionalPropertyTypes": true,
-    "lib": ["es2022"],
+    "lib": ["es2020"],
     "module": "node16",
     "strict": true,
-    "target": "es2022"
-  }
+    "target": "es2020"
+  },
+  "exclude": ["coverage/", "node_modules/"],
+  "include": ["**/*.js", "index.d.ts"]
 }

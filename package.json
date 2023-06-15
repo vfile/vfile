@@ -77,12 +77,12 @@
     "test": "npm run build && npm run format && npm run test-coverage"
   },
   "prettier": {
-    "tabWidth": 2,
-    "useTabs": false,
-    "singleQuote": true,
     "bracketSpacing": false,
     "semi": false,
-    "trailingComma": "none"
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "none",
+    "useTabs": false
   },
   "remarkConfig": {
     "plugins": [
@@ -95,8 +95,8 @@
   },
   "typeCoverage": {
     "atLeast": 100,
-    "ignoreCatch": true,
     "detail": true,
+    "ignoreCatch": true,
     "strict": true
   },
   "xo": {
