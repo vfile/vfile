@@ -16,53 +16,53 @@ metadata about files (such as its `path` and `value`) and lint
 
 ## Contents
 
-*   [unified](#unified)
-*   [What is this?](#what-is-this)
-*   [When should I use this?](#when-should-i-use-this)
-*   [Install](#install)
-*   [Use](#use)
-*   [API](#api)
-    *   [`VFile(options?)`](#vfileoptions)
-    *   [`file.cwd`](#filecwd)
-    *   [`file.data`](#filedata)
-    *   [`file.history`](#filehistory)
-    *   [`file.messages`](#filemessages)
-    *   [`file.value`](#filevalue)
-    *   [`file.basename`](#filebasename)
-    *   [`file.dirname`](#filedirname)
-    *   [`file.extname`](#fileextname)
-    *   [`file.path`](#filepath)
-    *   [`file.stem`](#filestem)
-    *   [`VFile#fail(reason[, options])`](#vfilefailreason-options)
-    *   [`VFile#info(reason[, options])`](#vfileinforeason-options)
-    *   [`VFile#message(reason[, options])`](#vfilemessagereason-options)
-    *   [`VFile#toString(encoding?)`](#vfiletostringencoding)
-    *   [`Compatible`](#compatible)
-    *   [`Data`](#data)
-    *   [`DataMap`](#datamap)
-    *   [`Map`](#map)
-    *   [`MessageOptions`](#messageoptions)
-    *   [`Options`](#options)
-    *   [`Reporter`](#reporter)
-    *   [`ReporterSettings`](#reportersettings)
-    *   [`Value`](#value)
-    *   [Well-known](#well-known)
-*   [List of utilities](#list-of-utilities)
-*   [Reporters](#reporters)
-*   [Types](#types)
-*   [Compatibility](#compatibility)
-*   [Contribute](#contribute)
-*   [Sponsor](#sponsor)
-*   [Acknowledgments](#acknowledgments)
-*   [License](#license)
+* [unified](#unified)
+* [What is this?](#what-is-this)
+* [When should I use this?](#when-should-i-use-this)
+* [Install](#install)
+* [Use](#use)
+* [API](#api)
+  * [`VFile(options?)`](#vfileoptions)
+  * [`file.cwd`](#filecwd)
+  * [`file.data`](#filedata)
+  * [`file.history`](#filehistory)
+  * [`file.messages`](#filemessages)
+  * [`file.value`](#filevalue)
+  * [`file.basename`](#filebasename)
+  * [`file.dirname`](#filedirname)
+  * [`file.extname`](#fileextname)
+  * [`file.path`](#filepath)
+  * [`file.stem`](#filestem)
+  * [`VFile#fail(reason[, options])`](#vfilefailreason-options)
+  * [`VFile#info(reason[, options])`](#vfileinforeason-options)
+  * [`VFile#message(reason[, options])`](#vfilemessagereason-options)
+  * [`VFile#toString(encoding?)`](#vfiletostringencoding)
+  * [`Compatible`](#compatible)
+  * [`Data`](#data)
+  * [`DataMap`](#datamap)
+  * [`Map`](#map)
+  * [`MessageOptions`](#messageoptions)
+  * [`Options`](#options)
+  * [`Reporter`](#reporter)
+  * [`ReporterSettings`](#reportersettings)
+  * [`Value`](#value)
+  * [Well-known](#well-known)
+* [List of utilities](#list-of-utilities)
+* [Reporters](#reporters)
+* [Types](#types)
+* [Compatibility](#compatibility)
+* [Contribute](#contribute)
+* [Sponsor](#sponsor)
+* [Acknowledgments](#acknowledgments)
+* [License](#license)
 
 ## unified
 
 **vfile** is part of the unified collective.
 
-*   for more about us, see [`unifiedjs.com`][site]
-*   for how the collective is governed, see [`unifiedjs/collective`][governance]
-*   for updates, see [@unifiedjs][twitter] on Twitter
+* for more about us, see [`unifiedjs.com`][site]
+* for how the collective is governed, see [`unifiedjs/collective`][governance]
+* for updates, see [@unifiedjs][twitter] on Twitter
 
 ## What is this?
 
@@ -169,10 +169,10 @@ Create a new virtual file.
 
 `options` is treated as:
 
-*   `string` or [`Uint8Array`][mdn-uint8-array] — `{value: options}`
-*   `URL` — `{path: options}`
-*   `VFile` — shallow copies its data over to the new file
-*   `object` — all fields are shallow copied over to the new file
+* `string` or [`Uint8Array`][mdn-uint8-array] — `{value: options}`
+* `URL` — `{path: options}`
+* `VFile` — shallow copies its data over to the new file
+* `object` — all fields are shallow copied over to the new file
 
 Path related fields are set in the following order (least specific to
 most specific): `history`, `path`, `basename`, `stem`, `extname`,
@@ -183,8 +183,8 @@ You cannot set `dirname` or `extname` without setting either `history`,
 
 ###### Parameters
 
-*   `options` ([`Compatible`][api-compatible], optional)
-    — file value
+* `options` ([`Compatible`][api-compatible], optional)
+  — file value
 
 ###### Returns
 
@@ -277,10 +277,10 @@ The message is added to the `messages` field on `file`.
 
 ###### Parameters
 
-*   `reason` (`string`)
-    — reason for message, should use markdown
-*   `options` ([`MessageOptions`][api-message-options], optional)
-    — configuration
+* `reason` (`string`)
+  — reason for message, should use markdown
+* `options` ([`MessageOptions`][api-message-options], optional)
+  — configuration
 
 ###### Returns
 
@@ -302,10 +302,10 @@ The message is added to the `messages` field on `file`.
 
 ###### Parameters
 
-*   `reason` (`string`)
-    — reason for message, should use markdown
-*   `options` ([`MessageOptions`][api-message-options], optional)
-    — configuration
+* `reason` (`string`)
+  — reason for message, should use markdown
+* `options` ([`MessageOptions`][api-message-options], optional)
+  — configuration
 
 ###### Returns
 
@@ -323,10 +323,10 @@ The message is added to the `messages` field on `file`.
 
 ###### Parameters
 
-*   `reason` (`string`)
-    — reason for message, should use markdown
-*   `options` ([`MessageOptions`][api-message-options], optional)
-    — configuration
+* `reason` (`string`)
+  — reason for message, should use markdown
+* `options` ([`MessageOptions`][api-message-options], optional)
+  — configuration
 
 ###### Returns
 
@@ -342,9 +342,9 @@ Serialize the file.
 
 ###### Parameters
 
-*   `encoding` (`string`, default: `'utf8'`)
-    — character encoding to understand `value` as when it’s a
-    [`Uint8Array`][mdn-uint8-array]
+* `encoding` (`string`, default: `'utf8'`)
+  — character encoding to understand `value` as when it’s a
+  [`Uint8Array`][mdn-uint8-array]
 
 ###### Returns
 
@@ -403,20 +403,20 @@ See [`source-map`][source-map].
 
 ###### Fields
 
-*   `version` (`number`)
-    — which version of the source map spec this map is following
-*   `sources` (`Array<string>`)
-    — an array of URLs to the original source files
-*   `names` (`Array<string>`)
-    — an array of identifiers which can be referenced by individual mappings
-*   `sourceRoot` (`string`, optional)
-    — the URL root from which all sources are relative
-*   `sourcesContent` (`Array<string>`, optional)
-    — an array of contents of the original source files
-*   `mappings` (`string`)
-    — a string of base64 VLQs which contain the actual mappings
-*   `file` (`string`)
-    — the generated file this source map is associated with
+* `version` (`number`)
+  — which version of the source map spec this map is following
+* `sources` (`Array<string>`)
+  — an array of URLs to the original source files
+* `names` (`Array<string>`)
+  — an array of identifiers which can be referenced by individual mappings
+* `sourceRoot` (`string`, optional)
+  — the URL root from which all sources are relative
+* `sourcesContent` (`Array<string>`, optional)
+  — an array of contents of the original source files
+* `mappings` (`string`)
+  — a string of base64 VLQs which contain the actual mappings
+* `file` (`string`)
+  — the generated file this source map is associated with
 
 ### `MessageOptions`
 
@@ -431,24 +431,24 @@ type).
 
 ###### Fields
 
-*   `basename` (`string`, optional)
-    — set `basename` (name)
-*   `cwd` (`string`, optional)
-    — set `cwd` (working directory)
-*   `data` ([`Data`][api-data], optional)
-    — set `data` (associated info)
-*   `dirname` (`string`, optional)
-    — set `dirname` (path w/o basename)
-*   `extname` (`string`, optional)
-    — set `extname` (extension with dot)
-*   `history` (`Array<string>`, optional)
-    — set `history` (paths the file moved between)
-*   `path` (`URL | string`, optional)
-    — set `path` (current path)
-*   `stem` (`string`, optional)
-    — set `stem` (name without extension)
-*   `value` ([`Value`][api-value], optional)
-    — set `value` (the contents of the file)
+* `basename` (`string`, optional)
+  — set `basename` (name)
+* `cwd` (`string`, optional)
+  — set `cwd` (working directory)
+* `data` ([`Data`][api-data], optional)
+  — set `data` (associated info)
+* `dirname` (`string`, optional)
+  — set `dirname` (path w/o basename)
+* `extname` (`string`, optional)
+  — set `extname` (extension with dot)
+* `history` (`Array<string>`, optional)
+  — set `history` (paths the file moved between)
+* `path` (`URL | string`, optional)
+  — set `path` (current path)
+* `stem` (`string`, optional)
+  — set `stem` (name without extension)
+* `value` ([`Value`][api-value], optional)
+  — set `value` (the contents of the file)
 
 ### `Reporter`
 
@@ -490,15 +490,15 @@ type Value = Uint8Array | string
 The following fields are considered “non-standard”, but they are allowed, and
 some utilities use them:
 
-*   `map` ([`Map`][api-map])
-    — source map; this type is equivalent to the `RawSourceMap` type from the
-    `source-map` module
-*   `result` (`unknown`)
-    — custom, non-string, compiled, representation; this is used by unified to
-    store non-string results; one example is when turning markdown into React
-    nodes
-*   `stored` (`boolean`)
-    — whether a file was saved to disk; this is used by vfile reporters
+* `map` ([`Map`][api-map])
+  — source map; this type is equivalent to the `RawSourceMap` type from the
+  `source-map` module
+* `result` (`unknown`)
+  — custom, non-string, compiled, representation; this is used by unified to
+  store non-string results; one example is when turning markdown into React
+  nodes
+* `stored` (`boolean`)
+  — whether a file was saved to disk; this is used by vfile reporters
 
 There are also well-known fields on messages, see
 [them in a similar section of
@@ -508,53 +508,53 @@ There are also well-known fields on messages, see
 
 ## List of utilities
 
-*   [`convert-vinyl-to-vfile`](https://github.com/dustinspecker/convert-vinyl-to-vfile)
-    — transform from [Vinyl][]
-*   [`to-vfile`](https://github.com/vfile/to-vfile)
-    — create a file from a file path and read and write to the file system
-*   [`vfile-find-down`](https://github.com/vfile/vfile-find-down)
-    — find files by searching the file system downwards
-*   [`vfile-find-up`](https://github.com/vfile/vfile-find-up)
-    — find files by searching the file system upwards
-*   [`vfile-glob`](https://github.com/shinnn/vfile-glob)
-    — find files by glob patterns
-*   [`vfile-is`](https://github.com/vfile/vfile-is)
-    — check if a file passes a test
-*   [`vfile-location`](https://github.com/vfile/vfile-location)
-    — convert between positional and offset locations
-*   [`vfile-matter`](https://github.com/vfile/vfile-matter)
-    — parse the YAML front matter
-*   [`vfile-message`](https://github.com/vfile/vfile-message)
-    — create a file message
-*   [`vfile-messages-to-vscode-diagnostics`](https://github.com/shinnn/vfile-messages-to-vscode-diagnostics)
-    — transform file messages to VS Code diagnostics
-*   [`vfile-mkdirp`](https://github.com/vfile/vfile-mkdirp)
-    — make sure the directory of a file exists on the file system
-*   [`vfile-rename`](https://github.com/vfile/vfile-rename)
-    — rename the path parts of a file
-*   [`vfile-sort`](https://github.com/vfile/vfile-sort)
-    — sort messages by line/column
-*   [`vfile-statistics`](https://github.com/vfile/vfile-statistics)
-    — count messages per category: failures, warnings, etc
-*   [`vfile-to-eslint`](https://github.com/vfile/vfile-to-eslint)
-    — convert to ESLint formatter compatible output
+* [`convert-vinyl-to-vfile`](https://github.com/dustinspecker/convert-vinyl-to-vfile)
+  — transform from [Vinyl][]
+* [`to-vfile`](https://github.com/vfile/to-vfile)
+  — create a file from a file path and read and write to the file system
+* [`vfile-find-down`](https://github.com/vfile/vfile-find-down)
+  — find files by searching the file system downwards
+* [`vfile-find-up`](https://github.com/vfile/vfile-find-up)
+  — find files by searching the file system upwards
+* [`vfile-glob`](https://github.com/shinnn/vfile-glob)
+  — find files by glob patterns
+* [`vfile-is`](https://github.com/vfile/vfile-is)
+  — check if a file passes a test
+* [`vfile-location`](https://github.com/vfile/vfile-location)
+  — convert between positional and offset locations
+* [`vfile-matter`](https://github.com/vfile/vfile-matter)
+  — parse the YAML front matter
+* [`vfile-message`](https://github.com/vfile/vfile-message)
+  — create a file message
+* [`vfile-messages-to-vscode-diagnostics`](https://github.com/shinnn/vfile-messages-to-vscode-diagnostics)
+  — transform file messages to VS Code diagnostics
+* [`vfile-mkdirp`](https://github.com/vfile/vfile-mkdirp)
+  — make sure the directory of a file exists on the file system
+* [`vfile-rename`](https://github.com/vfile/vfile-rename)
+  — rename the path parts of a file
+* [`vfile-sort`](https://github.com/vfile/vfile-sort)
+  — sort messages by line/column
+* [`vfile-statistics`](https://github.com/vfile/vfile-statistics)
+  — count messages per category: failures, warnings, etc
+* [`vfile-to-eslint`](https://github.com/vfile/vfile-to-eslint)
+  — convert to ESLint formatter compatible output
 
 > 👉 **Note**: see [unist][] for projects that work with nodes.
 
 ## Reporters
 
-*   [`vfile-reporter`][reporter]
-    — create a report
-*   [`vfile-reporter-json`](https://github.com/vfile/vfile-reporter-json)
-    — create a JSON report
-*   [`vfile-reporter-folder-json`](https://github.com/vfile/vfile-reporter-folder-json)
-    — create a JSON representation of vfiles
-*   [`vfile-reporter-pretty`](https://github.com/vfile/vfile-reporter-pretty)
-    — create a pretty report
-*   [`vfile-reporter-junit`](https://github.com/kellyselden/vfile-reporter-junit)
-    — create a jUnit report
-*   [`vfile-reporter-position`](https://github.com/Hocdoc/vfile-reporter-position)
-    — create a report with content excerpts
+* [`vfile-reporter`][reporter]
+  — create a report
+* [`vfile-reporter-json`](https://github.com/vfile/vfile-reporter-json)
+  — create a JSON report
+* [`vfile-reporter-folder-json`](https://github.com/vfile/vfile-reporter-folder-json)
+  — create a JSON representation of vfiles
+* [`vfile-reporter-pretty`](https://github.com/vfile/vfile-reporter-pretty)
+  — create a pretty report
+* [`vfile-reporter-junit`](https://github.com/kellyselden/vfile-reporter-junit)
+  — create a jUnit report
+* [`vfile-reporter-position`](https://github.com/Hocdoc/vfile-reporter-position)
+  — create a report with content excerpts
 
 > 👉 **Note**: want to make your own reporter?
 > Reporters *must* accept `Array<VFile>` as their first argument, and return
