@@ -33,17 +33,17 @@
   ],
   "sideEffects": false,
   "type": "module",
-  "exports": {
-    ".": "./index.js",
-    "./do-not-use-conditional-minpath": {
+  "exports": "./index.js",
+  "imports": {
+    "#minpath": {
       "node": "./lib/minpath.js",
       "default": "./lib/minpath.browser.js"
     },
-    "./do-not-use-conditional-minproc": {
+    "#minproc": {
       "node": "./lib/minproc.js",
       "default": "./lib/minproc.browser.js"
     },
-    "./do-not-use-conditional-minurl": {
+    "#minurl": {
       "node": "./lib/minurl.js",
       "default": "./lib/minurl.browser.js"
     }
