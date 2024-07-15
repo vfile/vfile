@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict'
 import {Buffer} from 'node:buffer'
-import {URL, fileURLToPath} from 'node:url'
 import path from 'node:path'
 import process from 'node:process'
 import test from 'node:test'
+import {fileURLToPath} from 'node:url'
 import {VFile} from 'vfile'
 import {minpath} from './lib/minpath.browser.js'
 
