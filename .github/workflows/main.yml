@@ -27,7 +27,7 @@ jobs:
     runs-on: ${{matrix.os}}
     steps:
       - name: checkout vfile
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: setup node
         uses: dcodeIO/setup-node-nvm@master
         with:
@@ -38,7 +38,7 @@ jobs:
           npm install
           npm run build
       - name: checkout ${{matrix.package}}
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           repository: ${{matrix.package}}
           path: canary/${{matrix.package}}
