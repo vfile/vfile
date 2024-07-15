@@ -5,7 +5,7 @@ import path from 'node:path'
 import process from 'node:process'
 import test from 'node:test'
 import {VFile} from 'vfile'
-import {path as p} from './lib/minpath.browser.js'
+import {minpath} from './lib/minpath.browser.js'
 
 /* eslint-disable no-undef */
 /** @type {Error} */
@@ -609,7 +609,7 @@ test('new VFile(options?)', async function (t) {
 // Mostly from `path-browserify` with some extra tests to reach coverage, and
 // some cleaning.
 // <https://github.com/browserify/path-browserify/tree/master/test>
-test('p (POSIX path for browsers)', async function (t) {
+test('minpath (POSIX path for browsers)', async function (t) {
   /** @type {Array<unknown>} */
   const typeErrorTests = [true, false, 7, null, {}, undefined, [], Number.NaN]
 
@@ -621,7 +621,7 @@ test('p (POSIX path for browsers)', async function (t) {
       assert.throws(
         function () {
           // @ts-expect-error: check if this produces a runtime error.
-          p.basename(test)
+          minpath.basename(test)
         },
         TypeError,
         'should fail on `' + test + '`'
@@ -632,7 +632,7 @@ test('p (POSIX path for browsers)', async function (t) {
         assert.throws(
           function () {
             // @ts-expect-error: check if this produces a runtime error.
-            p.basename('x', test)
+            minpath.basename('x', test)
           },
           TypeError,
           'should fail on `' + test + '` as `ext`'
@@ -640,47 +640,50 @@ test('p (POSIX path for browsers)', async function (t) {
       }
     }
 
-    assert.strictEqual(p.basename('.js', '.js'), '')
-    assert.strictEqual(p.basename(''), '')
-    assert.strictEqual(p.basename('/dir/basename.ext'), 'basename.ext')
-    assert.strictEqual(p.basename('/basename.ext'), 'basename.ext')
-    assert.strictEqual(p.basename('basename.ext'), 'basename.ext')
-    assert.strictEqual(p.basename('basename.ext/'), 'basename.ext')
-    assert.strictEqual(p.basename('basename.ext//'), 'basename.ext')
-    assert.strictEqual(p.basename('aaa/bbb', '/bbb'), 'bbb')
-    assert.strictEqual(p.basename('aaa/bbb', 'a/bbb'), 'bbb')
-    assert.strictEqual(p.basename('aaa/bbb', 'bbb'), 'bbb')
-    assert.strictEqual(p.basename('aaa/bbb//', 'bbb'), 'bbb')
-    assert.strictEqual(p.basename('aaa/bbb', 'bb'), 'b')
-    assert.strictEqual(p.basename('aaa/bbb', 'b'), 'bb')
-    assert.strictEqual(p.basename('/aaa/bbb', '/bbb'), 'bbb')
-    assert.strictEqual(p.basename('/aaa/bbb', 'a/bbb'), 'bbb')
-    assert.strictEqual(p.basename('/aaa/bbb', 'bbb'), 'bbb')
-    assert.strictEqual(p.basename('/aaa/bbb//', 'bbb'), 'bbb')
-    assert.strictEqual(p.basename('/aaa/bbb', 'bb'), 'b')
-    assert.strictEqual(p.basename('/aaa/bbb', 'b'), 'bb')
-    assert.strictEqual(p.basename('/aaa/bbb'), 'bbb')
-    assert.strictEqual(p.basename('/aaa/'), 'aaa')
-    assert.strictEqual(p.basename('/aaa/b'), 'b')
-    assert.strictEqual(p.basename('/a/b'), 'b')
-    assert.strictEqual(p.basename('//a'), 'a')
+    assert.strictEqual(minpath.basename('.js', '.js'), '')
+    assert.strictEqual(minpath.basename(''), '')
+    assert.strictEqual(minpath.basename('/dir/basename.ext'), 'basename.ext')
+    assert.strictEqual(minpath.basename('/basename.ext'), 'basename.ext')
+    assert.strictEqual(minpath.basename('basename.ext'), 'basename.ext')
+    assert.strictEqual(minpath.basename('basename.ext/'), 'basename.ext')
+    assert.strictEqual(minpath.basename('basename.ext//'), 'basename.ext')
+    assert.strictEqual(minpath.basename('aaa/bbb', '/bbb'), 'bbb')
+    assert.strictEqual(minpath.basename('aaa/bbb', 'a/bbb'), 'bbb')
+    assert.strictEqual(minpath.basename('aaa/bbb', 'bbb'), 'bbb')
+    assert.strictEqual(minpath.basename('aaa/bbb//', 'bbb'), 'bbb')
+    assert.strictEqual(minpath.basename('aaa/bbb', 'bb'), 'b')
+    assert.strictEqual(minpath.basename('aaa/bbb', 'b'), 'bb')
+    assert.strictEqual(minpath.basename('/aaa/bbb', '/bbb'), 'bbb')
+    assert.strictEqual(minpath.basename('/aaa/bbb', 'a/bbb'), 'bbb')
+    assert.strictEqual(minpath.basename('/aaa/bbb', 'bbb'), 'bbb')
+    assert.strictEqual(minpath.basename('/aaa/bbb//', 'bbb'), 'bbb')
+    assert.strictEqual(minpath.basename('/aaa/bbb', 'bb'), 'b')
+    assert.strictEqual(minpath.basename('/aaa/bbb', 'b'), 'bb')
+    assert.strictEqual(minpath.basename('/aaa/bbb'), 'bbb')
+    assert.strictEqual(minpath.basename('/aaa/'), 'aaa')
+    assert.strictEqual(minpath.basename('/aaa/b'), 'b')
+    assert.strictEqual(minpath.basename('/a/b'), 'b')
+    assert.strictEqual(minpath.basename('//a'), 'a')
 
     // Backslashes are normal characters.
-    assert.strictEqual(p.basename('\\dir\\basename.ext'), '\\dir\\basename.ext')
-    assert.strictEqual(p.basename('\\basename.ext'), '\\basename.ext')
-    assert.strictEqual(p.basename('basename.ext'), 'basename.ext')
-    assert.strictEqual(p.basename('basename.ext\\'), 'basename.ext\\')
-    assert.strictEqual(p.basename('basename.ext\\\\'), 'basename.ext\\\\')
-    assert.strictEqual(p.basename('foo'), 'foo')
+    assert.strictEqual(
+      minpath.basename('\\dir\\basename.ext'),
+      '\\dir\\basename.ext'
+    )
+    assert.strictEqual(minpath.basename('\\basename.ext'), '\\basename.ext')
+    assert.strictEqual(minpath.basename('basename.ext'), 'basename.ext')
+    assert.strictEqual(minpath.basename('basename.ext\\'), 'basename.ext\\')
+    assert.strictEqual(minpath.basename('basename.ext\\\\'), 'basename.ext\\\\')
+    assert.strictEqual(minpath.basename('foo'), 'foo')
 
     assert.strictEqual(
-      p.basename('/a/b/Icon\r'),
+      minpath.basename('/a/b/Icon\r'),
       'Icon\r',
       'should support control characters in filenames'
     )
 
     // Extra tests for `vfile` to reach coverage.
-    assert.strictEqual(p.basename('a.b', 'a'), 'a.b')
+    assert.strictEqual(minpath.basename('a.b', 'a'), 'a.b')
   })
 
   await t.test('dirname', function () {
@@ -691,21 +694,21 @@ test('p (POSIX path for browsers)', async function (t) {
       assert.throws(
         function () {
           // @ts-expect-error: check if this produces a runtime error.
-          p.dirname(test)
+          minpath.dirname(test)
         },
         TypeError,
         'should fail on `' + test + '`'
       )
     }
 
-    assert.strictEqual(p.dirname('/a/b/'), '/a')
-    assert.strictEqual(p.dirname('/a/b'), '/a')
-    assert.strictEqual(p.dirname('/a'), '/')
-    assert.strictEqual(p.dirname(''), '.')
-    assert.strictEqual(p.dirname('/'), '/')
-    assert.strictEqual(p.dirname('////'), '/')
-    assert.strictEqual(p.dirname('//a'), '//')
-    assert.strictEqual(p.dirname('foo'), '.')
+    assert.strictEqual(minpath.dirname('/a/b/'), '/a')
+    assert.strictEqual(minpath.dirname('/a/b'), '/a')
+    assert.strictEqual(minpath.dirname('/a'), '/')
+    assert.strictEqual(minpath.dirname(''), '.')
+    assert.strictEqual(minpath.dirname('/'), '/')
+    assert.strictEqual(minpath.dirname('////'), '/')
+    assert.strictEqual(minpath.dirname('//a'), '//')
+    assert.strictEqual(minpath.dirname('foo'), '.')
   })
 
   await t.test('extname', function () {
@@ -716,7 +719,7 @@ test('p (POSIX path for browsers)', async function (t) {
       assert.throws(
         function () {
           // @ts-expect-error: check if this produces a runtime error.
-          p.extname(test)
+          minpath.extname(test)
         },
         TypeError,
         'should fail on `' + test + '`'
@@ -773,18 +776,18 @@ test('p (POSIX path for browsers)', async function (t) {
 
     while (++index < pairs.length) {
       const pair = pairs[index]
-      assert.strictEqual(pair[1], p.extname(pair[0]))
+      assert.strictEqual(pair[1], minpath.extname(pair[0]))
     }
 
     // On *nix, backslash is a valid name component like any other character.
-    assert.strictEqual(p.extname('.\\'), '')
-    assert.strictEqual(p.extname('..\\'), '.\\')
-    assert.strictEqual(p.extname('file.ext\\'), '.ext\\')
-    assert.strictEqual(p.extname('file.ext\\\\'), '.ext\\\\')
-    assert.strictEqual(p.extname('file\\'), '')
-    assert.strictEqual(p.extname('file\\\\'), '')
-    assert.strictEqual(p.extname('file.\\'), '.\\')
-    assert.strictEqual(p.extname('file.\\\\'), '.\\\\')
+    assert.strictEqual(minpath.extname('.\\'), '')
+    assert.strictEqual(minpath.extname('..\\'), '.\\')
+    assert.strictEqual(minpath.extname('file.ext\\'), '.ext\\')
+    assert.strictEqual(minpath.extname('file.ext\\\\'), '.ext\\\\')
+    assert.strictEqual(minpath.extname('file\\'), '')
+    assert.strictEqual(minpath.extname('file\\\\'), '')
+    assert.strictEqual(minpath.extname('file.\\'), '.\\')
+    assert.strictEqual(minpath.extname('file.\\\\'), '.\\\\')
   })
 
   await t.test('join', function () {
@@ -795,7 +798,7 @@ test('p (POSIX path for browsers)', async function (t) {
       assert.throws(
         function () {
           // @ts-expect-error: check if this produces a runtime error.
-          p.join(test)
+          minpath.join(test)
         },
         TypeError,
         'should fail on `' + test + '`'
@@ -857,16 +860,16 @@ test('p (POSIX path for browsers)', async function (t) {
 
     while (++index < pairs.length) {
       const pair = pairs[index]
-      assert.strictEqual(p.join.apply(null, pair[0]), pair[1])
+      assert.strictEqual(minpath.join.apply(null, pair[0]), pair[1])
     }
 
     // Join will internally ignore all the zero-length strings and it will return
     // '.' if the joined string is a zero-length string.
-    assert.strictEqual(p.join(''), '.')
-    assert.strictEqual(p.join('', ''), '.')
+    assert.strictEqual(minpath.join(''), '.')
+    assert.strictEqual(minpath.join('', ''), '.')
 
     // Extra tests for `vfile` to reach coverage.
-    assert.strictEqual(p.join('a', '..'), '.')
+    assert.strictEqual(minpath.join('a', '..'), '.')
   })
 })
 

@@ -1,7 +1,7 @@
 .DS_Store
-lib/**/*.d.ts
-test.d.ts
+*.d.ts
 *.log
 node_modules/
 coverage/
 yarn.lock
+!/index.d.ts

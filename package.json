@@ -100,13 +100,36 @@
     "strict": true
   },
   "xo": {
+    "overrides": [
+      {
+        "files": [
+          "**/*.d.ts"
+        ],
+        "rules": {
+          "@typescript-eslint/array-type": [
+            "error",
+            {
+              "default": "generic"
+            }
+          ],
+          "@typescript-eslint/ban-types": [
+            "error",
+            {
+              "extendDefaults": true
+            }
+          ],
+          "@typescript-eslint/consistent-type-definitions": [
+            "error",
+            "interface"
+          ]
+        }
+      }
+    ],
     "prettier": true,
     "rules": {
       "logical-assignment-operators": "off",
-      "n/file-extension-in-import": "off",
       "unicorn/prefer-at": "off",
-      "unicorn/prefer-string-replace-all": "off",
-      "unicorn/prevent-abbreviations": "off"
+      "unicorn/prefer-string-replace-all": "off"
     }
   }
 }
