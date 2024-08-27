@@ -55,7 +55,6 @@
   ],
   "dependencies": {
     "@types/unist": "^3.0.0",
-    "unist-util-stringify-position": "^4.0.0",
     "vfile-message": "^4.0.0"
   },
   "devDependencies": {
