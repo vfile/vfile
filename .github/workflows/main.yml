@@ -1,10 +1,33 @@
-name: main
-on:
-  - pull_request
-  - push
 jobs:
+  canary:
+    name: canary / ${{matrix.package}}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: node
+      - run: npm install
+      - run: npm run build
+      - uses: actions/checkout@v4
+        with:
+          path: canary/${{matrix.package}}
+          repository: ${{matrix.package}}
+      - run: npm install && npx rimraf "node_modules/**/vfile" && npm test
+        working-directory: canary/${{matrix.package}}
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - unifiedjs/unified
+          - vfile/to-vfile
+          - vfile/vfile-find-down
+          - vfile/vfile-find-up
+          - vfile/vfile-location
+          - vfile/vfile-reporter
+      max-parallel: 2
   main:
-    name: test / vfile / ${{matrix.node}} on ${{matrix.os}}
+    name: ${{matrix.node}} on ${{matrix.os}}
     runs-on: ${{matrix.os}}
     steps:
       - uses: actions/checkout@v4
@@ -16,50 +39,13 @@ jobs:
       - uses: codecov/codecov-action@v4
     strategy:
       matrix:
+        node:
+          - lts/hydrogen
+          - node
         os:
           - ubuntu-latest
           - windows-latest
-        node:
-          - lts/gallium
-          - node
-  canary:
-    name: canary / ${{matrix.package}} / ${{matrix.node}} on ${{matrix.os}}
-    runs-on: ${{matrix.os}}
-    steps:
-      - name: checkout vfile
-        uses: actions/checkout@v4
-      - name: setup node
-        uses: dcodeIO/setup-node-nvm@master
-        with:
-          node-version: ${{matrix.node}}
-      - name: setup vfile
-        run: |
-          npm install -g npm
-          npm install
-          npm run build
-      - name: checkout ${{matrix.package}}
-        uses: actions/checkout@v4
-        with:
-          repository: ${{matrix.package}}
-          path: canary/${{matrix.package}}
-      - name: test ${{matrix.package}}
-        run: |
-          npm install
-          npx rimraf "node_modules/**/vfile"
-          npm test
-        working-directory: canary/${{matrix.package}}
-    strategy:
-      fail-fast: false
-      max-parallel: 2
-      matrix:
-        os:
-          - ubuntu-latest
-        node:
-          - lts/hydrogen
-        package:
-          - vfile/to-vfile
-          - vfile/vfile-location
-          - vfile/vfile-reporter
-          - vfile/vfile-find-up
-          - vfile/vfile-find-down
-          - unifiedjs/unified
+name: main
+on:
+  - pull_request
+  - push
