@@ -1,3 +1,7 @@
+/**
+ * @import {Root} from 'mdast'
+ */
+
 import assert from 'node:assert/strict'
 import {Buffer} from 'node:buffer'
 import path from 'node:path'
@@ -512,7 +516,7 @@ test('new VFile(options?)', async function (t) {
       String(
         new VFile().message(
           'test',
-          /** @type {import('mdast').Root} */ ({
+          /** @type {Root} */ ({
             type: 'root',
             children: [],
             position: {
