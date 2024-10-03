@@ -1,7 +1,8 @@
 .DS_Store
-*.d.ts.map
 *.d.ts
 *.log
+*.map
+*.tsbuildinfo
 node_modules/
 coverage/
 yarn.lock
