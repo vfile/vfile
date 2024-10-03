@@ -1,39 +1,39 @@
 {
-  "name": "vfile",
-  "version": "6.0.3",
-  "description": "Virtual file format for text processing",
-  "license": "MIT",
-  "keywords": [
-    "vfile",
-    "virtual",
-    "file",
-    "text",
-    "processing",
-    "message",
-    "warning",
-    "error",
-    "remark",
-    "retext",
-    "rehype"
-  ],
-  "repository": "vfile/vfile",
-  "bugs": "https://github.com/vfile/vfile/issues",
-  "funding": {
-    "type": "opencollective",
-    "url": "https://opencollective.com/unified"
-  },
   "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+  "bugs": "https://github.com/vfile/vfile/issues",
   "contributors": [
-    "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
     "Brendan Abbott <brendan.abbott@temando.com>",
     "Denys Dovhan <email@denysdovhan.com>",
     "Kyle Mathews <mathews.kyle@gmail.com>",
     "Shinnosuke Watanabe <snnskwtnb@gmail.com>",
-    "Sindre Sorhus <sindresorhus@gmail.com>"
+    "Sindre Sorhus <sindresorhus@gmail.com>",
+    "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
   ],
-  "sideEffects": false,
-  "type": "module",
+  "dependencies": {
+    "@types/unist": "^3.0.0",
+    "vfile-message": "^4.0.0"
+  },
+  "description": "Virtual file format for text processing",
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "c8": "^10.0.0",
+    "prettier": "^3.0.0",
+    "remark-cli": "^12.0.0",
+    "remark-preset-wooorm": "^10.0.0",
+    "type-coverage": "^2.0.0",
+    "typescript": "^5.0.0",
+    "xo": "^0.59.0"
+  },
   "exports": "./index.js",
+  "files": [
+    "lib/",
+    "index.d.ts",
+    "index.js"
+  ],
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/unified"
+  },
   "imports": {
     "#minpath": {
       "node": "./lib/minpath.js",
@@ -48,33 +48,21 @@
       "default": "./lib/minurl.browser.js"
     }
   },
-  "files": [
-    "lib/",
-    "index.d.ts",
-    "index.js"
+  "keywords": [
+    "error",
+    "file",
+    "message",
+    "processing",
+    "rehype",
+    "remark",
+    "retext",
+    "text",
+    "vfile",
+    "virtual",
+    "warning"
   ],
-  "dependencies": {
-    "@types/unist": "^3.0.0",
-    "vfile-message": "^4.0.0"
-  },
-  "devDependencies": {
-    "@types/node": "^22.0.0",
-    "c8": "^10.0.0",
-    "prettier": "^3.0.0",
-    "remark-cli": "^12.0.0",
-    "remark-preset-wooorm": "^10.0.0",
-    "type-coverage": "^2.0.0",
-    "typescript": "^5.0.0",
-    "xo": "^0.59.0"
-  },
-  "scripts": {
-    "prepack": "npm run build && npm run format",
-    "build": "tsc --build --clean && tsc --build && type-coverage",
-    "format": "remark . -qfo && prettier . -w --log-level warn && xo --fix",
-    "test-api": "node --conditions development test.js",
-    "test-coverage": "c8 --100 --reporter lcov npm run test-api",
-    "test": "npm run build && npm run format && npm run test-coverage"
-  },
+  "license": "MIT",
+  "name": "vfile",
   "prettier": {
     "bracketSpacing": false,
     "semi": false,
@@ -92,12 +80,24 @@
       ]
     ]
   },
+  "repository": "vfile/vfile",
+  "scripts": {
+    "prepack": "npm run build && npm run format",
+    "build": "tsc --build --clean && tsc --build && type-coverage",
+    "format": "remark . -qfo && prettier . -w --log-level warn && xo --fix",
+    "test-api": "node --conditions development test.js",
+    "test-coverage": "c8 --100 --reporter lcov npm run test-api",
+    "test": "npm run build && npm run format && npm run test-coverage"
+  },
+  "sideEffects": false,
   "typeCoverage": {
     "atLeast": 100,
     "detail": true,
     "ignoreCatch": true,
     "strict": true
   },
+  "type": "module",
+  "version": "6.0.3",
   "xo": {
     "overrides": [
       {
