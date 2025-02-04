@@ -62,7 +62,6 @@ metadata about files (such as its `path` and `value`) and lint
 
 * for more about us, see [`unifiedjs.com`][site]
 * for how the collective is governed, see [`unifiedjs/collective`][governance]
-* for updates, see [@unifiedjs][twitter] on Twitter
 
 ## What is this?
 
@@ -741,8 +740,6 @@ for contributing commits since!
 [vinyl]: https://github.com/gulpjs/vinyl
 
 [site]: https://unifiedjs.com
-
-[twitter]: https://twitter.com/unifiedjs
 
 [unist]: https://github.com/syntax-tree/unist#list-of-utilities
 
